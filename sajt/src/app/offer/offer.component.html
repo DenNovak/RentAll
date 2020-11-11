@@ -1,10 +1,14 @@
 <div style="background: #dedede" class="page-holder bg-cover">
 
   <div class="navbar" xmlns="http://www.w3.org/1999/html">
-    <img src="../../assets/images/logo_navbar.png" width="150">
+    <img src="../../assets/images/logo_navbar.png" width="150" onClick="location = 'index.html'" style="cursor: pointer">
     <a href="#" routerLink="/category">Categories</a>
+    <a href="#" routerLink="/owner">My products</a>
+    <a href="#" routerLink="/consumer">My bookings</a>
     <a class="active" href="#" routerLink="/offer">Create an offer</a>
-    <a href="#" routerLink="/user">Log in / Sign up</a>
+    <a *ngIf="!appComponent.isLoggedIn" href="#" routerLink="/user">Log in / Sign up</a>
+    <span *ngIf="appComponent.isLoggedIn" style="color: white; float: left; vertical-align: center; margin-right: -200px">{{ appComponent.username }}</span>
+    <a href=# routerLink="/" (click)="appComponent.logout()" *ngIf="appComponent.isLoggedIn">LogOut</a>
   </div>
 
   <!--  -->
@@ -100,7 +104,7 @@
         <h2>Add your product information</h2>
         <div class="row100">
           <div class="coll">
-            <app-combo-box [(list)]="cItems" (onSelect)="selectFromExternal($event)"></app-combo-box>
+            <app-combo-box [(ngModel)]="product.name" name="Name" [(list)]="cItems" (onSelect)="selectFromExternal($event)"></app-combo-box>
           </div>
           <div class="coll">
             <div class="inputBox">
@@ -127,7 +131,7 @@
           </div>
           <div class="coll">
             <div class="inputBox">
-              <input type="text" class="form-control" [(ngModel)]="product.phone_number" name="phoneNumber"
+              <input type="text" class="form-control" [(ngModel)]="product.phoneNumber" name="phoneNumber"
                      required="required">
               <span class="text">Phone number:</span>
               <span class="line"></span>

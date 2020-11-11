@@ -1,0 +1,35 @@
+<div class="navbar" xmlns="http://www.w3.org/1999/html">
+  <img src="../../assets/images/logo_navbar.png" width="150" onClick="location = 'index.html'" style="cursor: pointer">
+  <a href="#" routerLink="/category">Categories</a>
+  <a href="#" routerLink="/owner">My products</a>
+  <a href="#" routerLink="/consumer">My bookings</a>
+  <a class="active" href="#" routerLink="/offer">Create an offer</a>
+  <a *ngIf="!appComponent.isLoggedIn" href="#" routerLink="/user">Log in / Sign up</a>
+  <span *ngIf="appComponent.isLoggedIn"
+        style="color: white; float: left; vertical-align: center; margin-right: -200px">{{ appComponent.username }}</span>
+  <a href=# routerLink="/" (click)="appComponent.logout()" *ngIf="appComponent.isLoggedIn">LogOut</a>
+</div>
+
+<ul class="nav nav-pills">
+  <li class="nav-item">
+    <a class="nav-link"
+       [routerLinkActive]="['active']"
+       [routerLink]="['./reserved']">Reserved
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link"
+       [routerLinkActive]="['active']"
+       [routerLink]="['./booked']">Booked
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link"
+       [routerLinkActive]="['active']"
+       [routerLink]="['./free']">Free
+    </a>
+  </li>
+</ul>
+
+<router-outlet></router-outlet>
+

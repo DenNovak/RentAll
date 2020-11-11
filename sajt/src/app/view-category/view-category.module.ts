@@ -10,6 +10,8 @@ import { SearchComponent } from './category/search/search.component';
 import { ProductDetailsComponent } from './category/product-details/product-details.component';
 import { CitySearchComponent } from './category/city-search/city-search.component';
 import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatFormFieldModule} from "@angular/material/form-field";
 
 @NgModule({
   declarations: [
@@ -20,12 +22,14 @@ import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
     ProductDetailsComponent,
     CitySearchComponent
   ],
-    imports: [
-        CommonModule,
-        HttpClientModule,
-        RouterModule,
-        NgbModule
-    ],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    RouterModule,
+    NgbModule,
+    MatDatepickerModule,
+    MatFormFieldModule
+  ],
   exports: [
     CategoryComponent,
     ProductListComponent

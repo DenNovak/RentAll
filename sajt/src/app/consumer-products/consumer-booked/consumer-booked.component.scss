@@ -1,0 +1,221 @@
+.navbar {
+
+  background-color: black;
+}
+
+.navbar a:hover {
+
+  background-color: transparent;
+  border-radius: 5px;
+  border: 2px solid #A8D0E6;
+  color: white;
+}
+
+.bg-imgg{
+  //background: linear-gradient(to right, #06ff00, #e6ed00); ;
+  background-color: #F76C6C;
+}
+
+.navbar a.active {
+  //background: linear-gradient(to right, #06ff00, #e6ed00);
+  background: black;
+  border-radius: 5px;
+  border: 2px solid #A8D0E6;
+}
+
+
+//
+//
+//.page-holder {
+//  min-height: 100vh;
+//}
+//
+//.bg-cover {
+//  background-size: cover !important;
+//}
+
+//* {
+//  box-sizing: border-box;
+//}
+//
+//input[type=text], select, textarea {
+//  width: 100%;
+//  padding: 12px;
+//  border: 1px solid #ccc;
+//  border-radius: 4px;
+//  resize: vertical;
+//}
+//
+//label {
+//  padding: 12px 12px 12px 0;
+//  display: inline-block;
+//}
+//
+//input[type=submit] {
+//  background-color: #01800e;
+//  color: white;
+//  padding: 12px 20px;
+//  border: none;
+//  border-radius: 4px;
+//  cursor: pointer;
+//  float: right;
+//}
+//
+//input[type=submit]:hover {
+//  background-color: #45a049;
+//}
+
+
+* {
+  box-sizing: border-box;
+
+}
+
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #ffffff;
+}
+section .containerr {
+  width: 80%;
+  padding: 20px;
+}
+section .containerr h2 {
+  width: 100%;
+  color: #069D6B;
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+section .containerr .row100 {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+}
+
+section .containerr .row100 .coll {
+  position: relative;
+  width: 100%;
+  padding: 0 10px;
+  margin: 30px 0 10px;
+  transition: 0.5s;
+}
+section .containerr .row100 .inputBox{
+  position: relative;
+  width: 100%;
+  height: 40px;
+  color: #ADADAD;   //title of boxes color
+}
+section .containerr .row100 .inputBox input,
+section .containerr .row100 .inputBox.textarea textarea{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  padding: 0 10px;
+  z-index: 1;
+  color: #3D3D3D;       //color of fill
+}
+section .containerr .row100 .inputBox select,
+section .containerr .row100 .inputBox option
+{
+
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  padding: 0 10px;
+  z-index: 1;
+  color: #03070d;
+}
+
+section .containerr .row100 .inputBox .text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  line-height: 40px;
+  font-size: 18px;
+  padding: 0 10px;
+  display: block;
+  transition: 0.5s;
+  pointer-events: none;
+}
+
+section .containerr .row100 .inputBox input:focus + .text,
+section .containerr .row100 .inputBox input:valid + .text {
+  top: -35px;
+  left: -10px;
+}
+section .containerr .row100 .inputBox select:focus + .text,
+section .containerr .row100 .inputBox select:valid + .text {
+  top: -35px;
+  left: -10px;
+}
+section .containerr .row100 .inputBox .line {
+  position: absolute;
+  bottom: 0;
+  display: block;
+  width: 100%;
+  height: 2px;
+  // background: linear-gradient(to right, #09ff00, #00b4ed);
+  background: #91DEBB;
+  transition: 0.5s;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+section .containerr .row100 .inputBox input:focus ~ .line,
+section .containerr .row100 .inputBox input:valid ~ .line {
+  height: 100%;
+}
+section .containerr .row100 .inputBox select:focus ~ .line,
+section .containerr .row100 .inputBox select:valid ~ .line {
+  height: 100%;
+}
+
+section .containerr .row100 .inputBox.textarea  {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  padding: 10px 0;
+}
+section .containerr .row100 .inputBox.textarea textarea {
+  height: 100%;
+  resize: none;
+}
+section .containerr .row100 .inputBox textarea:focus + .text,
+section .containerr .row100 .inputBox textarea:valid + .text {
+  top: -35px;
+  left: -10px;
+}
+section .containerr .row100 .inputBox textarea:focus ~ .line,
+section .containerr .row100 .inputBox textarea:valid ~ .line {
+  height: 100%;
+}
+input[type="submit"] {
+  border: none;
+  padding: 7px 35px;
+  cursor: pointer;
+  outline: none;
+  background: #62D09F;
+  color: #ffffff;
+  font-size: 18px;
+  border-radius: 2px;
+}
+
+input:hover {
+
+  background: #07C586;
+
+}

@@ -14,10 +14,10 @@ export class ProductListComponent implements OnInit {
   currentCategoryId: number = 1;
   previousCategoryId: number = 1;
 
-  searchMode: boolean =  false; 
+  searchMode: boolean =  false;
   citySearchMode : boolean = false;
 
-  // new properties for pagination 
+  // new properties for pagination
   thePageNumber: number =1;
   thePageSize: number = 10;
   theTotalElements: number = 0;
@@ -33,16 +33,16 @@ export class ProductListComponent implements OnInit {
   listProducts() {
 
     this.searchMode = this.route.snapshot.paramMap.has('cityName');
-    
+
     if(this.route.snapshot.paramMap.has('keyword')) {
       this.handleSearchProducts();
     } else if (this.route.snapshot.paramMap.has('cityName')) {
       this.handleCitySearchProducts();
     }
     else {
-      this.handleListProducts(); 
-    }    
-   
+      this.handleListProducts();
+    }
+
   }
 
   handleSearchProducts() {
@@ -84,9 +84,9 @@ export class ProductListComponent implements OnInit {
    //
    // Check if we have a different category than previous
    // because of Angular will reuse a component if it is currently being viewed
-   //  
+   //
 
-   // if we have a different category id than previous 
+   // if we have a different category id than previous
    // then set thePageNumber back to 1
    if(this.previousCategoryId != this.currentCategoryId) {
      this.thePageNumber = 1;
@@ -95,7 +95,7 @@ export class ProductListComponent implements OnInit {
    this.previousCategoryId = this.currentCategoryId;
 
    console.log(`currentCategoryId=${this.currentCategoryId}, thePageNumber=${this.thePageNumber}`)
- 
+
      // now get the products for the given category id
      this.productService.getProductListPaginate(this.thePageNumber - 1,
                                                 this.thePageSize,

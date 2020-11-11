@@ -2,7 +2,7 @@ export class Product {
     id: string;
     name: string;
     firstName: string;
-    phone_number: string;
+    phoneNumber: string;
     description: string;
     unitPrice: number;
     imageUrl: string;
@@ -11,4 +11,5 @@ export class Product {
     lastUpdated: Date;
     city: string;
     category: string;
+    userId: number;
 }

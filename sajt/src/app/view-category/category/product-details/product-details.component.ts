@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Product } from 'src/app/common/product';
-import { ProductService } from 'src/app/services/product.service';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Product} from 'src/app/common/product';
+import {ProductService} from 'src/app/services/product.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AppComponent} from "../../../app.component";
 
 @Component({
   selector: 'app-product-details',
@@ -11,17 +12,23 @@ import { ActivatedRoute } from '@angular/router';
 export class ProductDetailsComponent implements OnInit {
 
   product: Product = new Product();
+  productStatus = 'FREE';
+  productConsumer = 0;
+  appComponent: AppComponent;
 
-  constructor(private productService: ProductService, 
-              private route: ActivatedRoute) { }
+  constructor(private productService: ProductService,
+              private route: ActivatedRoute, private router: Router) {
+  }
 
   ngOnInit(): void {
+    this.appComponent = this.productService.getAppComponent();
     this.route.paramMap.subscribe(() => {
       this.handleProductDetails();
-    })
+    });
   }
+
   handleProductDetails() {
-    
+
     // get the "id" param string. Convert string to a number using the + symbol
     const theProductId: number = +this.route.snapshot.paramMap.get('id');
 
@@ -29,17 +36,78 @@ export class ProductDetailsComponent implements OnInit {
       data => {
         this.product = data;
       }
-    )
+    );
+    this.productService.getProductStatus(theProductId).subscribe(
+      data => { this.productStatus = data.status; }
+    );
+    this.productService.getProductConsumer(theProductId).subscribe(
+      data => { this.productConsumer = data; }
+    );
   }
 
-  takeProduct() {
-    const productId : number =+this.route.snapshot.paramMap.get('id');
-
-    this.productService.takeProduct(productId).subscribe(
-      data => {
-        this.product = data;
+  reserveProduct(id: string) {
+    this.productService.reserveProduct(id).subscribe(
+      result => {
+        if (result === true) {
+          alert('Product reserved');
+          window.location.reload();
+        } else {
+          alert('Product reservation failed');
+        }
       }
-    )
+    );
+  }
+
+  cancelProductReservation(id: string) {
+    this.productService.cancelReservation(id).subscribe(
+      result => {
+        if (result === true) {
+          alert('Product reservation cancelled');
+          window.location.reload();
+        } else {
+          alert('Could not cancel product reservation');
+        }
+      }
+    );
+  }
+
+  bookProduct(id: string) {
+    this.productService.bookProduct(id).subscribe(
+      result => {
+        if (result === true) {
+          alert('Product booked');
+          window.location.reload();
+        } else {
+          alert('Product booking failed');
+        }
+      }
+    );
+  }
+
+  returnProductConsumer(id: string) {
+    this.productService.returnProductConsumer(id).subscribe(
+      result => {
+        if (result === true) {
+          alert('Product returned');
+          window.location.reload();
+        } else {
+          alert('Product return failed');
+        }
+      }
+    );
+  }
+
+  returnProduct(id: string) {
+    this.productService.returnProduct(id).subscribe(
+      result => {
+        if (result === true) {
+          alert('Product return confirmed');
+          window.location.reload();
+        } else {
+          alert('Product return failed');
+        }
+      }
+    );
   }
 
 }

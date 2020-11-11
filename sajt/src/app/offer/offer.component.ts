@@ -5,6 +5,9 @@ import {Product} from '../common/product';
 import {ProductService} from '../services/product.service';
 import {ComboBoxComponent} from "./combo-box/combo-box.component";
 import {ExternalProduct} from "../common/ExternalProduct";
+import {AppComponent} from "../app.component";
+import {TokenStorageService} from "../_services/token-storage.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-offer',
@@ -29,11 +32,16 @@ export class OfferComponent implements OnInit {
 
   })
 
-  constructor(private fb: FormBuilder, private productService: ProductService) {
+  constructor(private fb: FormBuilder, private productService: ProductService, private router: Router) {
   }
+  appComponent: AppComponent;
 
   ngOnInit(): void {
     this.loadProductList();
+    this.appComponent = this.productService.getAppComponent();
+    if (!this.appComponent.isLoggedIn) {
+      this.router.navigate(['/user']);
+    }
   }
 
   onFileSelected(event) {

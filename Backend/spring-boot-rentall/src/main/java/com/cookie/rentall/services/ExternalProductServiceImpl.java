@@ -37,7 +37,7 @@ public class ExternalProductServiceImpl implements ExternalProductService {
     @Override
     public List<ExternalProductView> getExternalProductList() {
         List<ExternalProductView> resultList = new ArrayList<>();
-        for(int i = 0; i < 5; i++) { //todo учитывать количество страниц
+        for(int i = 0; i < 3; i++) { //todo учитывать количество страниц
             final String uri = PRODUCT_URL + "?page=" + i;
             RestTemplate restTemplate = createRestTemplate();
             HttpEntity<String> entity = createStringHttpEntity();
