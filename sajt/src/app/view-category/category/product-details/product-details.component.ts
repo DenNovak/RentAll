@@ -106,6 +106,9 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   reserveProduct(id: string) {
+    if (!this.checkDates()) {
+      return;
+    }
     this.productService.reserveProduct(id).subscribe(
       result => {
         if (result === true) {
@@ -116,6 +119,24 @@ export class ProductDetailsComponent implements OnInit {
         }
       }
     );
+  }
+
+  checkDates(): boolean {
+    const fr = new NgbDate(this.from.year, this.from.month - 1, this.from.day - 1);
+    const t = new NgbDate(this.to.year, this.to.month - 1, this.to.day - 1);
+    for (const period of this.refusedDates) {
+      const st = new NgbDate(period.start.getFullYear(), period.start.getMonth() - 1, period.start.getDay() - 1);
+      const f = new NgbDate(period.end.getFullYear(), period.end.getMonth() - 1, period.end.getDay() - 1);
+      if (this.isInInterval(fr, st, f) || this.isInInterval(t, st, f)) {
+        alert('Selected date interval is not free');
+        return false;
+      }
+    }
+    return true;
+  }
+
+  isInInterval(d: NgbDate, s: NgbDate, f: NgbDate) {
+    return (d.after(s) || d.equals(s)) && (d.before(f) || d.equals(f));
   }
 
   cancelProductReservation(id: string) {
