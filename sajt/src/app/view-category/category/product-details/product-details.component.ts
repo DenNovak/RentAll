@@ -109,7 +109,9 @@ export class ProductDetailsComponent implements OnInit {
     if (!this.checkDates()) {
       return;
     }
-    this.productService.reserveProduct(id).subscribe(
+    const st = new Date(this.from.year, this.from.month, this.from.day);
+    const f = new Date(this.to.year, this.to.month, this.to.day);
+    this.productService.reserveProduct(id, st, f).subscribe(
       result => {
         if (result === true) {
           alert('Product reserved');
