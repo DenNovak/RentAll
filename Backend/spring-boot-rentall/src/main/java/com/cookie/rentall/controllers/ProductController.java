@@ -104,7 +104,7 @@ public class ProductController {
 
     @GetMapping("api/products/available")
     public Page<ProductShortView> available() {
-        return productRepository.findFree(Pageable.unpaged()).map(ProductShortView::new);
+        return productRepository.findAll(Pageable.unpaged()).map(ProductShortView::new);
     }
 
 
