@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AppComponent} from "../../../app.component";
 import {NgbDate, NgbDatepicker, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import {ProductUnavailableView} from "../../../common/productunavailableview";
 
 @Component({
   selector: 'app-product-details',
@@ -22,6 +23,7 @@ export class ProductDetailsComponent implements OnInit {
   to: NgbDateStruct;
   faCalendar = faCalendarAlt;
   markDisabled: (date: NgbDate) => {};
+  refusedDates: ProductUnavailableView[];
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute, private router: Router) {
@@ -31,12 +33,27 @@ export class ProductDetailsComponent implements OnInit {
     this.appComponent = this.productService.getAppComponent();
     this.route.paramMap.subscribe(() => {
       this.handleProductDetails();
+      this.productService.listUnavailableDates(this.product.id).subscribe((data) => {
+        this.refusedDates = data;
+        this.disableDays();
+      });
     });
-    this.disableDays()
   }
 
   disableDays() {
-    this.markDisabled = (date: NgbDate) => true;
+    this.markDisabled = (date: NgbDate) => {
+      for (const interval of this.refusedDates) {
+        if (interval.start === null || interval.end == null) {
+          continue;
+        }
+        const start = new NgbDate(interval.start.getFullYear(), interval.start.getMonth(), interval.start.getDay());
+        const end = new NgbDate(interval.end.getFullYear(), interval.end.getMonth(), interval.end.getDay());
+        if ((date.after(start) || date.equals(start)) && (date.before(end) || date.equals(end))) {
+          return true;
+        }
+      }
+      return false;
+    };
   }
 
 

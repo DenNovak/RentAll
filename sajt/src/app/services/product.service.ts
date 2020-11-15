@@ -8,6 +8,7 @@ import {ProductCategory} from '../common/product-category';
 import {ExternalProduct} from "../common/ExternalProduct";
 import {AppComponent} from "../app.component";
 import {ProductStatus} from "../common/productstatus";
+import {ProductUnavailableView} from "../common/productunavailableview";
 
 @Injectable({
   providedIn: 'root'
@@ -133,6 +134,11 @@ export class ProductService {
   listProductsByOwner(userId: number, status: string): Observable<Product[]> {
     const url = `${this.baseUrl}/createdByUser?status=${status}`;
     return this.httpClient.get<GetResponseProductsPlain>(url).pipe(map(response => response.content));
+  }
+
+  listUnavailableDates(theProductId: string): Observable<ProductUnavailableView[]> {
+    const url = `${this.baseUrl}/${theProductId}/unavailable`;
+    return this.httpClient.get<ProductUnavailableView[]>(url).pipe(map(response => response));
   }
 
   listProductsByConsumer(userId: number, status: string): Observable<Product[]> {
