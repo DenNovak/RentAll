@@ -4,7 +4,7 @@ import {ProductService} from 'src/app/services/product.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppComponent} from "../../../app.component";
 import {NgbDate, NgbDatepicker, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
-import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import {faCalendarAlt} from '@fortawesome/free-solid-svg-icons';
 import {ProductUnavailableView} from "../../../common/productunavailableview";
 
 @Component({
@@ -24,6 +24,7 @@ export class ProductDetailsComponent implements OnInit {
   faCalendar = faCalendarAlt;
   markDisabled: (date: NgbDate) => {};
   refusedDates: ProductUnavailableView[];
+  totalCost = 0;
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute, private router: Router) {
@@ -56,7 +57,30 @@ export class ProductDetailsComponent implements OnInit {
     };
   }
 
-
+  refreshCost(nVal: string, num: number) {
+    const dt = new Date(nVal);
+    const newVal = new NgbDate(dt.getFullYear(), dt.getMonth(), dt.getDay());
+    let fr = null;
+    let t = null;
+    if (this.from != null) {
+      fr = new NgbDate(this.from.year, this.from.month - 1, this.from.day - 1);
+    }
+    if (this.to != null) {
+      t = new NgbDate(this.to.year, this.to.month - 1, this.to.day - 1);
+    }
+    if (num === 1) {
+      fr = new NgbDate(newVal.year, newVal.month, newVal.day);
+    } else {
+      t = new NgbDate(newVal.year, newVal.month, newVal.day);
+    }
+    if (t.after(fr) || t.equals(fr)) {
+      const diff = Math.abs(new Date(t.year, t.month, t.day).getTime() - new Date(fr.year, fr.month, fr.day).getTime());
+      const diffDays = Math.ceil(diff / (1000 * 3600 * 24)) + 1;
+      this.totalCost = this.product.unitPrice * diffDays;
+      return;
+    }
+    this.totalCost = 0;
+  }
 
 
   handleProductDetails() {
@@ -70,10 +94,14 @@ export class ProductDetailsComponent implements OnInit {
       }
     );
     this.productService.getProductStatus(theProductId).subscribe(
-      data => { this.productStatus = data.status; }
+      data => {
+        this.productStatus = data.status;
+      }
     );
     this.productService.getProductConsumer(theProductId).subscribe(
-      data => { this.productConsumer = data; }
+      data => {
+        this.productConsumer = data;
+      }
     );
   }
 

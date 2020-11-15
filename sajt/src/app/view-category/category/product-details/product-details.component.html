@@ -15,6 +15,10 @@
           <ul>
             <p>{{ product.unitPrice | currency: 'PLN'}}</p>
           </ul>
+          <h3 class="my-3">Total cost:</h3>
+          <ul>
+            <p>{{ totalCost | currency: 'PLN'}}</p>
+          </ul>
           <h3 class="my-3">Description:</h3>
           <a>{{ product.description }}</a>
           <h3 class="my-3">Contact:</h3>
@@ -32,7 +36,7 @@
               <div class="form-group">
                 from
                 <div class="input-group">
-                  <input class="form-control" placeholder="yyyy-mm-dd"
+                  <input #i1 class="form-control" (ngModelChange)="refreshCost(i1.value, 1)" placeholder="yyyy-mm-dd"
                          name="dp1" [(ngModel)]="from" ngbDatepicker #d1="ngbDatepicker" [markDisabled]="markDisabled">
                   <div class="input-group-append">
                     <button class="btn btn-outline-secondary calendar" (click)="d1.toggle()" type="button"><fa-icon [icon]="faCalendar"></fa-icon></button>
@@ -40,8 +44,8 @@
                 </div>
                 to
                 <div class="input-group">
-                  <input class="form-control" placeholder="yyyy-mm-dd"
-                         name="dp2" [(ngModel)]="to" ngbDatepicker #d2="ngbDatepicker">
+                  <input #i2 class="form-control" (ngModelChange)="refreshCost(i2.value, 2)" placeholder="yyyy-mm-dd"
+                         name="dp2" [(ngModel)]="to" ngbDatepicker #d2="ngbDatepicker" [markDisabled]="markDisabled" >
                   <div class="input-group-append">
                     <button class="btn btn-outline-secondary calendar" (click)="d2.toggle()" type="button"><fa-icon [icon]="faCalendar"></fa-icon></button>
                   </div>
