@@ -8,6 +8,7 @@ import com.cookie.rentall.dao.ProductRepository;
 import com.cookie.rentall.entity.Booking;
 import com.cookie.rentall.entity.Product;
 import com.cookie.rentall.entity.ProductCategory;
+import com.cookie.rentall.product.ProductReserveRequest;
 import com.cookie.rentall.product.ProductUpdateRequest;
 import com.cookie.rentall.repositores.BookingRepository;
 import com.cookie.rentall.views.ProductShortView;
@@ -160,20 +161,29 @@ public class ProductController {
 
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("api/products/{id}/book")
-    public Boolean book(@PathVariable("id") Long id) {
+    public Boolean book(@PathVariable("id") Long id, @RequestBody ProductReserveRequest request) {
         Product product = productRepository.getOne(id);
-        Optional<Booking> actualBooking = product.getBookings().stream().filter(b -> b.getBookingDate() == null || b.getCreateDate() == null || b.getReturnDate() == null).findFirst();
+        Optional<Booking> actualBooking = product.getBookings().stream().filter(b ->
+                isInInterval(request.expectedStart, b.getExpectedStart(), b.getExpectedEnd())
+                        || isInInterval(request.expectedEnd, b.getExpectedStart(), b.getExpectedEnd())).findFirst();
         if (actualBooking.isPresent()) {
             return false;
         }
         Booking newBooking = new Booking();
         newBooking.setCreateDate(new Date());
+        newBooking.setExpectedStart(request.expectedStart);
+        newBooking.setExpectedEnd(request.expectedEnd);
         newBooking.setActual(true);
         newBooking.setUserId(getUserId());
         newBooking.setProduct(product);
         newBooking.setPinCode((int) (Math.random() * 100) + 1);
         bookingRepository.save(newBooking);
         return true;
+    }
+
+    private boolean isInInterval(Date date, Date begin, Date end) {
+        if (begin == null || end == null) return false;
+        return (date.after(begin) || date.equals(begin)) && (date.before(end) || date.equals(end));
     }
 
     @PreAuthorize("isAuthenticated()")
