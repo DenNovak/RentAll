@@ -29,6 +29,7 @@ import { ConsumerReservedComponent } from './consumer-products/consumer-reserved
 import { ConsumerBookedComponent } from './consumer-products/consumer-booked/consumer-booked.component';
 import { ConsumerFreeComponent } from './consumer-products/consumer-free/consumer-free.component';
 import { MaterialModule } from './material.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const productRoutes: Routes = [
   // {path: 'citySearch/:keyword/products/:id', component: ProductDetailsComponent},
@@ -94,7 +95,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgbModule,
     FormsModule,
-    MaterialModule
+    MaterialModule,
+    FontAwesomeModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

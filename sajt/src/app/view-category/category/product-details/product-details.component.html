@@ -28,11 +28,28 @@
           <button class="btn btn-dark" (click)="returnProductConsumer(product.id)" *ngIf="productStatus === 'BOOKED' && productConsumer === appComponent.userId">Return product</button>
           <button class="btn btn-dark" (click)="cancelProductReservation(product.id)" *ngIf="productStatus === 'RESERVED' && productConsumer === appComponent.userId">Cancel reservation</button>
           <div *ngIf="productStatus === 'FREE'">
-            <mat-form-field>
-              <input matInput [matDatepicker]="picker" placeholder="Choose a date">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
+            <form class="form-inline">
+              <div class="form-group">
+                from
+                <div class="input-group">
+                  <input class="form-control" placeholder="yyyy-mm-dd"
+                         name="dp1" [(ngModel)]="from" ngbDatepicker #d1="ngbDatepicker" [markDisabled]="markDisabled">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary calendar" (click)="d1.toggle()" type="button"><fa-icon [icon]="faCalendar"></fa-icon></button>
+                  </div>
+                </div>
+                to
+                <div class="input-group">
+                  <input class="form-control" placeholder="yyyy-mm-dd"
+                         name="dp2" [(ngModel)]="to" ngbDatepicker #d2="ngbDatepicker">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary calendar" (click)="d2.toggle()" type="button"><fa-icon [icon]="faCalendar"></fa-icon></button>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <hr/>
           </div>
 
 

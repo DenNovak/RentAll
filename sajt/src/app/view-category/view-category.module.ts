@@ -12,6 +12,8 @@ import { CitySearchComponent } from './category/city-search/city-search.componen
 import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatFormFieldModule} from "@angular/material/form-field";
+import {FormsModule} from "@angular/forms";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import {MatFormFieldModule} from "@angular/material/form-field";
     RouterModule,
     NgbModule,
     MatDatepickerModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    FormsModule,
+    FontAwesomeModule
   ],
   exports: [
     CategoryComponent,

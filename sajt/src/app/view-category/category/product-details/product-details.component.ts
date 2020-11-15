@@ -3,18 +3,25 @@ import {Product} from 'src/app/common/product';
 import {ProductService} from 'src/app/services/product.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppComponent} from "../../../app.component";
+import {NgbDate, NgbDatepicker, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.scss']
 })
+
 export class ProductDetailsComponent implements OnInit {
 
   product: Product = new Product();
   productStatus = 'FREE';
   productConsumer = 0;
   appComponent: AppComponent;
+  from: NgbDateStruct;
+  to: NgbDateStruct;
+  faCalendar = faCalendarAlt;
+  markDisabled: (date: NgbDate) => {};
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute, private router: Router) {
@@ -25,7 +32,15 @@ export class ProductDetailsComponent implements OnInit {
     this.route.paramMap.subscribe(() => {
       this.handleProductDetails();
     });
+    this.disableDays()
   }
+
+  disableDays() {
+    this.markDisabled = (date: NgbDate) => true;
+  }
+
+
+
 
   handleProductDetails() {
 
