@@ -13,6 +13,7 @@ import com.cookie.rentall.product.ProductUpdateRequest;
 import com.cookie.rentall.repositores.BookingRepository;
 import com.cookie.rentall.views.ProductShortView;
 import com.cookie.rentall.views.ProductStatusView;
+import com.cookie.rentall.views.ProductUnavailableView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
@@ -28,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
@@ -79,6 +81,13 @@ public class ProductController {
     @GetMapping("api/products/view/{id}")
     public ProductUpdateRequest getProduct(@PathVariable("id") Long id) {
         return new ProductUpdateRequest(productRepository.getOne(id));
+    }
+
+    @GetMapping("api/products/{id}/unavailable")
+    public List<ProductUnavailableView> getUnavailable(@PathVariable("id") Long id) {
+        Date now = new Date();
+        return productRepository.getOne(id).getBookings().stream().filter(b -> b.getExpectedEnd().after(now))
+                .map(b -> new ProductUnavailableView(b.getExpectedStart(), b.getExpectedEnd())).collect(Collectors.toList());
     }
 
     @GetMapping("api/products/{id}/status")
