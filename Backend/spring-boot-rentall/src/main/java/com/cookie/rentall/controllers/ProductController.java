@@ -86,7 +86,7 @@ public class ProductController {
     @GetMapping("api/products/{id}/unavailable")
     public List<ProductUnavailableView> getUnavailable(@PathVariable("id") Long id) {
         Date now = new Date();
-        return productRepository.getOne(id).getBookings().stream().filter(b -> b.getExpectedEnd().after(now))
+        return productRepository.getOne(id).getBookings().stream().filter(b -> b.getExpectedEnd() != null && b.getExpectedEnd().after(now))
                 .map(b -> new ProductUnavailableView(b.getExpectedStart(), b.getExpectedEnd())).collect(Collectors.toList());
     }
 
