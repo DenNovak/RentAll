@@ -26,12 +26,12 @@
           <br>
           <a>{{ product.phoneNumber}}</a>
           <br>
-          <button class="btn btn-dark" (click)="reserveProduct(product.id)" *ngIf="productStatus === 'FREE'">Reserve</button>
+          <button class="btn btn-dark" (click)="reserveProduct(product.id)">Reserve</button>
           <button class="btn btn-dark" (click)="bookProduct(product.id)" *ngIf="productStatus === 'RESERVED' && product.userId === appComponent.userId">Accept Booking</button>
           <button class="btn btn-dark" (click)="returnProduct(product.id)" *ngIf="productStatus === 'RETURNED_BY_CONSUMER' && product.userId === appComponent.userId">Confirm return</button>
           <button class="btn btn-dark" (click)="returnProductConsumer(product.id)" *ngIf="productStatus === 'BOOKED' && productConsumer === appComponent.userId">Return product</button>
           <button class="btn btn-dark" (click)="cancelProductReservation(product.id)" *ngIf="productStatus === 'RESERVED' && productConsumer === appComponent.userId">Cancel reservation</button>
-          <div *ngIf="productStatus === 'FREE'">
+          <div >
             <form class="form-inline">
               <div class="form-group">
                 from

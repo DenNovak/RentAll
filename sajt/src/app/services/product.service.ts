@@ -96,7 +96,7 @@ export class ProductService {
   reserveProduct(theProductId: string, from: Date, to: Date): Observable<any> {
     const reserveUrl = `${this.baseUrl}/${theProductId}/book`;
     const headers = {'content-type': 'application/json'};
-    const body = {start: from, end: to};
+    const body = {expectedStart: from, expectedEnd: to};
     return this.httpClient.patch(reserveUrl, body, {headers: headers});
   }
 
