@@ -47,7 +47,7 @@ background-color: #ffffff;
   width: 380px;
   height: 490px;
   position: relative;
-  margin: 6% auto;
+  margin: 9% auto;
   background: #F5F5F5;
   border-radius: 10px;
   padding: 5px;
@@ -151,3 +151,222 @@ background-color: #ffffff;
 #register{
   left: 450px;
 }
+
+
+
+//.navbar a:hover {
+//
+//  background-color: transparent;
+//  border-radius: 5px;
+//  border: 2px solid #A8D0E6;
+//  color: white;
+//}
+//
+//.navbar a.active {
+//  //background: linear-gradient(to right, #06ff00, #e6ed00);
+//  background: black;
+//  border-radius: 5px;
+//  border: 2px solid #A8D0E6;
+//}
+.row {
+
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 40px;
+  vertical-align: middle;
+}
+
+.column {
+  width:50%;
+}
+.column img {
+  margin-top: 30px;
+  margin-left: 170px;     //32px
+  vertical-align: middle;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+.navbar {
+
+  background-color: black;
+}
+
+
+
+
+
+body {
+  margin: 0;
+  background-color: #f9f9ff;
+}
+
+a {
+  color: #f9f9ff;
+}
+
+/* header */
+
+.header {
+  background-color: #000000;
+  position: fixed;
+  width: 100%;
+  z-index: 3;
+
+}
+
+.header ul {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #000000;
+  list-style: none;
+}
+
+.header li a {
+  display: inline-block;
+  padding: 20px 20px;
+  text-decoration: none;
+
+}
+
+.header li a:hover,
+.header .menu-btn:hover {
+  background-color: transparent;
+}
+
+.header .logo {
+  display: block;
+  float: left;
+  font-size: 2em;
+  padding: 10px 20px;
+  text-decoration: none;
+}
+
+/* menu */
+
+.header .menu {
+  clear: both;
+  max-height: 0;
+  transition: max-height .2s ease-out;
+}
+
+/* menu icon */
+
+.header .menu-icon {
+  cursor: pointer;
+  float: right;
+  padding: 28px 20px;
+  position: relative;
+  user-select: none;
+}
+
+.header .menu-icon .nav-icon {
+  background: #f9f9ff;
+  display: block;
+  height: 2px;
+  position: relative;
+  transition: background .2s ease-out;
+  width: 18px;
+}
+
+.header .menu-icon .nav-icon:before,
+.header .menu-icon .nav-icon:after {
+  background: #f9f9ff;
+  content: '';
+  display: block;
+  height: 100%;
+  position: absolute;
+  transition: all .2s ease-out;
+  width: 100%;
+}
+
+.header .menu-icon .nav-icon:before {
+  top: 5px;
+}
+
+.header .menu-icon .nav-icon:after {
+  top: -5px;
+}
+
+/* menu btn */
+
+.header .menu-btn {
+  display: none;
+}
+
+.header .menu-btn:checked ~ .menu {
+  max-height: 390px;
+}
+
+.header .menu-btn:checked ~ .menu-icon .nav-icon {
+  background: transparent;
+}
+
+.header .menu-btn:checked ~ .menu-icon .nav-icon:before {
+  transform: rotate(-45deg);
+  top:0;
+}
+
+.header .menu-btn:checked ~ .menu-icon .nav-icon:after {
+  transform: rotate(45deg);
+  top:0;
+}
+
+
+@media (min-width: 1026px) {
+  .header li {
+    float: left;
+  }
+  .header li a {
+    padding: 20px 30px;
+  }
+  .header .menu {
+    clear: none;
+    float: right;
+    max-height: none;
+  }
+  .header .menu-icon {
+    display: none;
+  }
+}
+
+.cool::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  background: white;
+  transition: width .3s;
+}
+
+.cool:hover::after {
+  width: 100%;
+  transition: width .3s;
+
+}
+
+@media screen and (max-width: 1052px){
+  .form-box {
+    width: 380px;
+    height: 490px;
+    position: relative;
+    margin: 20% auto;
+    background: #F5F5F5;
+    border-radius: 10px;
+    padding: 5px;
+    overflow: hidden;
+  }
+}
+
+//.menu li:hover {
+//  border-radius: 50px;
+//  background: #676767;
+//}

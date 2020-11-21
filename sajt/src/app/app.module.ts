@@ -31,6 +31,8 @@ import { ConsumerFreeComponent } from './consumer-products/consumer-free/consume
 import { MaterialModule } from './material.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+
+
 const productRoutes: Routes = [
   // {path: 'citySearch/:keyword/products/:id', component: ProductDetailsComponent},
   {path: 'citySearch/:cityName', component: ProductListComponent},
