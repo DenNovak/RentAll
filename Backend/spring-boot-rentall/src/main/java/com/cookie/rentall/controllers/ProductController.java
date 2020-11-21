@@ -1,6 +1,5 @@
 package com.cookie.rentall.controllers;
 
-import com.cookie.rentall.auth.User;
 import com.cookie.rentall.auth.UserDetailsImpl;
 import com.cookie.rentall.auth.UserRepository;
 import com.cookie.rentall.dao.ProductCategoryRepository;
