@@ -1,6 +1,8 @@
 export class Product {
     id: string;
     name: string;
+    firstName: string;
+    phoneNumber: string;
     description: string;
     unitPrice: number;
     imageUrl: string;
@@ -8,4 +10,6 @@ export class Product {
     dateCreated: Date;
     lastUpdated: Date;
     city: string;
+    category: string;
+    userId: number;
 }

@@ -1,17 +1,23 @@
 .active-cyan-3 input[type=text] {
-    border: 1px solid #4dd0e1;
-    box-shadow: 0 0 0 1px #4dd0e1;
+    border: 1px solid #62D09F;
+    box-shadow: 0 0 0 1px #62D09F;
   }
 
 
 .active-cyan-4 {
     margin: 2%;
+
   }
 
 .btn{
     margin-top: 1%;
+    background-color: #62D09F;
+    border: none;
 }
+.btn:hover{
 
+  background-color: #07C586;
+}
 .input-group{
   padding-left: 2%;
   padding-right: 2%;

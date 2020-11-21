@@ -18,10 +18,10 @@
 <div class="middled">
       <li *ngFor="let tempProductCategory of productCategories">
       <div class="link-5">
-        <a href="#" routerLink="{{ tempProductCategory.id }}">
+        <a href="#" routerLink="categories/{{ tempProductCategory.id }}">
           <span class="thick">{{ tempProductCategory.categoryName }}</span>
         </a>
-        <p>Vlados Pidr</p>
+        <p>Category</p>
       </div>
       </li>
 </div>

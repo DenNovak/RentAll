@@ -1,0 +1,18 @@
+<div class="inputBox">
+  <input type="text" class="form-control" [(ngModel)]="inputItem"
+         (ngModelChange)="getFilteredList()" (keyup)="onKeyPress($event)"
+         (blur)="toggleListDisplay(0)" (focus)="toggleListDisplay(1)"
+         [ngClass]="{'error': showError}" name="name" required="required">
+  <div class="combobox-options" *ngIf="!listHidden">
+    <list-item *ngFor="let item of filteredList;let i = index"
+               [ngClass]="{'selected': i===selectedIndex}"
+               (click)="selectItem(i)">
+      {{item}}
+    </list-item>
+  </div>
+  <span class="text">Product Name:</span>
+  <span class="line"></span>
+  <div class="invalid-tooltip">
+    Please provide name.
+  </div>
+</div>
