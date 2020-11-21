@@ -8,7 +8,12 @@ import {RouterModule} from "@angular/router";
 import { ProductCategoryMenuComponent } from './category/product-category-menu/product-category-menu.component';
 import { SearchComponent } from './category/search/search.component';
 import { ProductDetailsComponent } from './category/product-details/product-details.component';
-
+import { CitySearchComponent } from './category/city-search/city-search.component';
+import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {FormsModule} from "@angular/forms";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 @NgModule({
   declarations: [
@@ -16,13 +21,19 @@ import { ProductDetailsComponent } from './category/product-details/product-deta
     ProductListComponent,
     ProductCategoryMenuComponent,
     SearchComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    CitySearchComponent
   ],
-    imports: [
-        CommonModule,
-        HttpClientModule,
-        RouterModule
-    ],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    RouterModule,
+    NgbModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    FormsModule,
+    FontAwesomeModule
+  ],
   exports: [
     CategoryComponent,
     ProductListComponent

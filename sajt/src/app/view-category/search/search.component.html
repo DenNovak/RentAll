@@ -1,0 +1,13 @@
+
+<div class="input-group">
+  <input #myInput type="text"
+         placeholder="...what are you interested in?"
+         aria-label="Search"
+         class="form-control"
+         (keyup.enter)="doSearch(myInput.value)" />
+
+
+         <app-city-search></app-city-search>
+
+  <button type="button" class="btn btn-primary btn-lg btn-block" (click)="doSearch(myInput.value)">Search</button>
+</div>
