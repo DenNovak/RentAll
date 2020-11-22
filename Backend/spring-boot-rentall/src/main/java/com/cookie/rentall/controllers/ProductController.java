@@ -115,33 +115,6 @@ public class ProductController {
         return productRepository.findAll(Pageable.unpaged()).map(ProductShortView::new);
     }
 
-
-    @GetMapping("api/products/createdByUser")
-    public Page<ProductShortView> createdByUser(@RequestParam(name = "status") String status) {
-        switch (status.toUpperCase()) {
-            case "RESERVED":
-                return productRepository.findUserReserved(getUserId(), Pageable.unpaged()).map(ProductShortView::new);
-            case "BOOKED":
-                return productRepository.findUserGot(getUserId(), Pageable.unpaged()).map(ProductShortView::new);
-            case "RETURNED":
-                return productRepository.findUserReturned(getUserId(), Pageable.unpaged()).map(ProductShortView::new);
-        }
-        return Page.empty();
-    }
-
-    @GetMapping("api/products/gotByUser")
-    public Page<ProductShortView> gotByUser(@RequestParam(name = "status") String status) {
-        switch (status.toUpperCase()) {
-            case "RESERVED":
-                return productRepository.findCustomerReservations(getUserId(), Pageable.unpaged()).map(ProductShortView::new);
-            case "BOOKED":
-                return productRepository.findCustomerGot(getUserId(), Pageable.unpaged()).map(ProductShortView::new);
-            case "RETURNED":
-                return productRepository.findCustomerReturned(getUserId(), Pageable.unpaged()).map(ProductShortView::new);
-        }
-        return Page.empty();
-    }
-
     @PreAuthorize("isAuthenticated()")
     @PostMapping("api/products")
     public ProductUpdateRequest createProduct(@RequestBody ProductUpdateRequest request) {
@@ -192,68 +165,6 @@ public class ProductController {
     private boolean isInInterval(Date date, Date begin, Date end) {
         if (begin == null || end == null) return false;
         return (date.after(begin) || date.equals(begin)) && (date.before(end) || date.equals(end));
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PatchMapping("api/products/{id}/get")
-    public Boolean giveProductToCustomer(@PathVariable("id") Long id) {
-        Product product = productRepository.getOne(id);
-        Optional<Booking> actualBooking = product.getBookings().stream().filter(b -> b.getBookingDate() == null && b.getCreateDate() != null && b.getReturnDate() == null).findFirst();
-        if (!actualBooking.isPresent()) {
-            return false;
-        }
-        if (!new Long(product.getUserId()).equals(getUserId())) return false;
-        actualBooking.get().setBookingDate(new Date());
-        bookingRepository.save(actualBooking.get());
-        //todo
-        //sendSimpleMessage(userRepository.findById(actualBooking.get().getUserId()).map(User::getEmail).orElse(""), "Your booking accepted", product.getName() + " is successfully booked");
-        return true;
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PatchMapping("api/products/{id}/return")
-    public Boolean returnProduct(@PathVariable("id") Long id) {
-        Product product = productRepository.getOne(id);
-        Optional<Booking> actualBooking = product.getBookings().stream().filter(b -> b.getBookingDate() != null && b.getCreateDate() != null && b.getClientReturnDate() != null && b.getReturnDate() == null).findFirst();
-        if (!actualBooking.isPresent()) {
-            return false;
-        }
-        if (!new Long(product.getUserId()).equals(getUserId())) return false;
-        actualBooking.get().setReturnDate(new Date());
-        actualBooking.get().setActual(false);
-        bookingRepository.save(actualBooking.get());
-        return true;
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PatchMapping("api/products/{id}/returnConsumer")
-    public Boolean returnProductByConsumer(@PathVariable("id") Long id) {
-        Product product = productRepository.getOne(id);
-        Optional<Booking> actualBooking = product.getBookings().stream().filter(b -> b.getBookingDate() != null && b.getCreateDate() != null && b.getReturnDate() == null).findFirst();
-        if (!actualBooking.isPresent()) {
-            return false;
-        }
-        if (!new Long(actualBooking.get().getUserId()).equals(getUserId())) return false;
-        actualBooking.get().setClientReturnDate(new Date());
-        bookingRepository.save(actualBooking.get());
-        return true;
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PatchMapping("api/products/{id}/cancel")
-    public Boolean cancelReservation(@PathVariable("id") Long id) {
-        Product product = productRepository.getOne(id);
-        Optional<Booking> actualBooking = product.getBookings().stream().filter(b -> b.getCreateDate() != null && b.getBookingDate() == null).findFirst();
-        if (!actualBooking.isPresent()) {
-            return false;
-        }
-        if (!new Long(actualBooking.get().getUserId()).equals(getUserId())) return false;
-        List<Booking> newBookings = product.getBookings();
-        newBookings.remove(actualBooking.get());
-        product.setBookings(newBookings);
-        productRepository.save(product);
-        bookingRepository.delete(actualBooking.get());
-        return true;
     }
 
     private Long getUserId() {
