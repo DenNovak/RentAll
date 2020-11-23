@@ -27,7 +27,7 @@
           </td>
 
 
-          <td class="align-middle" routerLink="/category/{{ booking.productId }}">{{ products.get(booking.id).name }}</td>
+          <td class="align-middle" routerLink="/category/{{ booking.id }}">{{ products.get(booking.id).name }}</td>
 
           <td class="align-middle">{{ booking.cost | currency: 'PLN'}}</td>
           <td class="align-middle">{{ products.get(booking.id).city }}</td>

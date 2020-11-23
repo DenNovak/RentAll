@@ -112,7 +112,9 @@
         <h2>Add your product information</h2>
         <div class="row100">
           <div class="coll">
-            <app-combo-box [(ngModel)]="product.name" name="Name" [(list)]="cItems" (onSelect)="selectFromExternal($event)"></app-combo-box>
+            <!--app-combo-box [(ngModel)]="product.name" name="Name" [(list)]="cItems" (onSelect)="selectFromExternal($event)"></app-combo-box-->
+            <input type="text" class="form-control" [(ngModel)]="product.name" name="firstName"
+                   required="required">
           </div>
           <div class="coll">
             <div class="inputBox">

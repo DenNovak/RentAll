@@ -19,6 +19,8 @@ export class ProductService {
 
   private baseUrl = 'http://localhost:8080/api/products';
 
+  private bookingUrl = 'http://localhost:8080/api/booking';
+
   private categoryUrl = 'http://localhost:8080/api/product_category';
 
   constructor(private httpClient: HttpClient) {
@@ -30,6 +32,12 @@ export class ProductService {
     const productUrl = `${this.baseUrl}/${theProductId}`;
 
     return this.httpClient.get<Product>(productUrl);
+  }
+
+  getBooking(bookingId: number): Observable<Booking> {
+    // URL based on booking id
+    const url = `http://localhost:8080/api/booking/${bookingId}`;
+    return this.httpClient.get<Booking>(url);
   }
 
   getProductStatus(theProductId: number): Observable<ProductStatus> {
@@ -102,31 +110,31 @@ export class ProductService {
   }
 
 // CANCEL RESERVATION
-  cancelReservation(theProductId: string): Observable<any> {
-    const reserveUrl = `${this.baseUrl}/${theProductId}/cancel`;
+  cancelReservation(bookingId: string): Observable<any> {
+    const reserveUrl = `${this.bookingUrl}/${bookingId}/cancel`;
     const headers = {'content-type': 'application/json'};
     const body = {active: 'false'};
     return this.httpClient.patch(reserveUrl, body, {headers: headers});
   }
 
   // BOOK PRODUCT
-  bookProduct(theProductId: string): Observable<any> {
-    const bookUrl = `${this.baseUrl}/${theProductId}/get`;
+  bookProduct(bookingId: string): Observable<any> {
+    const bookUrl = `${this.bookingUrl}/${bookingId}/confirmReservation`;
     const headers = {'content-type': 'application/json'};
     const body = {active: 'false'};
     return this.httpClient.patch(bookUrl, body, {headers: headers});
   }
 
-  returnProductConsumer(theProductId: string): Observable<any> {
-    const returnUrl = `${this.baseUrl}/${theProductId}/returnConsumer`;
+  returnProductConsumer(bookingId: string): Observable<any> {
+    const returnUrl = `${this.bookingUrl}/${bookingId}/return`;
     const headers = {'content-type': 'application/json'};
     const body = {active: 'true'};
     return this.httpClient.patch(returnUrl, body, {headers: headers});
   }
 
 // CONFIRM RETURN PRODUCT
-  returnProduct(theProductId: string): Observable<any> {
-    const returnUrl = `${this.baseUrl}/${theProductId}/return`;
+  returnProduct(bookingId: string): Observable<any> {
+    const returnUrl = `${this.bookingUrl}/${bookingId}/confirmReturn`;
     const headers = {'content-type': 'application/json'};
     const body = {active: 'true'};
     return this.httpClient.patch(returnUrl, body, {headers: headers});

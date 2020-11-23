@@ -40,7 +40,8 @@ import { OwnerToReturnComponent } from './owner-products/owner-to-return/owner-t
 const productRoutes: Routes = [
   // {path: 'citySearch/:keyword/products/:id', component: ProductDetailsComponent},
   {path: 'citySearch/:cityName', component: ProductListComponent},
-  {path: ':id', component: ProductDetailsComponent},
+  {path: ':id', component: BookingItemComponent},
+  {path: 'product/:id', component: ProductDetailsComponent},
   // {path: ':id/products/:id', component: ProductDetailsComponent},
   //{path: 'search/:keyword/products/:id', component: ProductDetailsComponent},
   {path: 'search/:keyword', component: ProductListComponent},
@@ -54,7 +55,7 @@ const ownerProductRoutes: Routes = [
   { path: '', redirectTo: 'booked', pathMatch: 'full' },
   {path: 'reserved', component: ReservedComponent},
   {path: 'booked', component: BookedComponent},
-  {path: 'toreturn', component: OwnerToReturnComponent},
+  {path: 'toret', component: OwnerToReturnComponent},
   {path: 'free', component: FreeComponent}
 ];
 
