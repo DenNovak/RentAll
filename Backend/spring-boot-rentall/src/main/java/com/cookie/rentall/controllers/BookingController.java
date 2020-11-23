@@ -71,7 +71,7 @@ public class BookingController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PatchMapping("api/products/{id}/return")
+    @PatchMapping("api/booking/{id}/return")
     public Boolean returnProductByConsumer(@PathVariable("id") Long id) {
         Optional<Booking> booking = bookingRepository.findById(id);
         if (!booking.isPresent()) {
