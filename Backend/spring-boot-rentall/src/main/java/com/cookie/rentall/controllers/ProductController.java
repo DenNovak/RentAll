@@ -8,10 +8,12 @@ import com.cookie.rentall.dao.ProductRepository;
 import com.cookie.rentall.entity.Booking;
 import com.cookie.rentall.entity.Product;
 import com.cookie.rentall.entity.ProductCategory;
+import com.cookie.rentall.product.ProductReserveRequest;
 import com.cookie.rentall.product.ProductUpdateRequest;
 import com.cookie.rentall.repositores.BookingRepository;
 import com.cookie.rentall.views.ProductShortView;
 import com.cookie.rentall.views.ProductStatusView;
+import com.cookie.rentall.views.ProductUnavailableView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
@@ -27,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
@@ -80,13 +83,22 @@ public class ProductController {
         return new ProductUpdateRequest(productRepository.getOne(id));
     }
 
+    @GetMapping("api/products/{id}/unavailable")
+    public List<ProductUnavailableView> getUnavailable(@PathVariable("id") Long id) {
+        Date now = new Date();
+        return productRepository.getOne(id).getBookings().stream().filter(b -> b.getExpectedEnd() != null && b.getExpectedEnd().after(now))
+                .map(b -> new ProductUnavailableView(b.getExpectedStart(), b.getExpectedEnd())).collect(Collectors.toList());
+    }
+
     @GetMapping("api/products/{id}/status")
     public ProductStatusView getProductStatus(@PathVariable("id") Long id) {
         Product p = productRepository.getOne(id);
         if (p.getBookings().stream().anyMatch(b -> b.getCreateDate() != null && b.getBookingDate() == null))
             return new ProductStatusView("RESERVED");
-        if (p.getBookings().stream().anyMatch(b -> b.getBookingDate() != null && b.getReturnDate() == null))
+        if (p.getBookings().stream().anyMatch(b -> b.getBookingDate() != null && b.getReturnDate() == null && b.getClientReturnDate() == null))
             return new ProductStatusView("BOOKED");
+        if (p.getBookings().stream().anyMatch(b -> b.getBookingDate() != null && b.getReturnDate() == null && b.getClientReturnDate() != null))
+            return new ProductStatusView("RETURNED_BY_CONSUMER");
         return new ProductStatusView("FREE");
     }
 
@@ -101,7 +113,7 @@ public class ProductController {
 
     @GetMapping("api/products/available")
     public Page<ProductShortView> available() {
-        return productRepository.findFree(Pageable.unpaged()).map(ProductShortView::new);
+        return productRepository.findAll(Pageable.unpaged()).map(ProductShortView::new);
     }
 
 
@@ -158,20 +170,29 @@ public class ProductController {
 
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("api/products/{id}/book")
-    public Boolean book(@PathVariable("id") Long id) {
+    public Boolean book(@PathVariable("id") Long id, @RequestBody ProductReserveRequest request) {
         Product product = productRepository.getOne(id);
-        Optional<Booking> actualBooking = product.getBookings().stream().filter(b -> b.getBookingDate() == null || b.getCreateDate() == null || b.getReturnDate() == null).findFirst();
+        Optional<Booking> actualBooking = product.getBookings().stream().filter(b ->
+                isInInterval(request.expectedStart, b.getExpectedStart(), b.getExpectedEnd())
+                        || isInInterval(request.expectedEnd, b.getExpectedStart(), b.getExpectedEnd())).findFirst();
         if (actualBooking.isPresent()) {
             return false;
         }
         Booking newBooking = new Booking();
         newBooking.setCreateDate(new Date());
+        newBooking.setExpectedStart(request.expectedStart);
+        newBooking.setExpectedEnd(request.expectedEnd);
         newBooking.setActual(true);
         newBooking.setUserId(getUserId());
         newBooking.setProduct(product);
         newBooking.setPinCode((int) (Math.random() * 100) + 1);
         bookingRepository.save(newBooking);
         return true;
+    }
+
+    private boolean isInInterval(Date date, Date begin, Date end) {
+        if (begin == null || end == null) return false;
+        return (date.after(begin) || date.equals(begin)) && (date.before(end) || date.equals(end));
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -194,13 +215,27 @@ public class ProductController {
     @PatchMapping("api/products/{id}/return")
     public Boolean returnProduct(@PathVariable("id") Long id) {
         Product product = productRepository.getOne(id);
-        Optional<Booking> actualBooking = product.getBookings().stream().filter(b -> b.getBookingDate() != null && b.getCreateDate() != null && b.getReturnDate() == null).findFirst();
+        Optional<Booking> actualBooking = product.getBookings().stream().filter(b -> b.getBookingDate() != null && b.getCreateDate() != null && b.getClientReturnDate() != null && b.getReturnDate() == null).findFirst();
         if (!actualBooking.isPresent()) {
             return false;
         }
         if (!new Long(product.getUserId()).equals(getUserId())) return false;
         actualBooking.get().setReturnDate(new Date());
         actualBooking.get().setActual(false);
+        bookingRepository.save(actualBooking.get());
+        return true;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping("api/products/{id}/returnConsumer")
+    public Boolean returnProductByConsumer(@PathVariable("id") Long id) {
+        Product product = productRepository.getOne(id);
+        Optional<Booking> actualBooking = product.getBookings().stream().filter(b -> b.getBookingDate() != null && b.getCreateDate() != null && b.getReturnDate() == null).findFirst();
+        if (!actualBooking.isPresent()) {
+            return false;
+        }
+        if (!new Long(actualBooking.get().getUserId()).equals(getUserId())) return false;
+        actualBooking.get().setClientReturnDate(new Date());
         bookingRepository.save(actualBooking.get());
         return true;
     }

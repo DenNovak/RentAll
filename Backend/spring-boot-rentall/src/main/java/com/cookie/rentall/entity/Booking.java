@@ -36,6 +36,9 @@ public class Booking {
     @Column(name = "user_id")
     private long userId;
 
+    @Column(name = "actual")
+    private Boolean actual;
+
     public long getId() {
         return id;
     }
@@ -86,5 +89,13 @@ public class Booking {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+    public Boolean getActual() {
+        return actual;
+    }
+
+    public void setActual(Boolean actual) {
+        this.actual = actual;
     }
 }
