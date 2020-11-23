@@ -30,6 +30,10 @@ import { ConsumerBookedComponent } from './consumer-products/consumer-booked/con
 import { ConsumerFreeComponent } from './consumer-products/consumer-free/consumer-free.component';
 import { MaterialModule } from './material.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { BookingListComponent } from './booking-list/booking-list.component';
+import { BookingItemComponent } from './booking-list/booking-item/booking-item.component';
+import { ConsumerToReturnComponent } from './consumer-products/consumer-to-return/consumer-to-return.component';
+import { OwnerToReturnComponent } from './owner-products/owner-to-return/owner-to-return.component';
 
 
 
@@ -50,6 +54,7 @@ const ownerProductRoutes: Routes = [
   { path: '', redirectTo: 'booked', pathMatch: 'full' },
   {path: 'reserved', component: ReservedComponent},
   {path: 'booked', component: BookedComponent},
+  {path: 'toreturn', component: OwnerToReturnComponent},
   {path: 'free', component: FreeComponent}
 ];
 
@@ -57,6 +62,7 @@ const consumerProductRoutes: Routes = [
   { path: '', redirectTo: 'booked', pathMatch: 'full' },
   {path: 'reserved', component: ConsumerReservedComponent},
   {path: 'booked', component: ConsumerBookedComponent},
+  {path: 'toreturn', component: ConsumerToReturnComponent},
   {path: 'free', component: ConsumerFreeComponent}
 ];
 
@@ -87,7 +93,11 @@ const routes: Routes = [
     FreeComponent,
     ConsumerReservedComponent,
     ConsumerBookedComponent,
-    ConsumerFreeComponent
+    ConsumerFreeComponent,
+    BookingListComponent,
+    BookingItemComponent,
+    ConsumerToReturnComponent,
+    OwnerToReturnComponent
   ],
   imports: [
     BrowserModule,

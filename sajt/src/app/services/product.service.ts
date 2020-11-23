@@ -9,6 +9,7 @@ import {ExternalProduct} from "../common/ExternalProduct";
 import {AppComponent} from "../app.component";
 import {ProductStatus} from "../common/productstatus";
 import {ProductUnavailableView} from "../common/productunavailableview";
+import {Booking} from "../common/booking";
 
 @Injectable({
   providedIn: 'root'
@@ -146,6 +147,20 @@ export class ProductService {
     return this.httpClient.get<GetResponseProductsPlain>(url).pipe(map(response => response.content));
   }
 
+  listBookingsByConsumer(userId: number, status: string): Observable<Booking[]> {
+    const url = `http://localhost:8080/api/booking/byConsumer?status=${status}`;
+    return this.httpClient.get<GetResponseBookingsPlain>(url).pipe(map(response => {
+      return response.content;
+    }));
+  }
+
+  listBookingsByOwner(userId: number, status: string): Observable<Booking[]> {
+    const url = `http://localhost:8080/api/booking/byOwner?status=${status}`;
+    return this.httpClient.get<GetResponseBookingsPlain>(url).pipe(map(response => {
+      return response.content;
+    }));
+  }
+
   addProduct(product: Product): Observable<any> {
     const headers = {'content-type': 'application/json'}
     const body = JSON.stringify(product);
@@ -197,8 +212,23 @@ interface GetResponseProductsPlain {
   sort: Sort;
   numberOfElements: bigint;
   first: boolean;
-  empty: boolean
+  empty: boolean;
 }
+
+interface GetResponseBookingsPlain {
+  content: Booking[];
+  pageable: string;
+  last: boolean;
+  totalPages: bigint;
+  totalElements: bigint;
+  size: bigint;
+  number: bigint;
+  sort: Sort;
+  numberOfElements: bigint;
+  first: boolean;
+  empty: boolean;
+}
+
 
 interface GetResponseProductCategory {
   _embedded: {
