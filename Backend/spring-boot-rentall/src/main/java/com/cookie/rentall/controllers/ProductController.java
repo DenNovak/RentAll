@@ -112,7 +112,7 @@ public class ProductController {
 
     @GetMapping("api/products/available")
     public Page<ProductShortView> available() {
-        return productRepository.findAll(Pageable.unpaged()).map(ProductShortView::new);
+        return productRepository.findAllNotDeleted(Pageable.unpaged()).map(ProductShortView::new);
     }
 
     @PreAuthorize("isAuthenticated()")
