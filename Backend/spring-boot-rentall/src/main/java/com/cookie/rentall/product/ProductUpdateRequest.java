@@ -35,6 +35,8 @@ public class ProductUpdateRequest {
 
     public String city;
 
+    public Boolean deleted;
+
     public ProductUpdateRequest() {}
 
     public ProductUpdateRequest(Product product) {
@@ -50,5 +52,6 @@ public class ProductUpdateRequest {
         this.lastUpdated = product.getLastUpdated();
         this.phoneNumber = product.getPhoneNumber();
         this.unitPrice = product.getUnitPrice();
+        this.deleted = product.getDeleted();
     }
 }

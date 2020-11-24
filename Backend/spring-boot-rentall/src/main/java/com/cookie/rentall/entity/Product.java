@@ -61,6 +61,9 @@ public class Product {
     @Column(name = "user_id")
     private long userId;
 
+    @Column(name = "deleted")
+    private Boolean deleted;
+
     public Long getId() {
         return id;
     }
@@ -167,5 +170,13 @@ public class Product {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }
