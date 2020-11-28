@@ -126,6 +126,11 @@ public class ProductController {
         return productRepository.findAllNotDeleted(Pageable.unpaged()).map(ProductShortView::new);
     }
 
+    @GetMapping("api/products/owners")
+    public Page<ProductShortView> owners() {
+        return productRepository.findAllOwners(getCurrentUser(), Pageable.unpaged()).map(ProductShortView::new);
+    }
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("api/products")
     public ProductUpdateRequest createProduct(@RequestBody ProductUpdateRequest request) {

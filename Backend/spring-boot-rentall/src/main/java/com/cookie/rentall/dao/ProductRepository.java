@@ -23,6 +23,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select  p from Product  p where p.deleted is null or p.deleted <> true")
     Page<Product> findAllNotDeleted(Pageable pageable);
 
+    @Query("select  p from Product  p where p.userId = :userId and (p.deleted is null or p.deleted <> true)")
+    Page<Product> findAllOwners(Long userId, Pageable pageable);
+
     @Query("select p from Product p left join Booking b on p.id = b.product.id where (b.actual = false or b.id is null) and not exists (select b from Booking b where b.product.id = p.id and b.actual = true)")
     Page<Product> findFree(Pageable pageable);
 
