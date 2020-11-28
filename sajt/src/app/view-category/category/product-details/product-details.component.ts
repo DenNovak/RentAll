@@ -110,6 +110,16 @@ export class ProductDetailsComponent implements OnInit {
     );
   }
 
+  deleteProduct(id: string) {
+    this.productService.deleteProduct(id).subscribe(result => {
+      if (result) {
+        this.router.navigate(['/category']);
+      } else {
+        alert('Failed to delete Product');
+      }
+    });
+  }
+
   reserveProduct(id: string) {
     if (!this.checkDates()) {
       return;

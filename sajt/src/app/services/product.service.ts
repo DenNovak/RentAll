@@ -29,7 +29,7 @@ export class ProductService {
   getProduct(theProductId: number): Observable<Product> {
 
     // URL based on product id
-    const productUrl = `${this.baseUrl}/${theProductId}`;
+    const productUrl = `${this.baseUrl}/view/${theProductId}`;
 
     return this.httpClient.get<Product>(productUrl);
   }
@@ -110,8 +110,7 @@ export class ProductService {
   // DELETE product
   deleteProduct(productId: string): Observable<any> {
     const url = `${this.baseUrl}/${productId}`;
-    const headers = {'content-type': 'application/json'};
-    return this.httpClient.delete(url, {headers: headers});
+    return this.httpClient.delete(url);
   }
 
 // RESERVE PRODUCT
