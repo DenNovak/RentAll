@@ -89,6 +89,17 @@ public class ProductController {
                 .map(b -> new ProductUnavailableView(b.getExpectedStart(), b.getExpectedEnd())).collect(Collectors.toList());
     }
 
+    @DeleteMapping("api/products/{id}")
+    public boolean deleteProduct(@PathVariable("id") Long id) {
+        Product product = productRepository.getOne(id);
+        if (product == null || product.getUserId() != getCurrentUser()) {
+            return false;
+        }
+        product.setDeleted(true);
+        productRepository.save(product);
+        return true;
+    }
+
     @GetMapping("api/products/{id}/status")
     public ProductStatusView getProductStatus(@PathVariable("id") Long id) {
         Product p = productRepository.getOne(id);
