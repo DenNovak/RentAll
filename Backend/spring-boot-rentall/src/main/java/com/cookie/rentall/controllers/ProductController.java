@@ -89,6 +89,7 @@ public class ProductController {
                 .map(b -> new ProductUnavailableView(b.getExpectedStart(), b.getExpectedEnd())).collect(Collectors.toList());
     }
 
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("api/products/{id}")
     public boolean deleteProduct(@PathVariable("id") Long id) {
         Product product = productRepository.getOne(id);

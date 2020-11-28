@@ -37,11 +37,13 @@ public class ProductUpdateRequest {
 
     public Boolean deleted;
 
+    public Long userId;
+
     public ProductUpdateRequest() {}
 
     public ProductUpdateRequest(Product product) {
         this.active = product.isActive();
-        this.category = product.getCategory().getCategoryName();
+        this.category = product.getCategory() != null ? product.getCategory().getCategoryName() : null;
         this.city = product.getCity();
         this.dateCreated = product.getDateCreated();
         this.description = product.getDescription();
@@ -53,5 +55,6 @@ public class ProductUpdateRequest {
         this.phoneNumber = product.getPhoneNumber();
         this.unitPrice = product.getUnitPrice();
         this.deleted = product.getDeleted();
+        this.userId = product.getUserId();
     }
 }
