@@ -101,6 +101,12 @@ export class ProductService {
 
   }
 
+  // Owner's product list
+  ownersProducts(theKeyword: string): Observable<Product[]> {
+    return this.httpClient.get<GetResponseProductsPlain>(`${this.baseUrl}/owners`).pipe(map(response => response.content));
+
+  }
+
   // DELETE product
   deleteProduct(productId: string): Observable<any> {
     const url = `${this.baseUrl}/${productId}`;
