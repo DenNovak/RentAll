@@ -101,6 +101,13 @@ export class ProductService {
 
   }
 
+  // DELETE product
+  deleteProduct(productId: string): Observable<any> {
+    const url = `${this.baseUrl}/${productId}`;
+    const headers = {'content-type': 'application/json'};
+    return this.httpClient.delete(url, {headers: headers});
+  }
+
 // RESERVE PRODUCT
   reserveProduct(theProductId: string, from: Date, to: Date): Observable<any> {
     const reserveUrl = `${this.baseUrl}/${theProductId}/book`;
