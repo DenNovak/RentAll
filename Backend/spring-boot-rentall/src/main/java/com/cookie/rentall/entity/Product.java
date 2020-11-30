@@ -64,7 +64,7 @@ public class Product {
     @Column(name = "USER_DESCRIPTION")
     private String userDescription;
 
-    @Column(name = "CONDITION")
+    @Column(name = "PRODUCT_CONDITION")
     private String condition;
 
     @Column(name = "deleted")
