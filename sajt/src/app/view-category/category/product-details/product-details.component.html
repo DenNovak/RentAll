@@ -11,90 +11,65 @@
           <ul>
             <p>{{ product.unitPrice | currency: 'PLN'}}</p>
           </ul>
+          <h3 class="my-3">Total cost:</h3>
+          <ul>
+            <p>{{ totalCost | currency: 'PLN'}}</p>
+          </ul>
           <h3 class="my-3">Description:</h3>
           <a>{{ product.description }}</a>
+          <h3 class="my-3">User Description:</h3>
+          <a>{{ product.userDescription }}</a>
+          <h3 class="my-3">Condition:</h3>
+          <a>{{ product.condition }}</a>
           <h3 class="my-3">Contact:</h3>
           <a>{{ product.firstName }} </a>
           <br>
           <a>{{ product.phoneNumber}}</a>
           <br>
-          <button class="btn btn-dark" (click)="reserveProduct(product.id)" *ngIf="productStatus === 'FREE'">Reserve</button>
-          <button class="btn btn-dark" (click)="bookProduct(product.id)" *ngIf="productStatus === 'RESERVED' && product.userId === appComponent.userId">Accept Booking</button>
-          <button class="btn btn-dark" (click)="returnProduct(product.id)" *ngIf="productStatus === 'RETURNED_BY_CONSUMER' && product.userId === appComponent.userId">Confirm return</button>
-          <button class="btn btn-dark" (click)="returnProductConsumer(product.id)" *ngIf="productStatus === 'BOOKED' && productConsumer === appComponent.userId">Return product</button>
-          <button class="btn btn-dark" (click)="cancelProductReservation(product.id)" *ngIf="productStatus === 'RESERVED' && productConsumer === appComponent.userId">Cancel reservation</button>
-          <div *ngIf="productStatus === 'FREE'">
-            <mat-form-field>
-              <input matInput [matDatepicker]="picker" placeholder="Choose a date">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
+          <button class="btn btn-dark" (click)="reserveProduct(product.id)">Reserve</button>
+          <button class="btn btn-dark" (click)="deleteProduct(product.id)" *ngIf="product.userId === appComponent.userId">Delete Product</button>
+          <div >
+            <div class="col-md-5">
+              <div class="my-3">
             <form class="form-inline">
               <div class="form-group">
-                from
+                From
                 <div class="input-group">
-                  <input class="form-control" placeholder="yyyy-mm-dd"
+                  <input #i1 class="form-control" (ngModelChange)="refreshCost(i1.value, 1)" placeholder="yyyy-mm-dd"
                          name="dp1" [(ngModel)]="from" ngbDatepicker #d1="ngbDatepicker" [markDisabled]="markDisabled">
                   <div class="input-group-append">
                     <button class="btn btn-outline-secondary calendar" (click)="d1.toggle()" type="button"><fa-icon [icon]="faCalendar"></fa-icon></button>
                   </div>
                 </div>
-                to
+              </div>
+            </form>
+            </div>
+            </div>
+            <div class="col-md-4">
+              <div class="my-3">
+                <form class="form-inline">
+                  <div class="form-group">
+                    To
                 <div class="input-group">
-                  <input class="form-control" placeholder="yyyy-mm-dd"
-                         name="dp2" [(ngModel)]="to" ngbDatepicker #d2="ngbDatepicker">
+                  <input #i2 class="form-control" (ngModelChange)="refreshCost(i2.value, 2)" placeholder="yyyy-mm-dd"
+                         name="dp2" [(ngModel)]="to" ngbDatepicker #d2="ngbDatepicker" [markDisabled]="markDisabled" >
                   <div class="input-group-append">
                     <button class="btn btn-outline-secondary calendar" (click)="d2.toggle()" type="button"><fa-icon [icon]="faCalendar"></fa-icon></button>
                   </div>
                 </div>
               </div>
             </form>
-
-            <hr/>
+              </div>
+            </div>
           </div>
-
-
-        </div>
-        <div class="col-mb-2">
-          <div *ngIf="product.active; then content else other_content">
-          </div>
-          <ng-template #content>
-            <button type="button" class="btn btn-success">Active</button>
-          </ng-template>
-          <ng-template #other_content>
-            <button type="button" class="btn btn-danger">Busy</button>
-          </ng-template>
         </div>
       </div>
       Product status: {{productStatus}}
-      <h3 class="my-4">Photos</h3>
-      <div class="row">
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-        </div>
-      </div>
       <!-- /.row -->
       <div class="fixed-bottom">
         <a routerLink="/category"><button type="button" class="btn btn-info btn-lg btn-block">Back to category</button></a>
       </div>
-      <div style="height: 300px"></div>
+      <div style="height: 169px"></div>
     </div>
   </div>
 </div>
