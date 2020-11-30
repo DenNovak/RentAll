@@ -41,3 +41,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select p from Product p left join Booking b on p.id = b.product.id where b.returnDate is not null and b.actual = false and b.userId = :userId")
     Page<Product> findCustomerReturned(Long userId, Pageable pageable);
 }
+
