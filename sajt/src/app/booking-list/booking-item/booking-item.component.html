@@ -28,6 +28,10 @@
           <h3 class="my-3">Contact:</h3>
           <a>{{ product.firstName }} </a>
           <br>
+          <h3 class="my-3">User Description:</h3>
+          <a>{{ product.userDescription }}</a>
+          <h3 class="my-3">Condition:</h3>
+          <a>{{ product.condition }}</a>
           <a>{{ product.phoneNumber}}</a>
           <br>
           <button class="btn btn-dark" (click)="bookProduct(booking.id)" *ngIf="productStatus === 'RESERVED' && product.userId === appComponent.userId">Accept Booking</button>
