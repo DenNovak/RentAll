@@ -1,3 +1,8 @@
-<div *ngIf="products.length > 0">
-  <app-pr-list [(products)]="products"></app-pr-list>
-</div>
+<section>
+  <div *ngIf="products.length > 0">
+    <app-pr-list [(products)]="products"></app-pr-list>
+  </div>
+  <div *ngIf="bookings.length > 0">
+    <app-booking-list [(bookings)]="bookings"></app-booking-list>
+  </div>
+</section>

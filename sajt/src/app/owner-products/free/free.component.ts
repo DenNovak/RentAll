@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AppComponent} from "../../app.component";
 import {Product} from "../../common/product";
 import {ProductService} from "../../services/product.service";
+import {Booking} from "../../common/booking";
 
 @Component({
   selector: 'app-free',
@@ -11,16 +12,18 @@ import {ProductService} from "../../services/product.service";
 export class FreeComponent implements OnInit {
   appComponent: AppComponent;
   products: Product[] = [];
+  bookings: Booking[] = [];
 
   constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
     this.appComponent = this.productService.getAppComponent();
     this.productService.listProductsByOwner(1, 'RETURNED').subscribe(
-      data => {
-        this.products = data;
-      }
-    );
+      this.productService.listBookingsByOwner(1, 'RETURNED').subscribe(
+        data => {
+          this.products = data;
+          this.bookings = data;
+        }
+      );
   }
-
 }

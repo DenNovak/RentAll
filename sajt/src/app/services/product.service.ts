@@ -9,6 +9,7 @@ import {ExternalProduct} from "../common/ExternalProduct";
 import {AppComponent} from "../app.component";
 import {ProductStatus} from "../common/productstatus";
 import {ProductUnavailableView} from "../common/productunavailableview";
+import {Booking} from "../common/booking";
 
 @Injectable({
   providedIn: 'root'
@@ -68,10 +69,10 @@ export class ProductService {
     return this.httpClient.get<GetResponseProductsPlain>(`${this.baseUrl}/available`).pipe(map(response => response.content));
   }
 // RESERVE PRODUCT
-  reserveProduct(theProductId: string): Observable<any> {
+  reserveProduct(theProductId: string, from: Date, to: Date): Observable<any> {
     const reserveUrl = `${this.baseUrl}/${theProductId}/book`;
     const headers = {'content-type': 'application/json'};
-    const body = {active: 'false'};
+    const body = {expectedStart: from, expectedEnd: to};
     return this.httpClient.patch(reserveUrl, body, {headers: headers});
   }
 // CANCEL RESERVATION
@@ -105,16 +106,29 @@ export class ProductService {
     const url = `${this.baseUrl}/createdByUser?status=${status}`;
     return this.httpClient.get<GetResponseProductsPlain>(url).pipe(map(response => response.content));
   }
-
   listUnavailableDates(theProductId: string): Observable<ProductUnavailableView[]> {
     const url = `${this.baseUrl}/${theProductId}/unavailable`;
     return this.httpClient.get<ProductUnavailableView[]>(url).pipe(map(response => response));
   }
-
   listProductsByConsumer(userId: number, status: string): Observable<Product[]> {
     const url = `${this.baseUrl}/gotByUser?status=${status}`;
     return this.httpClient.get<GetResponseProductsPlain>(url).pipe(map(response => response.content));
   }
+
+  listBookingsByConsumer(userId: number, status: string): Observable<Booking[]> {
+    const url = `http://localhost:8080/api/booking/byConsumer?status=${status}`;
+    return this.httpClient.get<GetResponseBookingsPlain>(url).pipe(map(response => {
+      return response.content;
+    }));
+  }
+
+  listBookingsByOwner(userId: number, status: string): Observable<Booking[]> {
+    const url = `http://localhost:8080/api/booking/byOwner?status=${status}`;
+    return this.httpClient.get<GetResponseBookingsPlain>(url).pipe(map(response => {
+      return response.content;
+    }));
+  }
+
   addProduct(product: Product): Observable<any> {
     const headers = {'content-type': 'application/json'}
     const body = JSON.stringify(product);
@@ -160,7 +174,24 @@ interface GetResponseProductsPlain {
   numberOfElements: bigint;
   first: boolean;
   empty: boolean
+  empty: boolean;
 }
+
+interface GetResponseBookingsPlain {
+  content: Booking[];
+  pageable: string;
+  last: boolean;
+  totalPages: bigint;
+  totalElements: bigint;
+  size: bigint;
+  number: bigint;
+  sort: Sort;
+  numberOfElements: bigint;
+  first: boolean;
+  empty: boolean;
+}
+
+
 interface GetResponseProductCategory {
   _embedded: {
     productCategory: ProductCategory[];
