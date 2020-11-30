@@ -146,6 +146,8 @@ public class ProductController {
         product.setPhoneNumber(request.phoneNumber);
         product.setUnitPrice(request.unitPrice);
         product.setUserId(getUserId());
+        product.setUserDescription(request.userDescription);
+        product.setCondition(request.condition);
         if (request.category != null) {
             ProductCategory productCategory = productCategoryRepository.findProductCategoryByCategoryName(request.category);
             if (productCategory != null) {
