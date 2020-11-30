@@ -89,10 +89,65 @@ public class ProductController {
                 .map(b -> new ProductUnavailableView(b.getExpectedStart(), b.getExpectedEnd())).collect(Collectors.toList());
     }
 
+<<<<<<< HEAD
+=======
+    @GetMapping("api/products/{id}/status")
+    public ProductStatusView getProductStatus(@PathVariable("id") Long id) {
+        Product p = productRepository.getOne(id);
+        if (p.getBookings().stream().anyMatch(b -> b.getCreateDate() != null && b.getBookingDate() == null))
+            return new ProductStatusView("RESERVED");
+        if (p.getBookings().stream().anyMatch(b -> b.getBookingDate() != null && b.getReturnDate() == null && b.getClientReturnDate() == null))
+            return new ProductStatusView("BOOKED");
+        if (p.getBookings().stream().anyMatch(b -> b.getBookingDate() != null && b.getReturnDate() == null && b.getClientReturnDate() != null))
+            return new ProductStatusView("RETURNED_BY_CONSUMER");
+        return new ProductStatusView("FREE");
+    }
+
+    @GetMapping("api/products/{id}/consumer")
+    public Long getProductConsumer(@PathVariable("id") Long id) {
+        Product p = productRepository.getOne(id);
+        Optional<Booking> booking = p.getBookings().stream().filter(b -> b.getCreateDate() != null && b.getBookingDate() == null || b.getBookingDate() != null && b.getReturnDate() == null).findFirst();
+        if (booking.isPresent())
+            return booking.get().getUserId();
+        return 0L;
+    }
+
+    @GetMapping("api/products/available")
+    public Page<ProductShortView> available() {
+        return productRepository.findAll(Pageable.unpaged()).map(ProductShortView::new);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("api/products")
+    public ProductUpdateRequest createProduct(@RequestBody ProductUpdateRequest request) {
+        Product product = new Product();
+        product.setActive(true);
+        product.setCity(request.city);
+        product.setDateCreated(new Date());
+        product.setFirstName(request.firstName);
+        product.setName(request.name);
+        product.setDescription(request.description);
+        product.setImageUrl(request.imageUrl);
+        product.setPhoneNumber(request.phoneNumber);
+        product.setUnitPrice(request.unitPrice);
+        product.setUserId(getUserId());
+        if (request.category != null) {
+            ProductCategory productCategory = productCategoryRepository.findProductCategoryByCategoryName(request.category);
+            if (productCategory != null) {
+                product.setCategory(productCategory);
+            }
+        }
+        productRepository.save(product);
+        request.id = product.getId();
+        return request;
+    }
+
+>>>>>>> 274eb5baa17ae0748754c7e086268a5cc4df5c10
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("api/products/{id}")
     public boolean deleteProduct(@PathVariable("id") Long id) {
         Product product = productRepository.getOne(id);
+<<<<<<< HEAD
         if (product == null || product.getUserId() != getCurrentUser()) {
             return false;
         }
@@ -163,6 +218,8 @@ public class ProductController {
     @PatchMapping("api/products/{id}/book")
     public Boolean book(@PathVariable("id") Long id, @RequestBody ProductReserveRequest request) {
         Product product = productRepository.getOne(id);
+=======
+>>>>>>> 274eb5baa17ae0748754c7e086268a5cc4df5c10
         Optional<Booking> actualBooking = product.getBookings().stream().filter(b ->
                 isInInterval(request.expectedStart, b.getExpectedStart(), b.getExpectedEnd())
                         || isInInterval(request.expectedEnd, b.getExpectedStart(), b.getExpectedEnd())).findFirst();

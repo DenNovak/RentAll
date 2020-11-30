@@ -2,62 +2,82 @@
   <div class="card border-0 shadow my-5">
     <div class="card-body p-3">
       <div class="row">
+
         <div class="col-md-4">
           <img class="img-fluid" src="{{ product.imageUrl }}" onerror="this.onerror=null; this.src='assets/images/products/noImage.jpg' " sizes="400x300" >
         </div>
-        <div class="col-md-5">
+
+        <div class="col-md-4">
           <h3 class="my-3">{{ product.name }}</h3>
           <h3 class="my-3">Price:</h3>
           <ul>
             <p>{{ product.unitPrice | currency: 'PLN'}}</p>
           </ul>
+          <h3 class="my-3">Total cost:</h3>
+          <ul>
+            <p>{{ totalCost | currency: 'PLN'}}</p>
+          </ul>
           <h3 class="my-3">Description:</h3>
           <a>{{ product.description }}</a>
+          <h3 class="my-3">User Description:</h3>
+          <a>{{ product.userDescription }}</a>
+          <h3 class="my-3">Condition:</h3>
+          <a>{{ product.condition }}</a>
           <h3 class="my-3">Contact:</h3>
           <a>{{ product.firstName }} </a>
           <br>
           <a>{{ product.phoneNumber}}</a>
           <br>
-          <button class="btn btn-dark" (click)="reserveProduct(product.id)" *ngIf="productStatus === 'FREE'">Reserve</button>
-          <button class="btn btn-dark" (click)="bookProduct(product.id)" *ngIf="productStatus === 'RESERVED' && product.userId === appComponent.userId">Accept Booking</button>
 
-          <ng-template #content>
-            <button type="button" class="btn btn-success">Active</button>
-          </ng-template>
-          <ng-template #other_content>
-            <button type="button" class="btn btn-danger">Busy</button>
-          </ng-template>
+        </div>
+        <div class="col-md-4">
+          <div class="my-3">
+          <button class="btn btn-dark" (click)="reserveProduct(product.id)">Reserve</button>
+          </div>
+            <div class="my-3">
+          <button class="btn btn-dark" (click)="deleteProduct(product.id)" *ngIf="product.userId === appComponent.userId">Delete Product</button>
+            </div>
+          <div >
+            <div class="my-3">
+              <form class="form-inline">
+                <div class="form-group">
+                  From
+                  <div class="input-group">
+                    <input #i1 class="form-control" (ngModelChange)="refreshCost(i1.value, 1)" placeholder="yyyy-mm-dd"
+                           name="dp1" [(ngModel)]="from" ngbDatepicker #d1="ngbDatepicker" [markDisabled]="markDisabled">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary calendar" (click)="d1.toggle()" type="button"><fa-icon [icon]="faCalendar"></fa-icon></button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="my-3">
+              <form class="form-inline">
+                <div class="form-group">
+                  To
+                  <div class="input-group">
+                    <input #i2 class="form-control" (ngModelChange)="refreshCost(i2.value, 2)" placeholder="yyyy-mm-dd"
+                           name="dp2" [(ngModel)]="to" ngbDatepicker #d2="ngbDatepicker" [markDisabled]="markDisabled" >
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary calendar" (click)="d2.toggle()" type="button"><fa-icon [icon]="faCalendar"></fa-icon></button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
+
       Product status: {{productStatus}}
-      <h3 class="my-4">Photos</h3>
-      <div class="row">
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-        </div>
-      </div>
+
       <!-- /.row -->
+
       <div class="fixed-bottom">
         <a routerLink="/category"><button type="button" class="btn btn-info btn-lg btn-block">Back to category</button></a>
       </div>
-      <div style="height: 300px"></div>
+      <div style="height: 169px"></div>
     </div>
   </div>
 </div>
