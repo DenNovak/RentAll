@@ -39,6 +39,10 @@ public class ProductUpdateRequest {
 
     public Long userId;
 
+    public String userDescription;
+
+    public String condition;
+
     public ProductUpdateRequest() {}
 
     public ProductUpdateRequest(Product product) {
@@ -56,5 +60,7 @@ public class ProductUpdateRequest {
         this.unitPrice = product.getUnitPrice();
         this.deleted = product.getDeleted();
         this.userId = product.getUserId();
+        this.userDescription = product.getUserDescription();
+        this.condition = product.getCondition();
     }
 }

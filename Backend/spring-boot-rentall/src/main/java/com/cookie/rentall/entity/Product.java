@@ -61,6 +61,12 @@ public class Product {
     @Column(name = "user_id")
     private long userId;
 
+    @Column(name = "USER_DESCRIPTION")
+    private String userDescription;
+
+    @Column(name = "CONDITION")
+    private String condition;
+
     @Column(name = "deleted")
     private Boolean deleted;
 
@@ -178,5 +184,21 @@ public class Product {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public String getUserDescription() {
+        return userDescription;
+    }
+
+    public void setUserDescription(String userDescription) {
+        this.userDescription = userDescription;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
     }
 }
