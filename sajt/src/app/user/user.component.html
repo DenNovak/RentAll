@@ -1,8 +1,13 @@
+
 <div class="navbar">
-  <img src="../../assets/images/logo_navbar.png" width="150">
+  <img src="../../assets/images/logo_navbar.png" width="150" onClick="location = 'index.html'" style="cursor: pointer">
   <a href="#" routerLink="/category">Categories</a>
   <a href="#" routerLink="/offer">Create an offer</a>
-  <a class="active" href="#" routerLink="/user">Log in / Sign up</a>
+  <a href="#" routerLink="/owner">My products</a>
+  <a href="#" routerLink="/consumer">My bookings</a>
+  <a  *ngIf="!appComponent.isLoggedIn" class="active" href="#" routerLink="/user">Log in / Sign up</a>
+  <span *ngIf="appComponent.isLoggedIn" style="color: white; float: left; vertical-align: center; margin-right: -200px">{{ appComponent.username }}</span>
+  <a href=# routerLink="/" (click)="appComponent.logout()" *ngIf="appComponent.isLoggedIn">LogOut</a>
 </div>
 
 
@@ -10,44 +15,12 @@
 
   <div class="form-box">
     <div class="button-box">
-      <div id="btn"></div>
-      <button type= "button" class= "togglee-btn" (click)="login()">Log in</button>
-      <button type= "button" class= "togglee-btn" (click)="register()">Sign up</button>
+      <div id="btn" #cbutton></div>
+      <button type= "button" class= "togglee-btn" (click)="login()" #lbutton>Log In</button>
+      <button type= "button" class= "togglee-btn" (click)="register()" #rbutton>Register</button>
     </div>
-  <form id="login" class="input-group">
-    <input type="text" class="input-field" placeholder="User Id" required>
-    <input type="text" class="input-field" placeholder="Enter Password" required>
-    <input type="checkbox" class="check-box"><span>Remember Password</span>
-    <button type="submit" class="submit-btn">Log in</button>
-  </form>
-  <!--  <div class="social-icon">
-    <img src="https://cdn.imgbin.com/13/6/3/imgbin-social-media-facebook-linkedin-estate-agent-computer-icons-background-black-facebook-logo-pt0WZiVEANsHHhcr5WfL3Czkk.jpg" >
-    <img src="https://www.pngkey.com/png/detail/13-134881_social-media-icons-black-instagram-daily-dot-logo.png">
-    <img src="https://cdn.iconscout.com/icon/free/png-512/google-276-434776.png">
-  </div>-->
-    <form id="register" class="input-group">
-      <input type="text" class="input-field" placeholder="User Id" >
-      <input type="email" class="input-field" placeholder="Email Id">
-      <input type="text" class="input-field" placeholder="User Id" >
-      <input type="checkbox" class="check-box"><span>I agree with terms</span>
-      <button type="submit" class="submit-btn">Register</button>
-    </form>
-</div>
+    <app-login-form *ngIf="isLoginComponent"></app-login-form>
+    <app-signup-form *ngIf="!isLoginComponent"></app-signup-form>
+  </div>
 
 </div>
-
-<script>
-  var x = document.getElementById("login"), y = document.getElementById("register"),
-    z = document.getElementById("btn");
-
-  function register() {
-    x.style.left = "-400px";
-    y.style.left = " 50px";
-    z.style.left = "110px";
-  }
-  function login() {
-    x.style.left = "50px";
-    y.style.left = "450px";
-    z.style.left = "0px";
-  }
-</script>

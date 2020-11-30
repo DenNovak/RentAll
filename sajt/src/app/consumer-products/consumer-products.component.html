@@ -1,0 +1,50 @@
+
+<header class="header">
+  <div class="logo"><img src="../../assets/images/logo_navbar.png" width="150"></div>
+  <input class="menu-btn" type="checkbox" id="menu-btn" />
+  <label class="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>
+  <ul class="menu">
+    <li><a class ="cool" href="#" routerLink="/category">Categories</a></li>
+    <li><a class ="cool" href="#" routerLink="/owner">My products</a></li>
+    <li><a class ="cool" href="#" routerLink="/consumer">My bookings</a></li>
+    <li><a class ="cool" href="#" routerLink="/offer">Create an offer</a></li>
+    <li><a class ="cool" *ngIf="!appComponent.isLoggedIn" href="#" routerLink="/user">Log in / Sign up</a></li>
+    <li><a class ="cool" href=# routerLink="/" (click)="appComponent.logout()" *ngIf="appComponent.isLoggedIn">LogOut</a></li>
+    <li><a class ="cool" href=# routerLink="/" *ngIf="appComponent.isLoggedIn"><svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
+      <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+      <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+    </svg>  {{ appComponent.username }}</a></li>
+  </ul>
+</header>
+<section>
+<ul class="nav nav-pills nav-fill">
+  <li class="nav-item m-2">
+    <a class="nav-link btn btn btn-outline-info"
+       [routerLinkActive]="['active']"
+       [routerLink]="['./reserved']">Reserved
+    </a>
+  </li>
+  <li class="nav-item m-2">
+    <a class="nav-link btn btn-outline-secondary"
+       [routerLinkActive]="['active']"
+       [routerLink]="['./booked']">Booked
+    </a>
+  </li>
+  <li class="nav-item m-2">
+    <a class="nav-link btn btn-outline-secondary"
+       [routerLinkActive]="['active']"
+       [routerLink]="['./toreturn']">Returned by consumer
+    </a>
+  </li>
+  <li class="nav-item m-2">
+    <a class="nav-link btn btn-outline-success"
+       [routerLinkActive]="['active']"
+       [routerLink]="['./free']">Free
+    </a>
+  </li>
+</ul>
+</section>
+<router-outlet></router-outlet>
+
+

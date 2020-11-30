@@ -1,190 +1,189 @@
+<div style="background: #dedede" class="page-holder bg-cover">
+
+  <div class="navbar" xmlns="http://www.w3.org/1999/html">
+    <img src="../../assets/images/logo_navbar.png" width="150" onClick="location = 'index.html'" style="cursor: pointer">
+    <a href="#" routerLink="/category">Categories</a>
+    <a href="#" routerLink="/owner">My products</a>
+    <a href="#" routerLink="/consumer">My bookings</a>
+    <a class="active" href="#" routerLink="/offer">Create an offer</a>
+    <a *ngIf="!appComponent.isLoggedIn" href="#" routerLink="/user">Log in / Sign up</a>
+    <span *ngIf="appComponent.isLoggedIn" style="color: white; float: left; vertical-align: center; margin-right: -200px">{{ appComponent.username }}</span>
+    <a href=# routerLink="/" (click)="appComponent.logout()" *ngIf="appComponent.isLoggedIn">LogOut</a>
+  </div>
+
+  <!--  -->
+  <!--    <div class="row justify-content-md-center">-->
+  <!--      <div class="col-12 p-12">-->
+  <!--        <label>Post your AD</label>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--<div class="container">-->
+  <!--  <div class="card border-0 shadow my-5">-->
+  <!--    <div class="card-body p-3">-->
 
 
-  <div style="background: #dedede" class="page-holder bg-cover">
-
-    <div class="navbar" xmlns="http://www.w3.org/1999/html">
-      <img src="../../assets/images/logo_navbar.png" width="150">
-      <a href="#" routerLink="/category">Categories</a>
-      <a class="active" href="#" routerLink="/offer">Create an offer</a>
-      <a href="#" routerLink="/user">Log in / Sign up</a>
-    </div>
-
-    <!--  -->
-    <!--    <div class="row justify-content-md-center">-->
-    <!--      <div class="col-12 p-12">-->
-    <!--        <label>Post your AD</label>-->
-    <!--      </div>-->
-    <!--    </div>-->
-    <!--<div class="container">-->
-    <!--  <div class="card border-0 shadow my-5">-->
-    <!--    <div class="card-body p-3">-->
+  <!--  <div class="row">-->
+  <!--    <div class="col-6">-->
+  <!--<label>Product Name:</label>-->
+  <!--    </div>-->
+  <!--    <div class="col-6">-->
+  <!--<input  [(ngModel)]="product.name" required>-->
+  <!--    </div>-->
+  <!--  </div>-->
 
 
-    <!--  <div class="row">-->
-    <!--    <div class="col-6">-->
-    <!--<label>Product Name:</label>-->
-    <!--    </div>-->
-    <!--    <div class="col-6">-->
-    <!--<input  [(ngModel)]="product.name" required>-->
-    <!--    </div>-->
-    <!--  </div>-->
+  <!--<div class="row">-->
+  <!--  <div class="col-6">-->
+  <!--<label>Description:</label>-->
+  <!--  </div>-->
+  <!--<div class="col-6">-->
+
+  <!--  <textarea required="add description,please" [(ngModel)]="product.description"></textarea>-->
+  <!--</div>-->
+  <!--</div>-->
+
+  <!--  <div class="row">-->
+  <!--    <div class="col-6">-->
+  <!--<label>Price:</label>-->
+  <!--    </div>-->
+  <!--    <div class="col-6">-->
+  <!--<input [(ngModel)]="product.unitPrice"/>-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <!--<div class="row">-->
+  <!--  <div class="col-6">-->
+  <!--<label>First Name: </label>-->
+  <!--  </div>-->
+  <!--  <div class="col-6">-->
+  <!--<input  [(ngModel)]="product.firstName"/>-->
+  <!--  </div>-->
+  <!--</div>-->
+  <!--  <div class="row">-->
+  <!--    <div class="col-6">-->
+  <!--<label>Phone Number: </label>-->
+  <!--    </div>-->
+  <!--    <div class="col-6">-->
+  <!--<input  [(ngModel)]="product.phone_number"/>-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <!--  <div class="row">-->
+  <!--    <div class="col-6">-->
+  <!--<label>City:</label>-->
+  <!--    </div>-->
+  <!--    <div class="col-6">-->
+  <!--<select  [(ngModel)]="product.city">-->
+  <!--  <option value="Warszawa">Warszawa</option>-->
+  <!--  <option value="Kraków">Kraków</option>-->
+  <!--  <option value="Poznań">Poznań</option>-->
+  <!--</select>-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <!--  <div class="row">-->
+  <!--    <div class="col-6">-->
+  <!--<label>Category:</label>-->
+  <!--    </div>-->
+  <!--    <div class="col-6">-->
+  <!--<select [(ngModel)]="product.category" id="Category" name="Category" >-->
+  <!--  <option value="http://localhost:8080/api/product-category/1">Devices</option>-->
+  <!--  <option value="http://localhost:8080/api/product-category/2">Garden</option>-->
+  <!--</select>-->
+  <!--    </div>-->
+  <!--  </div>-->
 
 
-    <!--<div class="row">-->
-    <!--  <div class="col-6">-->
-    <!--<label>Description:</label>-->
-    <!--  </div>-->
-    <!--<div class="col-6">-->
+  <!--<br>-->
+  <!--<input type="submit" (click)="addProduct()" />-->
 
-    <!--  <textarea required="add description,please" [(ngModel)]="product.description"></textarea>-->
-    <!--</div>-->
-    <!--</div>-->
+  <!--</div>-->
 
-    <!--  <div class="row">-->
-    <!--    <div class="col-6">-->
-    <!--<label>Price:</label>-->
-    <!--    </div>-->
-    <!--    <div class="col-6">-->
-    <!--<input [(ngModel)]="product.unitPrice"/>-->
-    <!--    </div>-->
-    <!--  </div>-->
-    <!--<div class="row">-->
-    <!--  <div class="col-6">-->
-    <!--<label>First Name: </label>-->
-    <!--  </div>-->
-    <!--  <div class="col-6">-->
-    <!--<input  [(ngModel)]="product.firstName"/>-->
-    <!--  </div>-->
-    <!--</div>-->
-    <!--  <div class="row">-->
-    <!--    <div class="col-6">-->
-    <!--<label>Phone Number: </label>-->
-    <!--    </div>-->
-    <!--    <div class="col-6">-->
-    <!--<input  [(ngModel)]="product.phone_number"/>-->
-    <!--    </div>-->
-    <!--  </div>-->
-    <!--  <div class="row">-->
-    <!--    <div class="col-6">-->
-    <!--<label>City:</label>-->
-    <!--    </div>-->
-    <!--    <div class="col-6">-->
-    <!--<select  [(ngModel)]="product.city">-->
-    <!--  <option value="Warszawa">Warszawa</option>-->
-    <!--  <option value="Kraków">Kraków</option>-->
-    <!--  <option value="Poznań">Poznań</option>-->
-    <!--</select>-->
-    <!--    </div>-->
-    <!--  </div>-->
-    <!--  <div class="row">-->
-    <!--    <div class="col-6">-->
-    <!--<label>Category:</label>-->
-    <!--    </div>-->
-    <!--    <div class="col-6">-->
-    <!--<select [(ngModel)]="product.category" id="Category" name="Category" >-->
-    <!--  <option value="http://localhost:8080/api/product-category/1">Devices</option>-->
-    <!--  <option value="http://localhost:8080/api/product-category/2">Garden</option>-->
-    <!--</select>-->
-    <!--    </div>-->
-    <!--  </div>-->
-
-
-    <!--<br>-->
-    <!--<input type="submit" (click)="addProduct()" />-->
-
-    <!--</div>-->
-
-    <!--      <div style="height: 100px"></div>-->
-    <!--    </div>-->
-        <form class="needs-validation" novalidate>
+  <!--      <div style="height: 100px"></div>-->
+  <!--    </div>-->
+  <form class="needs-validation" novalidate>
     <section>
-    <div class="containerr">
-      <h2>Add your product information</h2>
-      <div class="row100">
-        <div class="coll">
+      <div class="containerr">
+        <h2>Add your product information</h2>
+        <div class="row100">
+          <div class="coll">
+            <app-combo-box [(ngModel)]="product.name" name="Name" [(list)]="cItems" (onSelect)="selectFromExternal($event)"></app-combo-box>
+          </div>
+          <div class="coll">
             <div class="inputBox">
-              <input type="text" class="form-control" [(ngModel)]="product.name" name="name" required="required">
-              <span class="text">Product Name:</span>
+              <input type="text" class="form-control" [(ngModel)]="product.unitPrice" name="0" required="required">
+              <span class="text">Price:</span>
               <span class="line"></span>
               <div class="invalid-tooltip">
-                Please provide name.
+                Please provide a price.
               </div>
             </div>
           </div>
-        <div class="coll">
-          <div class="inputBox">
-            <input type="text" class="form-control" [(ngModel)]="product.unitPrice" name="0" required="required">
-            <span class="text">Price:</span>
-            <span class="line"></span>
-            <div class="invalid-tooltip">
-              Please provide a price.
+        </div>
+        <div class="row100">
+          <div class="coll">
+            <div class="inputBox">
+              <input type="text" class="form-control" [(ngModel)]="product.firstName" name="firstName"
+                     required="required">
+              <span class="text">First name:</span>
+              <span class="line"></span>
+              <div class="invalid-tooltip">
+                Please provide a first name.
+              </div>
+            </div>
+          </div>
+          <div class="coll">
+            <div class="inputBox">
+              <input type="text" class="form-control" [(ngModel)]="product.phoneNumber" name="phoneNumber"
+                     required="required">
+              <span class="text">Phone number:</span>
+              <span class="line"></span>
+              <div class="invalid-tooltip">
+                Please provide a phone number.
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="row100">
-        <div class="coll">
-          <div class="inputBox">
-            <input type="text" class="form-control" [(ngModel)]="product.firstName" name="firstName" required="required">
-            <span class="text">First name:</span>
-            <span class="line"></span>
-            <div class="invalid-tooltip">
-              Please provide a first name.
-            </div>
-          </div>
-        </div>
-        <div class="coll">
-          <div class="inputBox">
-            <input type="text" class="form-control" [(ngModel)]="product.phone_number" name="phoneNumber" required="required">
-            <span class="text">Phone number:</span>
-            <span class="line"></span>
-            <div class="invalid-tooltip">
-              Please provide a phone number.
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row100">
-        <div class="coll">
-          <div class="inputBox">
-            <select  [(ngModel)]="product.city" name="city">
+        <div class="row100">
+          <div class="coll">
+            <div class="inputBox">
+              <select [(ngModel)]="product.city" name="city">
                 <option value="Warszawa">Warszawa</option>
                 <option value="Kraków">Kraków</option>
                 <option value="Poznań">Poznań</option>
               </select>
-            <span class="text">City:</span>
-            <span class="line"></span>
+              <span class="text">City:</span>
+              <span class="line"></span>
+            </div>
           </div>
-        </div>
-        <div class="coll">
-          <div class="inputBox">
-            <select [(ngModel)]="product.category" id="Category" name="Category" >
+          <div class="coll">
+            <div class="inputBox">
+              <select [(ngModel)]="product.category" id="Category" name="Category">
                 <option value="http://localhost:8080/api/product-category/1">Devices</option>
                 <option value="http://localhost:8080/api/product-category/2">Garden</option>
-            </select>
-            <span class="text">Category:</span>
-            <span class="line"></span>
-          </div>
-        </div>
-      </div>
-        <div class="row100">
-        <div class="coll">
-          <div class="inputBox textarea">
-            <textarea class="form-control" required="required" [(ngModel)]="product.description" name="description"></textarea>
-            <span class="text">Description:</span>
-            <span class="line"></span>
-            <div class="invalid-tooltip">
-              Please provide a valid zip.
+              </select>
+              <span class="text">Category:</span>
+              <span class="line"></span>
             </div>
           </div>
         </div>
+        <div class="row100">
+          <div class="coll">
+            <div class="inputBox textarea">
+              <img style="z-index: 0" src="{{productImage}}">
+              <textarea class="form-control" required="required" [(ngModel)]="product.description"
+                        name="description"></textarea>
+              <span class="text">Description:</span>
+
+              <div class="invalid-tooltip">
+                Please provide a valid zip.
+              </div>
+            </div>
+          </div>
         </div>
         <div>
-          <input 
-        type="file" 
-        [(ngModel)]="imageInput"
-        name="imageInput"
-        (change)="onFileSelected($event)">
+          <input
+            type="file"
+            [(ngModel)]="imageInput"
+            name="imageInput"
+            (change)="onFileSelected($event)">
         </div>
         <div class="row100">
           <div class="coll">
@@ -193,4 +192,4 @@
         </div>
       </div>
     </section>
-        </form>
+  </form>

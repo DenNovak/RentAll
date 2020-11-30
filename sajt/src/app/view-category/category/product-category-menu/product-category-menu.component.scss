@@ -1,70 +1,16 @@
-//
-//
-//.items{
-//  display: inline-flex;
-//}
-//.items, .items2{
-//  margin: 0 auto;
-//  max-width: 1140px;
-//
-//}
-//.items2{
-//  padding-top:50px;
-//}
-//.items a, .items2 a{
-//  display:inline-block;
-//  text-decoration:none;
-//  color:white;
-//  font-family: 'Montserrat', sans-serif;
-//  text-transform: uppercase;
-//  font-size: 20px;
-//  font-weight:400;
-//  margin:0 20px;
-//  height: 20px;
-//  overflow: hidden;
-//
-//
-//}
-//.items a span{
-//  display: inline-block;
-//  position:relative;
-//  transition: transform 500ms;
-//  -webkit-transition: -webkit-transform 500ms;
-//  -moz-transition: transform 500ms;
-//
-//}
-//.items a span:after{
-//  content: attr(data-hover);
-//  position: absolute;
-//  top: -30px;
-//  left:0;
-//  transform: translate3d(0,0,0);
-//  -moz-transform: translate3d(0,0,0);
-//  -webkit-transform: translate3d(0,0,0);
-//}
-//.items a:hover span,
-//.items a:focus span {
-//  transform: translateY(30px);
-//  -webkit-transform: translateY(30px);
-//  -moz-transform: translateY(30px);
-//}
-//
-//
-//ul.list {
-//  display: inline-block;
-//}
-
-
-
 
 .middled {
   text-align: center;
   padding-left: 37%;
-  margin-bottom: -10%;
+  margin-bottom: -7%;
   display: inline-flex;
+  list-style: none;
+
+
 }
 
-.thick { font-weight: 700; }
+.thick { font-weight: 700;
+}
 
 a {
   text-transform: uppercase;
@@ -78,16 +24,17 @@ a {
 [class^="link-"] {
   display: inline-block;
   margin: 2em
+
 }
 
 
 .link-5 a:before {
-  content: '';
-  border-bottom: solid 1px #00ff09;
-  position: absolute;
-  bottom: 0; left: 0;
-  width: 100%;
-}
+   content: '';
+   border-bottom: solid 1px #00ff09;
+   position: absolute;
+   bottom: 0; left: 0;
+   width: 100%;
+ }
 
 .link-5 a:hover:before {
   -webkit-transform: scaleY(4);
@@ -134,4 +81,17 @@ a {
   20% { transform: scaleX(0); }
   30% { transform: scaleX(1); }
   40% { transform: scaleX(0); }
+}
+
+@media  screen and (max-width: 768px) {
+  .middled {
+    text-align: center;
+    padding-left: 0%;
+    margin-bottom: -10%;
+    display: inline-flex;
+    list-style: none;
+
+
+  }
+
 }

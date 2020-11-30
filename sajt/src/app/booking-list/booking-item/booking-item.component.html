@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="card border-0 shadow my-5">
+    <div class="card-body p-3">
+      <div class="row">
+
+        <div class="col-md-4">
+          <img class="img-fluid" src="{{ product.imageUrl }}" onerror="this.onerror=null; this.src='assets/images/products/noImage.jpg' " sizes="400x300" >
+
+        </div>
+
+        <div class="col-md-5">
+          <h3 class="my-3">{{ product.name }}</h3>
+
+          <h3 class="my-3">Price:</h3>
+          <ul>
+            <p>{{ product.unitPrice | currency: 'PLN'}}</p>
+          </ul>
+          <h3 class="my-3">Reservation period:</h3>
+          <ul>
+            <p>{{ booking.expectedStart}} to {{booking.expectedEnd}}</p>
+          </ul>
+          <h3 class="my-3">Total cost:</h3>
+          <ul>
+            <p>{{ booking.cost | currency: 'PLN'}}</p>
+          </ul>
+          <h3 class="my-3">Description:</h3>
+          <a>{{ product.description }}</a>
+          <h3 class="my-3">Contact:</h3>
+          <a>{{ product.firstName }} </a>
+          <br>
+          <a>{{ product.phoneNumber}}</a>
+          <br>
+          <button class="btn btn-dark" (click)="bookProduct(booking.id)" *ngIf="productStatus === 'RESERVED' && product.userId === appComponent.userId">Accept Booking</button>
+          <button class="btn btn-dark" (click)="returnProduct(booking.id)" *ngIf="productStatus === 'RETURNED_BY_CONSUMER' && product.userId === appComponent.userId">Confirm return</button>
+          <button class="btn btn-dark" (click)="returnProductConsumer(booking.id)" *ngIf="productStatus === 'BOOKED' && productConsumer === appComponent.userId">Return product</button>
+          <button class="btn btn-dark" (click)="cancelProductReservation(booking.id)" *ngIf="productStatus === 'RESERVED' && productConsumer === appComponent.userId">Cancel reservation</button>
+
+
+        </div>
+
+      </div>
+      Product status: {{productStatus}}
+
+
+
+      <!-- /.row -->
+
+      <div class="fixed-bottom">
+        <a routerLink="/category"><button type="button" class="btn btn-info btn-lg btn-block">Back to category</button></a>
+      </div>
+      <div style="height: 169px"></div>
+    </div>
+  </div>
+</div>

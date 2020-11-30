@@ -5,11 +5,13 @@ import com.cookie.rentall.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookingRepository extends CrudRepository<Booking, Long> {
+
     @Query("select b from Booking b where b.product.userId = :userId and b.createDate is not null and b.bookingDate is null")
     Page<Booking> findOwnerReserved(Long userId, Pageable pageable);
 
@@ -33,4 +35,6 @@ public interface BookingRepository extends CrudRepository<Booking, Long> {
 
     @Query("select b from Booking b where b.userId = :userId and b.returnDate is not null")
     Page<Booking> findConsumerReturned(Long userId, Pageable pageable);
+}
+
 }
