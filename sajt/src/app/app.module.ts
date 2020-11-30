@@ -1,34 +1,12 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
-import {AppComponent} from './app.component';
-import {UserComponent} from './user/user.component';
-import {HomePageComponent} from './home-page/home-page.component';
-import {RouterModule, Routes} from '@angular/router';
-import {ViewCategoryModule} from './view-category/view-category.module';
-import {CategoryComponent} from './view-category/category/category.component';
-import {ProductListComponent} from './view-category/category/product-list/product-list.component';
-import {ProductDetailsComponent} from './view-category/category/product-details/product-details.component';
-import {OfferComponent} from './offer/offer.component';
-import {ReactiveFormsModule} from '@angular/forms';
-import {FormsModule} from '@angular/forms'
-import {HttpClientModule} from '@angular/common/http';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {ComboBoxComponent} from "./offer/combo-box/combo-box.component";
-import {SignupFormComponent} from "./user/signup-form/signup-form.component";
-import {LoginFormComponent} from "./user/login-form/login-form.component";
-import {authInterceptorProviders} from "./helpers/auth.interceptor";
-import { OwnerProductsComponent } from './owner-products/owner-products.component';
-import { ConsumerProductsComponent } from './consumer-products/consumer-products.component';
-import { PrListComponent } from './owner-products/pr-list/pr-list.component';
-import { PrcListComponent } from './consumer-products/prc-list/prc-list.component';
-import { ReservedComponent } from './owner-products/reserved/reserved.component';
-import { BookedComponent } from './owner-products/booked/booked.component';
-import { FreeComponent } from './owner-products/free/free.component';
-import { ConsumerReservedComponent } from './consumer-products/consumer-reserved/consumer-reserved.component';
-import { ConsumerBookedComponent } from './consumer-products/consumer-booked/consumer-booked.component';
 import { ConsumerFreeComponent } from './consumer-products/consumer-free/consumer-free.component';
 import { MaterialModule } from './material.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { BookingListComponent } from './booking-list/booking-list.component';
+import { BookingItemComponent } from './booking-list/booking-item/booking-item.component';
+import { ConsumerToReturnComponent } from './consumer-products/consumer-to-return/consumer-to-return.component';
+import { OwnerToReturnComponent } from './owner-products/owner-to-return/owner-to-return.component';
+
+
 
 const productRoutes: Routes = [
   // {path: 'citySearch/:keyword/products/:id', component: ProductDetailsComponent},
@@ -46,14 +24,18 @@ const ownerProductRoutes: Routes = [
   { path: '', redirectTo: 'booked', pathMatch: 'full' },
   {path: 'reserved', component: ReservedComponent},
   {path: 'booked', component: BookedComponent},
+  {path: 'toreturn', component: OwnerToReturnComponent},
   {path: 'free', component: FreeComponent}
 ];
+
 const consumerProductRoutes: Routes = [
   { path: '', redirectTo: 'booked', pathMatch: 'full' },
   {path: 'reserved', component: ConsumerReservedComponent},
   {path: 'booked', component: ConsumerBookedComponent},
+  {path: 'toreturn', component: ConsumerToReturnComponent},
   {path: 'free', component: ConsumerFreeComponent}
 ];
+
 const routes: Routes = [
   {path: '', component: HomePageComponent},
   {path: 'user', component: UserComponent},
@@ -81,6 +63,11 @@ const routes: Routes = [
     ConsumerReservedComponent,
     ConsumerBookedComponent,
     ConsumerFreeComponent
+    ConsumerFreeComponent,
+    BookingListComponent,
+    BookingItemComponent,
+    ConsumerToReturnComponent,
+    OwnerToReturnComponent
   ],
   imports: [
     BrowserModule,
@@ -90,7 +77,6 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgbModule,
     FormsModule,
-    MaterialModule
     MaterialModule,
     FontAwesomeModule
   ],
