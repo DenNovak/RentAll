@@ -20,6 +20,12 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+    @GetMapping("api/user/{id}")
+    public UserView getUser(@PathVariable("id") Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.map(UserView::new).orElse(null);
+    }
+
     @PreAuthorize("isAuthenticated()")
     @PutMapping("api/user/{id}")
     public UserView cancelReservation(@PathVariable("id") Long id, @RequestBody UserUpdateRequest request) {
