@@ -4,14 +4,12 @@ import com.cookie.rentall.auth.User;
 
 public class UserView {
     private String email;
-    private String password;
     private String firstName;
     private String lastName;
     private String description;
 
     public UserView(User user) {
         this.email = user.getEmail();
-        this.password = user.getPassword();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.description = user.getDescription();
@@ -23,14 +21,6 @@ public class UserView {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstName() {
