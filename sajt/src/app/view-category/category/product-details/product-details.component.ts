@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {Product} from 'src/app/common/product';
 import {ProductService} from 'src/app/services/product.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AppComponent} from "../../../app.component";
-import {NgbDate, NgbDatepicker, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {AppComponent} from '../../../app.component';
+import {NgbDate, NgbDatepicker, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {faCalendarAlt} from '@fortawesome/free-solid-svg-icons';
-import {ProductUnavailableView} from "../../../common/productunavailableview";
+import {ProductUnavailableView} from '../../../common/productunavailableview';
 
 @Component({
   selector: 'app-product-details',
