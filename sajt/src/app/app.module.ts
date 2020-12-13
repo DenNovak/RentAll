@@ -35,6 +35,7 @@ import { BookingItemComponent } from './booking-list/booking-item/booking-item.c
 import { ConsumerToReturnComponent } from './consumer-products/consumer-to-return/consumer-to-return.component';
 import { OwnerToReturnComponent } from './owner-products/owner-to-return/owner-to-return.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
+import { UserViewComponent } from './user-view/user-view.component';
 
 
 
@@ -73,6 +74,7 @@ const routes: Routes = [
   {path: 'user', component: UserComponent},
   {path: 'offer', component: OfferComponent},
   {path: 'user-edit/:id', component: UserEditComponent},
+  {path: 'user-view/:id', component: UserViewComponent},
   {path: 'category', component: CategoryComponent, children: productRoutes},
   {path: 'owner', component: OwnerProductsComponent, children: ownerProductRoutes},
   {path: 'consumer', component: ConsumerProductsComponent, children: consumerProductRoutes}
@@ -101,7 +103,8 @@ const routes: Routes = [
     BookingItemComponent,
     ConsumerToReturnComponent,
     OwnerToReturnComponent,
-    UserEditComponent
+    UserEditComponent,
+    UserViewComponent
   ],
   imports: [
     BrowserModule,
