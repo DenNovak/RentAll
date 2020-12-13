@@ -41,6 +41,11 @@ export class ProductService {
     return this.httpClient.get<Booking>(url);
   }
 
+  getUser(userId: number): Observable<User> {
+    const url = `http://localhost:8080/api/user/${userId}`;
+    return this.httpClient.get<User>(url);
+  }
+
   getProductStatus(theProductId: number): Observable<ProductStatus> {
     const productUrl = `${this.baseUrl}/${theProductId}/status`;
     return this.httpClient.get<ProductStatus>(productUrl);
