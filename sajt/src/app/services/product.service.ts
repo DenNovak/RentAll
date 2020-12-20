@@ -178,13 +178,12 @@ export class ProductService {
     return this.httpClient.get<number[]>(url).pipe();
   }
 
-  postFile(fileToUpload: File, productId: number): Observable<boolean> {
-    const url = `${this.baseUrl}/${productId}/image/upload`;;
+  postFile(fileToUpload: File, productId: string): Observable<boolean> {
+    const url = `${this.baseUrl}/${productId}/image`;;
     const formData: FormData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
-    const headers = {'content-type': 'image/jpg'};
     return this.httpClient
-      .post(url, formData, { headers: headers }).pipe(map(() => true));
+      .post(url, formData, ).pipe(map(() => true));
   }
 
   listBookingsByConsumer(userId: number, status: string): Observable<Booking[]> {

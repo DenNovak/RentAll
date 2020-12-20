@@ -19,7 +19,7 @@ export class OfferComponent implements OnInit {
   product = new Product();
   cItems: string[];
   externalProducts: ExternalProduct[];
-  imageInput: string;
+  imageInput: File;
   productImage: string;
 
   OfferForm = this.fb.group({
@@ -46,17 +46,28 @@ export class OfferComponent implements OnInit {
 
   onFileSelected(event) {
     if (event.target.files.length > 0) {
-      this.imageInput = event.target.files[0].name;
+      this.imageInput = event.target.files[0];
     }
+  }
+
+  uploadFileToActivity() {
+    this.productService.postFile(this.imageInput, this.product.id).subscribe(data => {
+    }, error => {
+      console.log(error);
+    });
   }
 
   addProduct() {
     this.product.active = true;
-    this.product.imageUrl = `assets/images/products/${this.imageInput}`
+    //this.product.imageUrl = `assets/images/products/${this.imageInput}`
     this.productService.addProduct(this.product)
       .subscribe(data => {
-      })
-    history.go(0);
+        this.product = data;
+        if (this.imageInput) {
+          this.uploadFileToActivity();
+        }
+      });
+    //history.go(0);
   }
 
   fillProduct() {
