@@ -26,6 +26,9 @@ public class Product {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     private List<Booking> bookings;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Image> images;
+
     @Column(name = "name")
     private String name;
 
