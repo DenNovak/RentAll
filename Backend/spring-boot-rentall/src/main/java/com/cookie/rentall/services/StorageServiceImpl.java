@@ -19,8 +19,8 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public void store(MultipartFile file) {
-        try(FileOutputStream fileOutputStream = new FileOutputStream("images/" + file.getName())) {
+    public void store(MultipartFile file, String storedName) {
+        try(FileOutputStream fileOutputStream = new FileOutputStream(new File("images/" + storedName))) {
             fileOutputStream.write(file.getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -5,11 +5,13 @@ import com.cookie.rentall.auth.UserRepository;
 import com.cookie.rentall.dao.ProductCategoryRepository;
 import com.cookie.rentall.dao.ProductRepository;
 import com.cookie.rentall.entity.Booking;
+import com.cookie.rentall.entity.Image;
 import com.cookie.rentall.entity.Product;
 import com.cookie.rentall.entity.ProductCategory;
 import com.cookie.rentall.product.ProductReserveRequest;
 import com.cookie.rentall.product.ProductUpdateRequest;
 import com.cookie.rentall.repositores.BookingRepository;
+import com.cookie.rentall.repositores.ImageRepository;
 import com.cookie.rentall.services.StorageService;
 import com.cookie.rentall.views.ProductShortView;
 import com.cookie.rentall.views.ProductStatusView;
@@ -26,10 +28,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin
@@ -43,6 +42,8 @@ public class ProductController {
     private ProductCategoryRepository productCategoryRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ImageRepository imageRepository;
     @Autowired
     private JavaMailSender emailSender;
     @Autowired
@@ -169,7 +170,16 @@ public class ProductController {
         Optional<Product> product = productRepository.findById(id);
         if (!product.isPresent() || product.get().getUserId() != getCurrentUser())
             return false;
-        storageService.store(file);
+        String storedName = UUID.randomUUID().toString() + file.getOriginalFilename();
+        storageService.store(file, storedName);
+        Image image = new Image();
+        image.setFilename(storedName);
+        image.setUserId(getCurrentUser());
+        imageRepository.save(image);
+        List<Image> images = new ArrayList<>(product.get().getImages());
+        images.add(image);
+        product.get().setImages(images);
+        productRepository.save(product.get());
         return true;
     }
 
