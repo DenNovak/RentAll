@@ -1,11 +1,14 @@
 package com.cookie.rentall.product;
 
 import com.cookie.rentall.entity.Booking;
+import com.cookie.rentall.entity.Image;
 import com.cookie.rentall.entity.Product;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductUpdateRequest {
 
@@ -43,6 +46,8 @@ public class ProductUpdateRequest {
 
     public String condition;
 
+    public List<Long> imageIds;
+
     public ProductUpdateRequest() {}
 
     public ProductUpdateRequest(Product product) {
@@ -62,5 +67,6 @@ public class ProductUpdateRequest {
         this.userId = product.getUserId();
         this.userDescription = product.getUserDescription();
         this.condition = product.getCondition();
+        this.imageIds = product.getImages().stream().map(Image::getId).collect(Collectors.toList());
     }
 }
