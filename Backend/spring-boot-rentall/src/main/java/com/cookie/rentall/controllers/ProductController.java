@@ -10,6 +10,7 @@ import com.cookie.rentall.entity.ProductCategory;
 import com.cookie.rentall.product.ProductReserveRequest;
 import com.cookie.rentall.product.ProductUpdateRequest;
 import com.cookie.rentall.repositores.BookingRepository;
+import com.cookie.rentall.services.StorageService;
 import com.cookie.rentall.views.ProductShortView;
 import com.cookie.rentall.views.ProductStatusView;
 import com.cookie.rentall.views.ProductUnavailableView;
@@ -23,6 +24,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
@@ -43,6 +45,8 @@ public class ProductController {
     private UserRepository userRepository;
     @Autowired
     private JavaMailSender emailSender;
+    @Autowired
+    private StorageService storageService;
 
     private void sendSimpleMessage(
             String to, String subject, String text) {
@@ -157,6 +161,16 @@ public class ProductController {
         productRepository.save(product);
         request.id = product.getId();
         return request;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("api/products/{id}/image")
+    public Boolean uploadImage(@PathVariable("id") Long id, @RequestParam("file") MultipartFile file) {
+        Optional<Product> product = productRepository.findById(id);
+        if (!product.isPresent() || product.get().getUserId() != getCurrentUser())
+            return false;
+        storageService.store(file);
+        return true;
     }
 
     @PreAuthorize("isAuthenticated()")
