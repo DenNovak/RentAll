@@ -18,8 +18,11 @@ import com.cookie.rentall.views.ProductStatusView;
 import com.cookie.rentall.views.ProductUnavailableView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -162,6 +165,17 @@ public class ProductController {
         productRepository.save(product);
         request.id = product.getId();
         return request;
+    }
+
+    @GetMapping("api/products/image/{id}")
+    public ResponseEntity<Resource> getImage(@PathVariable("id") Long id) {
+        Optional<Image> image = imageRepository.findById(id);
+        if (image.isPresent()) {
+            Resource file = storageService.loadAsResource(image.get().getFilename());
+            return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                    "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+        }
+        return null;
     }
 
     @PreAuthorize("isAuthenticated()")
