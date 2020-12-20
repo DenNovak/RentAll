@@ -178,6 +178,12 @@ public class ProductController {
         return null;
     }
 
+    @GetMapping("api/products/{id}/image/count")
+    public Integer getImageCount(@PathVariable("id") Long id) {
+        Optional<Product> product = productRepository.findById(id);
+        return product.map(value -> value.getImages().size()).orElse(0);
+    }
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("api/products/{id}/image")
     public Boolean uploadImage(@PathVariable("id") Long id, @RequestParam("file") MultipartFile file) {
