@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class Product {
     private List<Booking> bookings;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<Image> images;
+    private List<Image> images = Collections.emptyList();
 
     @Column(name = "name")
     private String name;
@@ -203,5 +204,13 @@ public class Product {
 
     public void setCondition(String condition) {
         this.condition = condition;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }
