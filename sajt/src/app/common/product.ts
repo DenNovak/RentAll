@@ -14,4 +14,5 @@ export class Product {
   userId: number;
   userDescription: string;
   condition: string;
+  imageIds: number[];
 }

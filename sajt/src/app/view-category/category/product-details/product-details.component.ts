@@ -25,6 +25,10 @@ export class ProductDetailsComponent implements OnInit {
   markDisabled: (date: NgbDate) => {};
   refusedDates: ProductUnavailableView[];
   totalCost = 0;
+  currentImageId: number;
+  imageCount = 0;
+  currentImageIndex = 0;
+  imageInput: File;
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute, private router: Router) {
@@ -87,6 +91,10 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.getProduct(theProductId).subscribe(
       data => {
         this.product = data;
+        if (this.product.imageIds && this.product.imageIds.length > 0) {
+          this.currentImageId = this.product.imageIds[0];
+          this.imageCount = this.product.imageIds.length;
+        }
         this.productService.listUnavailableDates(this.product.id).subscribe((d) => {
           this.refusedDates = d.map(rec => {
             const v = new ProductUnavailableView();
@@ -141,7 +149,7 @@ export class ProductDetailsComponent implements OnInit {
   checkDates(): boolean {
     if (this.from === null || this.to === null || this.from === undefined || this.to === undefined) {
       alert('Fill reservation dates');
-      return  false;
+      return false;
     }
     if (this.refusedDates === null || this.refusedDates === undefined) {
       return true;
@@ -215,4 +223,41 @@ export class ProductDetailsComponent implements OnInit {
     );
   }
 
+  nextImage() {
+    this.currentImageIndex = (this.currentImageIndex + 1) % this.imageCount;
+    if (this.imageCount && this.imageCount > 0) {
+      this.currentImageId = this.product.imageIds[this.currentImageIndex];
+    }
+  }
+
+  prevImage() {
+    this.currentImageIndex--;
+    if (this.currentImageIndex < 0) {
+      this.currentImageIndex = this.imageCount - 1;
+    }
+    if (this.imageCount && this.imageCount > 0) {
+      this.currentImageId = this.product.imageIds[this.currentImageIndex];
+    }
+  }
+
+  onFileSelected(event) {
+    if (event.target.files.length > 0) {
+      this.imageInput = event.target.files[0];
+      this.uploadFileToActivity();
+    }
+  }
+
+  uploadFileToActivity() {
+    this.productService.postFile(this.imageInput, this.product.id).subscribe(data => {
+      this.productService.getProduct(this.product.id).subscribe(data => {
+        this.product = data;
+        if (this.product.imageIds && this.product.imageIds.length > 0) {
+          this.imageCount = this.product.imageIds.length;
+          this.currentImageId = this.product.imageIds[this.imageCount - 1];
+        }
+      });
+    }, error => {
+      console.log(error);
+    });
+  }
 }

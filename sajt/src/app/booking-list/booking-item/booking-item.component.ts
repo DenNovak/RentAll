@@ -16,6 +16,9 @@ export class BookingItemComponent implements OnInit {
   productStatus = 'FREE';
   productConsumer = 0;
   appComponent: AppComponent;
+  currentImageId: number;
+  imageCount = 0;
+  currentImageIndex = 0;
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute) { }
@@ -37,6 +40,10 @@ export class BookingItemComponent implements OnInit {
         this.booking = b;
         this.productService.getProduct(this.booking.productId).subscribe(data => {
           this.product = data;
+          if (this.product.imageIds && this.product.imageIds.length > 0) {
+            this.currentImageId = this.product.imageIds[0];
+            this.imageCount = this.product.imageIds.length;
+          }
           if (this.booking.bookingDate === null) {
             this.productStatus = 'RESERVED';
           } else if (this.booking.clientReturnDate === null) {
@@ -102,5 +109,22 @@ export class BookingItemComponent implements OnInit {
         }
       }
     );
+  }
+
+  nextImage() {
+    this.currentImageIndex = (this.currentImageIndex + 1) % this.imageCount;
+    if (this.imageCount && this.imageCount > 0) {
+      this.currentImageId = this.product.imageIds[this.currentImageIndex];
+    }
+  }
+
+  prevImage() {
+    this.currentImageIndex--;
+    if (this.currentImageIndex < 0) {
+      this.currentImageIndex = this.imageCount - 1;
+    }
+    if (this.imageCount && this.imageCount > 0) {
+      this.currentImageId = this.product.imageIds[this.currentImageIndex];
+    }
   }
 }
