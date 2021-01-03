@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Validators} from '@angular/forms';
 import {Product} from '../common/product';
 import {ProductService} from '../services/product.service';
-import {ComboBoxComponent} from "./combo-box/combo-box.component";
-import {ExternalProduct} from "../common/ExternalProduct";
-import {AppComponent} from "../app.component";
-import {TokenStorageService} from "../_services/token-storage.service";
-import {Router} from "@angular/router";
+import {ComboBoxComponent} from './combo-box/combo-box.component';
+import {ExternalProduct} from '../common/ExternalProduct';
+import {AppComponent} from '../app.component';
+import {TokenStorageService} from '../_services/token-storage.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-offer',
@@ -22,18 +22,22 @@ export class OfferComponent implements OnInit {
   imageInput: File;
   productImage: string;
 
-  OfferForm = this.fb.group({
-    name: ['', Validators.required],
-    description: [''],
-    unitPrice: [''],
-    city: [''],
-    imageUrl: [''],
-
-
-  })
+  OfferForm = new FormGroup({
+    name: new FormControl(this.product.name),
+    price: new FormControl(this.product.unitPrice),
+    firstName: new FormControl(this.product.firstName),
+    phoneNumber: new FormControl(this.product.phoneNumber),
+    city: new FormControl(this.product.city),
+    category: new FormControl(this.product.category),
+    productCondition: new FormControl(this.product.condition),
+    userDescription: new FormControl(this.product.userDescription),
+    description: new FormControl(this.product.description),
+    imageInput: new FormControl(this.imageInput)
+  });
 
   constructor(private fb: FormBuilder, private productService: ProductService, private router: Router) {
   }
+
   appComponent: AppComponent;
 
   ngOnInit(): void {
@@ -59,20 +63,33 @@ export class OfferComponent implements OnInit {
 
   addProduct() {
     this.product.active = true;
-    //this.product.imageUrl = `assets/images/products/${this.imageInput}`
-    this.productService.addProduct(this.product)
-      .subscribe(data => {
-        this.product = data;
-        if (this.imageInput) {
-          this.uploadFileToActivity();
-        }
-      });
-    //history.go(0);
+    this.product.name = this.OfferForm.get('name').value;
+    this.product.unitPrice = this.OfferForm.get('price').value;
+    this.product.firstName = this.OfferForm.get('firstName').value;
+    this.product.phoneNumber = this.OfferForm.get('phoneNumber').value;
+    this.product.city = this.OfferForm.get('city').value;
+    this.product.category = this.OfferForm.get('category').value;
+    this.product.condition = this.OfferForm.get('productCondition').value;
+    this.product.userDescription = this.OfferForm.get('userDescription').value;
+    this.product.description = this.OfferForm.get('description').value;
+    if (this.OfferForm.valid) {
+
+      // this.product.imageUrl = `assets/images/products/${this.imageInput}`
+      this.productService.addProduct(this.product)
+        .subscribe(data => {
+          this.product = data;
+          if (this.imageInput) {
+            this.uploadFileToActivity();
+          }
+        });
+    }
+    // history.go(0);
   }
 
   fillProduct() {
     this.productService.searchExternalProduct(this.product.name).subscribe(data => {
       const pr = data.filter(p => p.name.includes(this.product.name))[0];
+      // tslint:disable-next-line:max-line-length
       this.product.description = `Engine name: ${pr.markaSilnika}\nEngine volume: ${pr.pojemnoscSilnika}\nCutting width: ${pr.szerokoscKoszenia}\nHeight regulation: ${pr.regulacjaWysokosciKoszenia}\nBasket capacity: ${pr.pojemnoscKosza}`;
       this.product.name = pr.name;
     });
@@ -90,6 +107,7 @@ export class OfferComponent implements OnInit {
     this.productImage = `https://mediaexpert.pl${pr.photoLink}`;
     this.product.name = pr.name;
     if (pr != null) {
+      // tslint:disable-next-line:max-line-length
       this.product.description = `Engine name: ${pr.markaSilnika}\nEngine volume: ${pr.pojemnoscSilnika}\nCutting width: ${pr.szerokoscKoszenia}\nHeight regulation: ${pr.regulacjaWysokosciKoszenia}\nBasket capacity: ${pr.pojemnoscKosza}`;
     }
   }

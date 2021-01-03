@@ -249,7 +249,7 @@ export class ProductDetailsComponent implements OnInit {
 
   uploadFileToActivity() {
     this.productService.postFile(this.imageInput, this.product.id).subscribe(data => {
-      this.productService.getProduct(this.product.id).subscribe(data => {
+      this.productService.getProduct(Number(this.product.id)).subscribe(data => {
         this.product = data;
         if (this.product.imageIds && this.product.imageIds.length > 0) {
           this.imageCount = this.product.imageIds.length;

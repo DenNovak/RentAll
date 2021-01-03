@@ -2,123 +2,47 @@
 
   <header class="header">
     <div class="logo"><img src="../../assets/images/logo_navbar.png" width="150"></div>
-    <input class="menu-btn" type="checkbox" id="menu-btn" />
+    <input class="menu-btn" type="checkbox" id="menu-btn"/>
     <label class="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>
     <ul class="menu">
-      <li><a  class ="cool" href="#" routerLink="/category">Categories</a></li>
-      <li><a class ="cool" href="#" routerLink="/owner">My products</a></li>
-      <li><a class ="cool" href="#" routerLink="/consumer">My bookings</a></li>
-      <li><a class="activee" class ="cool" href="#" routerLink="/offer">Create an offer</a></li>
-      <li><a class ="cool" *ngIf="!appComponent.isLoggedIn" href="#" routerLink="/user">Log in / Sign up</a></li>
-      <li><a class ="cool" href=# routerLink="/" (click)="appComponent.logout()" *ngIf="appComponent.isLoggedIn">LogOut</a></li>
-      <li><a class ="cool" href=# routerLink="/user-edit/{{appComponent.userId}}" *ngIf="appComponent.isLoggedIn"><svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
-        <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-        <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
-      </svg>  {{ appComponent.username }}</a></li>
+      <li><a class="cool" href="#" routerLink="/category">Categories</a></li>
+      <li><a class="cool" href="#" routerLink="/owner">My products</a></li>
+      <li><a class="cool" href="#" routerLink="/consumer">My bookings</a></li>
+      <li><a class="activee" class="cool" href="#" routerLink="/offer">Create an offer</a></li>
+      <li><a class="cool" *ngIf="!appComponent.isLoggedIn" href="#" routerLink="/user">Log in / Sign up</a></li>
+      <li><a class="cool" href=# routerLink="/" (click)="appComponent.logout()"
+             *ngIf="appComponent.isLoggedIn">LogOut</a></li>
+      <li><a class="cool" href=# routerLink="/user-edit/{{appComponent.userId}}" *ngIf="appComponent.isLoggedIn">
+        <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor"
+             xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
+          <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+        </svg>
+        {{ appComponent.username }}</a></li>
     </ul>
   </header>
 
-  <!--  -->
-  <!--    <div class="row justify-content-md-center">-->
-  <!--      <div class="col-12 p-12">-->
-  <!--        <label>Post your AD</label>-->
-  <!--      </div>-->
-  <!--    </div>-->
-  <!--<div class="container">-->
-  <!--  <div class="card border-0 shadow my-5">-->
-  <!--    <div class="card-body p-3">-->
-
-
-  <!--  <div class="row">-->
-  <!--    <div class="col-6">-->
-  <!--<label>Product Name:</label>-->
-  <!--    </div>-->
-  <!--    <div class="col-6">-->
-  <!--<input  [(ngModel)]="product.name" required>-->
-  <!--    </div>-->
-  <!--  </div>-->
-
-
-  <!--<div class="row">-->
-  <!--  <div class="col-6">-->
-  <!--<label>Description:</label>-->
-  <!--  </div>-->
-  <!--<div class="col-6">-->
-
-  <!--  <textarea required="add description,please" [(ngModel)]="product.description"></textarea>-->
-  <!--</div>-->
-  <!--</div>-->
-
-  <!--  <div class="row">-->
-  <!--    <div class="col-6">-->
-  <!--<label>Price:</label>-->
-  <!--    </div>-->
-  <!--    <div class="col-6">-->
-  <!--<input [(ngModel)]="product.unitPrice"/>-->
-  <!--    </div>-->
-  <!--  </div>-->
-  <!--<div class="row">-->
-  <!--  <div class="col-6">-->
-  <!--<label>First Name: </label>-->
-  <!--  </div>-->
-  <!--  <div class="col-6">-->
-  <!--<input  [(ngModel)]="product.firstName"/>-->
-  <!--  </div>-->
-  <!--</div>-->
-  <!--  <div class="row">-->
-  <!--    <div class="col-6">-->
-  <!--<label>Phone Number: </label>-->
-  <!--    </div>-->
-  <!--    <div class="col-6">-->
-  <!--<input  [(ngModel)]="product.phone_number"/>-->
-  <!--    </div>-->
-  <!--  </div>-->
-  <!--  <div class="row">-->
-  <!--    <div class="col-6">-->
-  <!--<label>City:</label>-->
-  <!--    </div>-->
-  <!--    <div class="col-6">-->
-  <!--<select  [(ngModel)]="product.city">-->
-  <!--  <option value="Warszawa">Warszawa</option>-->
-  <!--  <option value="Kraków">Kraków</option>-->
-  <!--  <option value="Poznań">Poznań</option>-->
-  <!--</select>-->
-  <!--    </div>-->
-  <!--  </div>-->
-  <!--  <div class="row">-->
-  <!--    <div class="col-6">-->
-  <!--<label>Category:</label>-->
-  <!--    </div>-->
-  <!--    <div class="col-6">-->
-  <!--<select [(ngModel)]="product.category" id="Category" name="Category" >-->
-  <!--  <option value="http://localhost:8080/api/product-category/1">Devices</option>-->
-  <!--  <option value="http://localhost:8080/api/product-category/2">Garden</option>-->
-  <!--</select>-->
-  <!--    </div>-->
-  <!--  </div>-->
-
-
-  <!--<br>-->
-  <!--<input type="submit" (click)="addProduct()" />-->
-
-  <!--</div>-->
-
-  <!--      <div style="height: 100px"></div>-->
-  <!--    </div>-->
-  <form class="needs-validation" novalidate>
+  <form class="needs-validation" novalidate [formGroup]="OfferForm">
     <section>
       <div class="containerr">
         <h2>Add your product information</h2>
         <div class="row100">
           <div class="coll">
+            <div class="inputBox">
+              <input type="text" class="form-control" formControlName="name" name="Name" required="required">
+              <span class="text">Name:</span>
+              <span class="line"></span>
+              <div class="invalid-tooltip">
+                Please provide a product name.
+              </div>
+            </div>
             <!--app-combo-box [(ngModel)]="product.name" name="Name" [(list)]="cItems" (onSelect)="selectFromExternal($event)"></app-combo-box-->
-            <input type="text" class="form-control" [(ngModel)]="product.name" name="firstName"
-                   required="required">
           </div>
           <div class="coll">
             <div class="inputBox">
-              <input type="text" class="form-control" [(ngModel)]="product.unitPrice" name="0" required="required">
+              <input type="text" class="form-control" formControlName="price" name="0" required="required">
               <span class="text">Price:</span>
               <span class="line"></span>
               <div class="invalid-tooltip">
@@ -130,7 +54,7 @@
         <div class="row100">
           <div class="coll">
             <div class="inputBox">
-              <input type="text" class="form-control" [(ngModel)]="product.firstName" name="firstName"
+              <input type="text" class="form-control" formControlName="firstName" name="firstName"
                      required="required">
               <span class="text">First name:</span>
               <span class="line"></span>
@@ -141,7 +65,7 @@
           </div>
           <div class="coll">
             <div class="inputBox">
-              <input type="text" class="form-control" [(ngModel)]="product.phoneNumber" name="phoneNumber"
+              <input type="text" class="form-control" formControlName="phoneNumber" name="phoneNumber"
                      required="required">
               <span class="text">Phone number:</span>
               <span class="line"></span>
@@ -154,7 +78,7 @@
         <div class="row100">
           <div class="coll">
             <div class="inputBox">
-              <select [(ngModel)]="product.city" name="city">
+              <select formControlName="city" name="city">
                 <option value="Warszawa">Warszawa</option>
                 <option value="Kraków">Kraków</option>
                 <option value="Poznań">Poznań</option>
@@ -165,7 +89,7 @@
           </div>
           <div class="coll">
             <div class="inputBox">
-              <select [(ngModel)]="product.category" id="Category" name="Category">
+              <select formControlName="category" id="Category" name="Category">
                 <option value="http://localhost:8080/api/product-category/1">Devices</option>
                 <option value="http://localhost:8080/api/product-category/2">Garden</option>
               </select>
@@ -176,11 +100,10 @@
         </div>
 
 
-
         <div class="row100">
           <div class="coll">
             <div class="inputBox">
-              <select [(ngModel)]="product.condition" name="Product Condition">
+              <select formControlName="productCondition" name="Product Condition">
                 <option value="Good">Good</option>
                 <option value="Used">Used</option>
                 <option value="Bad">Bad</option>
@@ -191,21 +114,18 @@
           </div>
           <div class="coll">
             <div class="inputBox">
-              <input type="text" class="form-control" [(ngModel)]="product.userDescription" name="phoneNumber"
-                     required="required">
+              <input type="text" class="form-control" formControlName="userDescription" name="phoneNumber">
               <span class="text">User Description:</span>
               <span class="line"></span>
             </div>
           </div>
         </div>
 
-
-
         <div class="row100">
           <div class="coll">
             <div class="inputBox textarea">
               <img style="z-index: 0" src="{{productImage}}">
-              <textarea class="form-control" required="required" [(ngModel)]="product.description"
+              <textarea class="form-control" formControlName="description"
                         name="description"></textarea>
               <span class="text">Description:</span>
 
@@ -215,13 +135,20 @@
             </div>
           </div>
         </div>
-        <div>
-          <input
-            type="file"
-            [(ngModel)]="imageInput"
-            name="imageInput"
-            (change)="onFileSelected($event)">
+
+        <div class="row100">
+          <div class="coll">
+
+            <div>
+              <input
+                type="file"
+                formControlName="imageInput"
+                name="imageInput"
+                (change)="onFileSelected($event)">
+            </div>
+          </div>
         </div>
+
         <div class="row100">
           <div class="coll">
             <input type="submit" (click)="addProduct()" value="Send">
@@ -230,3 +157,4 @@
       </div>
     </section>
   </form>
+</div>
