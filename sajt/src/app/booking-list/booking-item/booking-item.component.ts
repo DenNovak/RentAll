@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Product} from '../../common/product';
 import {AppComponent} from '../../app.component';
 import {ProductService} from '../../services/product.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Booking} from '../../common/booking';
 
 @Component({
@@ -21,7 +21,7 @@ export class BookingItemComponent implements OnInit {
   currentImageIndex = 0;
 
   constructor(private productService: ProductService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.appComponent = this.productService.getAppComponent();
@@ -64,7 +64,7 @@ export class BookingItemComponent implements OnInit {
       result => {
         if (result === true) {
           alert('Product reservation cancelled');
-          window.location.reload();
+          this.router.navigate(['/consumer/reserved']);
         } else {
           alert('Could not cancel product reservation');
         }
