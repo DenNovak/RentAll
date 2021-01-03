@@ -4,6 +4,7 @@ import {AppComponent} from '../../app.component';
 import {ProductService} from '../../services/product.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Booking} from '../../common/booking';
+import {AlertService} from "../../_alert";
 
 @Component({
   selector: 'app-booking-item',
@@ -21,7 +22,7 @@ export class BookingItemComponent implements OnInit {
   currentImageIndex = 0;
 
   constructor(private productService: ProductService,
-              private route: ActivatedRoute, private router: Router) { }
+              private route: ActivatedRoute, private router: Router, private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.appComponent = this.productService.getAppComponent();
@@ -63,10 +64,12 @@ export class BookingItemComponent implements OnInit {
     this.productService.cancelReservation(bookingId).subscribe(
       result => {
         if (result === true) {
-          alert('Product reservation cancelled');
-          this.router.navigate(['/consumer/reserved']);
+          this.alertService.success('Product reservation cancelled');
+          setTimeout(() => {
+            this.router.navigate(['/consumer/reserved']);
+          }, 2000);
         } else {
-          alert('Could not cancel product reservation');
+          this.alertService.error('Could not cancel product reservation');
         }
       }
     );
@@ -76,10 +79,12 @@ export class BookingItemComponent implements OnInit {
     this.productService.bookProduct(bookingId).subscribe(
       result => {
         if (result === true) {
-          alert('Product booked');
-          window.location.reload();
+          this.alertService.success('Product booked');
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         } else {
-          alert('Product booking failed');
+          this.alertService.error('Product booking failed');
         }
       }
     );
@@ -89,10 +94,14 @@ export class BookingItemComponent implements OnInit {
     this.productService.returnProductConsumer(bookingId).subscribe(
       result => {
         if (result === true) {
-          alert('Product returned');
-          window.location.reload();
-        } else {
-          alert('Product return failed');
+          if (result === true) {
+            this.alertService.success('Product returned');
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          } else {
+            this.alertService.error('Product return failed');
+          }
         }
       }
     );
@@ -102,10 +111,12 @@ export class BookingItemComponent implements OnInit {
     this.productService.returnProduct(bookingId).subscribe(
       result => {
         if (result === true) {
-          alert('Product return confirmed');
-          window.location.reload();
+          this.alertService.success('Product return confirmed');
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         } else {
-          alert('Product return failed');
+          this.alertService.error('Product return failed');
         }
       }
     );

@@ -8,6 +8,7 @@ import {ExternalProduct} from '../common/ExternalProduct';
 import {AppComponent} from '../app.component';
 import {TokenStorageService} from '../_services/token-storage.service';
 import {Router} from '@angular/router';
+import {AlertService} from "../_alert";
 
 @Component({
   selector: 'app-offer',
@@ -35,7 +36,7 @@ export class OfferComponent implements OnInit {
     imageInput: new FormControl(this.imageInput)
   });
 
-  constructor(private fb: FormBuilder, private productService: ProductService, private router: Router) {
+  constructor(private fb: FormBuilder, private productService: ProductService, private router: Router, private alertService: AlertService) {
   }
 
   appComponent: AppComponent;

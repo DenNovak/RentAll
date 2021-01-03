@@ -14,6 +14,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {FormsModule} from "@angular/forms";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {AlertModule} from "../_alert";
 
 @NgModule({
   declarations: [
@@ -24,16 +25,17 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
     ProductDetailsComponent,
     CitySearchComponent
   ],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    RouterModule,
-    NgbModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    FormsModule,
-    FontAwesomeModule
-  ],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        RouterModule,
+        NgbModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        FormsModule,
+        FontAwesomeModule,
+        AlertModule
+    ],
   exports: [
     CategoryComponent,
     ProductListComponent

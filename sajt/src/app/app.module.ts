@@ -37,6 +37,7 @@ import { OwnerToReturnComponent } from './owner-products/owner-to-return/owner-t
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { OfferListComponent } from './offer-list/offer-list.component';
+import { AlertModule } from './_alert';
 
 
 
@@ -118,7 +119,8 @@ const routes: Routes = [
     NgbModule,
     FormsModule,
     MaterialModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    AlertModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

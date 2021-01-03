@@ -6,6 +6,8 @@ import {AppComponent} from '../../../app.component';
 import {NgbDate, NgbDatepicker, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {faCalendarAlt} from '@fortawesome/free-solid-svg-icons';
 import {ProductUnavailableView} from '../../../common/productunavailableview';
+import {AlertService} from "../../../_alert";
+import {Observable, timer} from "rxjs";
 
 @Component({
   selector: 'app-product-details',
@@ -31,7 +33,7 @@ export class ProductDetailsComponent implements OnInit {
   imageInput: File;
 
   constructor(private productService: ProductService,
-              private route: ActivatedRoute, private router: Router) {
+              private route: ActivatedRoute, private router: Router, private alertService: AlertService) {
   }
 
   ngOnInit(): void {
@@ -123,7 +125,7 @@ export class ProductDetailsComponent implements OnInit {
       if (result) {
         this.router.navigate(['/offers']);
       } else {
-        alert('Failed to delete Product');
+        this.alertService.error('Failed to delete Product');
       }
     });
   }
@@ -137,10 +139,12 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.reserveProduct(id, st, f).subscribe(
       result => {
         if (result === true) {
-          alert('Product reserved');
-          this.router.navigate(['/consumer/reserved']);
+          this.alertService.success('Product reserved');
+          setTimeout(() => {
+            this.router.navigate(['/consumer/reserved']);
+          }, 2000);
         } else {
-          alert('Product reservation failed');
+          this.alertService.error('Product reservation failed');
         }
       }
     );
@@ -148,7 +152,7 @@ export class ProductDetailsComponent implements OnInit {
 
   checkDates(): boolean {
     if (this.from === null || this.to === null || this.from === undefined || this.to === undefined) {
-      alert('Fill reservation dates');
+      this.alertService.error('Fill reservation dates');
       return false;
     }
     if (this.refusedDates === null || this.refusedDates === undefined) {
@@ -160,7 +164,7 @@ export class ProductDetailsComponent implements OnInit {
       const st = new NgbDate(period.start.getFullYear(), period.start.getMonth() - 1, period.start.getDate() - 1);
       const f = new NgbDate(period.end.getFullYear(), period.end.getMonth() - 1, period.end.getDate() - 1);
       if (this.isInInterval(fr, st, f) || this.isInInterval(t, st, f)) {
-        alert('Selected date interval is not free');
+        this.alertService.error('Selected date interval is not free');
         return false;
       }
     }
@@ -175,10 +179,12 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.cancelReservation(id).subscribe(
       result => {
         if (result === true) {
-          alert('Product reservation cancelled');
-          window.location.reload();
+          this.alertService.success('Product reservation cancelled');
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         } else {
-          alert('Could not cancel product reservation');
+          this.alertService.error('Could not cancel product reservation');
         }
       }
     );
@@ -188,10 +194,12 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.bookProduct(id).subscribe(
       result => {
         if (result === true) {
-          alert('Product booked');
-          window.location.reload();
+          this.alertService.success('Product booked');
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         } else {
-          alert('Product booking failed');
+          this.alertService.error('Product booking failed');
         }
       }
     );
@@ -201,10 +209,12 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.returnProductConsumer(id).subscribe(
       result => {
         if (result === true) {
-          alert('Product returned');
-          window.location.reload();
+          this.alertService.success('Product returned');
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         } else {
-          alert('Product return failed');
+          this.alertService.error('Product return failed');
         }
       }
     );
@@ -214,10 +224,12 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.returnProduct(id).subscribe(
       result => {
         if (result === true) {
-          alert('Product return confirmed');
-          window.location.reload();
+          this.alertService.success('Product return confirmed');
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         } else {
-          alert('Product return failed');
+          this.alertService.error('Product return failed');
         }
       }
     );

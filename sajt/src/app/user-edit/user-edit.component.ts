@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {ProductService} from '../services/product.service';
 import {AppComponent} from '../app.component';
 import {User} from '../common/user';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AlertService} from "../_alert";
 
 @Component({
   selector: 'app-user-edit',
@@ -14,7 +15,7 @@ export class UserEditComponent implements OnInit {
   user: User;
   userId: number;
 
-  constructor(private productService: ProductService, private route: ActivatedRoute) { }
+  constructor(private productService: ProductService, private route: ActivatedRoute, private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.appComponent = this.productService.getAppComponent();
@@ -31,7 +32,7 @@ export class UserEditComponent implements OnInit {
   saveUser() {
     this.productService.editUser(this.userId, this.user).subscribe(data => {
       this.user = data;
-      alert('User updated');
+      this.alertService.success('User updated');
     });
   }
 }
