@@ -9,7 +9,7 @@
           <button (click)="prevImage()"> &nbsp;&lt;&nbsp; </button>
           &nbsp;
           <button (click)="nextImage()"> &nbsp;&gt;&nbsp; </button>
-          <div>
+          <div *ngIf="product.userId === appComponent.userId">
             <input
               type="file"
               [(ngModel)]="imageInput"
@@ -21,63 +21,65 @@
         <div class="col-md-5">
           <h3 class="my-3">{{ product.name }}</h3>
 
-          <h3 class="my-3">Price:</h3>
-          <ul>
-            <p>{{ product.unitPrice | currency: 'PLN'}}</p>
-          </ul>
-          <h3 class="my-3">Total cost:</h3>
-          <ul>
-            <p>{{ totalCost | currency: 'PLN'}}</p>
-          </ul>
+          <h3 class="my-3">Price: {{ product.unitPrice | currency: 'PLN '}}</h3>
+          <h3 class="my-3">Total cost: {{ totalCost | currency: 'PLN '}}</h3>
           <h3 class="my-3">Description:</h3>
           <a>{{ product.description }}</a>
           <h3 class="my-3">User Description:</h3>
           <a>{{ product.userDescription }}</a>
-          <h3 class="my-3">Condition:</h3>
-          <a>{{ product.condition }}</a>
+          <h3 class="my-3">Condition: {{ product.condition }}</h3>
           <h3 class="my-3">Contact:</h3>
-          <a>{{ product.firstName }} </a>
-          <br>
+          <a>{{ product.firstName }},  </a>
           <a>{{ product.phoneNumber}}</a>
           <br>
-          <button class="btn btn-dark" (click)="reserveProduct(product.id)">Reserve</button>
-          <button class="btn btn-dark" (click)="deleteProduct(product.id)" *ngIf="product.userId === appComponent.userId">Delete Product</button>
-          <div >
-            <div class="col-md-5">
-              <div class="my-3">
-            <form class="form-inline">
-              <div class="form-group">
-                From
-                <div class="input-group">
-                  <input #i1 class="form-control" (ngModelChange)="refreshCost(i1.value, 1)" placeholder="yyyy-mm-dd"
-                         name="dp1" [(ngModel)]="from" ngbDatepicker #d1="ngbDatepicker" [markDisabled]="markDisabled">
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-secondary calendar" (click)="d1.toggle()" type="button"><fa-icon [icon]="faCalendar"></fa-icon></button>
+          <div>
+            <table>
+              <tr>
+                <td>
+                  <div class="col-md-5" style= "display: inline-block;">
+                    <div class="my-3">
+                      <form class="form-inline">
+                        <div class="form-group">
+                          From
+                          <div class="input-group">
+                            <input #i1 class="form-control" (ngModelChange)="refreshCost(i1.value, 1)" placeholder="yyyy-mm-dd"
+                                   name="dp1" [(ngModel)]="from" ngbDatepicker #d1="ngbDatepicker" [markDisabled]="markDisabled">
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-secondary calendar" (click)="d1.toggle()" type="button"><fa-icon [icon]="faCalendar"></fa-icon></button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </form>
-            </div>
-            </div>
-            <div class="col-md-4">
-              <div class="my-3">
-                <form class="form-inline">
-                  <div class="form-group">
-                    To
-                <div class="input-group">
-                  <input #i2 class="form-control" (ngModelChange)="refreshCost(i2.value, 2)" placeholder="yyyy-mm-dd"
-                         name="dp2" [(ngModel)]="to" ngbDatepicker #d2="ngbDatepicker" [markDisabled]="markDisabled" >
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-secondary calendar" (click)="d2.toggle()" type="button"><fa-icon [icon]="faCalendar"></fa-icon></button>
+                </td>
+                <td width="150px"></td>
+                <td>
+                  <div class="col-md-4">
+                    <div class="my-3">
+                      <form class="form-inline">
+                        <div class="form-group">
+                          To
+                          <div class="input-group">
+                            <input #i2 class="form-control" (ngModelChange)="refreshCost(i2.value, 2)" placeholder="yyyy-mm-dd"
+                                   name="dp2" [(ngModel)]="to" ngbDatepicker #d2="ngbDatepicker" [markDisabled]="markDisabled" >
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-secondary calendar" (click)="d2.toggle()" type="button"><fa-icon [icon]="faCalendar"></fa-icon></button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </form>
-              </div>
-            </div>
+                </td>
+              </tr>
+            </table>
+
+
 
           </div>
-
+          <button class="btn btn-dark" (click)="reserveProduct(product.id)">Reserve</button>
+          <button class="btn btn-dark" (click)="deleteProduct(product.id)" *ngIf="product.userId === appComponent.userId">Delete Product</button>
 
         </div>
 
