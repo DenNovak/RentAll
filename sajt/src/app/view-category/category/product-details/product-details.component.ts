@@ -121,7 +121,7 @@ export class ProductDetailsComponent implements OnInit {
   deleteProduct(id: string) {
     this.productService.deleteProduct(id).subscribe(result => {
       if (result) {
-        this.router.navigate(['/category']);
+        this.router.navigate(['/offers']);
       } else {
         alert('Failed to delete Product');
       }

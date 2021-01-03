@@ -36,6 +36,7 @@ import { ConsumerToReturnComponent } from './consumer-products/consumer-to-retur
 import { OwnerToReturnComponent } from './owner-products/owner-to-return/owner-to-return.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { UserViewComponent } from './user-view/user-view.component';
+import { OfferListComponent } from './offer-list/offer-list.component';
 
 
 
@@ -73,6 +74,7 @@ const routes: Routes = [
   {path: '', component: HomePageComponent},
   {path: 'user', component: UserComponent},
   {path: 'offer', component: OfferComponent},
+  {path: 'offers', component: OfferListComponent},
   {path: 'user-edit/:id', component: UserEditComponent},
   {path: 'user-view/:id', component: UserViewComponent},
   {path: 'category', component: CategoryComponent, children: productRoutes},
@@ -104,7 +106,8 @@ const routes: Routes = [
     ConsumerToReturnComponent,
     OwnerToReturnComponent,
     UserEditComponent,
-    UserViewComponent
+    UserViewComponent,
+    OfferListComponent
   ],
   imports: [
     BrowserModule,

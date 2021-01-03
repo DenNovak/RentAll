@@ -1,0 +1,72 @@
+<header class="header">
+  <div class="logo"><img src="../../assets/images/logo_navbar.png" width="150"></div>
+  <input class="menu-btn" type="checkbox" id="menu-btn" />
+  <label class="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>
+  <ul class="menu">
+    <li><a class ="cool" href="#" routerLink="/category">Categories</a></li>
+    <li><a class ="cool" href="#" routerLink="/owner">Booked from me</a></li>
+    <li><a class ="cool" href="#" routerLink="/consumer">My bookings</a></li>
+    <li><a class ="cool" href="#" routerLink="/offers">Manage products</a></li>
+    <li><a class ="cool" *ngIf="!appComponent.isLoggedIn" href="#" routerLink="/user">Log in / Sign up</a></li>
+    <li><a class ="cool" href=# routerLink="/" (click)="appComponent.logout()" *ngIf="appComponent.isLoggedIn">LogOut</a></li>
+    <li><a class ="cool" href=# routerLink="/user-edit/{{appComponent.userId}}" *ngIf="appComponent.isLoggedIn"><svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"/>
+      <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+      <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+    </svg>  {{ appComponent.username }}</a></li>
+  </ul>
+</header>
+<div>&nbsp;</div><div>&nbsp; </div><div> &nbsp;</div><div> &nbsp;</div><div> </div>
+
+<div class="container ">
+  <div class="card border-0 shadow my-5">
+    <div class="card-body p-3">
+      <div>
+        <button (click)="createOffer()" class="btn btn-dark">Create Offer</button>
+      </div>
+      <div> &nbsp;</div>
+      <table class="table bg-light">
+        <thead class="thead-success">
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>City</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let tempProduct of products">
+
+          <td class="align-middle">
+
+            <a routerLink="/category/product/{{ tempProduct.id }}">
+              <!--img src="{{ tempProduct.imageUrl }}" onerror="this.onerror=null; this.src='assets/images/products/noImage.png'" width="100px" height="100px"/-->
+              <img class="img-fluid" src="http://localhost:8080/api/products/image/{{ tempProduct.imageIds[0] }}" onerror="this.onerror=null; this.src='assets/images/products/noImage.jpg' " sizes="400x300" width="200" height="150">
+            </a>
+
+
+          </td>
+
+
+          <td class="align-middle" routerLink="/category/product/{{ tempProduct.id }}" >{{ tempProduct.name }}</td>
+
+          <td class="align-middle">{{ tempProduct.unitPrice | currency: 'PLN'}}</td>
+          <td class="align-middle">{{ tempProduct.city }}</td>
+        </tr>
+
+        <!-- if products empty then display a message -->
+        <div *ngIf="products?.length == 0" class="alert alert-warning col-md-12" role="alert">
+          No products found.
+        </div>
+
+        </tbody>
+
+      </table>
+      <div style="height: 700px"></div>
+
+    </div>
+
+  </div>
+
+
+</div>

@@ -80,10 +80,10 @@ export class OfferComponent implements OnInit {
           this.product = data;
           if (this.imageInput) {
             this.uploadFileToActivity();
+            this.router.navigate(['/offers']);
           }
         });
     }
-    // history.go(0);
   }
 
   fillProduct() {
