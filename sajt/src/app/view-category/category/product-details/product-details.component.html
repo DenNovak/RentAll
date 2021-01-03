@@ -32,7 +32,7 @@
           <a>{{ product.firstName }},  </a>
           <a>{{ product.phoneNumber}}</a>
           <br>
-          <div>
+          <div *ngIf="product.userId != appComponent.userId">
             <table>
               <tr>
                 <td>
@@ -78,7 +78,7 @@
 
 
           </div>
-          <button class="btn btn-dark" (click)="reserveProduct(product.id)">Reserve</button>
+          <button class="btn btn-dark" (click)="reserveProduct(product.id)" *ngIf="product.userId != appComponent.userId">Reserve</button>
           <button class="btn btn-dark" (click)="deleteProduct(product.id)" *ngIf="product.userId === appComponent.userId">Delete Product</button>
 
         </div>
