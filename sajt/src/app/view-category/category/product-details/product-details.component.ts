@@ -138,7 +138,7 @@ export class ProductDetailsComponent implements OnInit {
       result => {
         if (result === true) {
           alert('Product reserved');
-          window.location.reload();
+          this.router.navigate(['/consumer/reserved']);
         } else {
           alert('Product reservation failed');
         }
