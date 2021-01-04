@@ -5,11 +5,12 @@ import {Product} from '../common/product';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ProductCategory} from '../common/product-category';
-import {ExternalProduct} from "../common/ExternalProduct";
-import {AppComponent} from "../app.component";
-import {ProductStatus} from "../common/productstatus";
-import {ProductUnavailableView} from "../common/productunavailableview";
-import {Booking} from "../common/booking";
+import {ExternalProduct} from '../common/ExternalProduct';
+import {AppComponent} from '../app.component';
+import {ProductStatus} from '../common/productstatus';
+import {ProductUnavailableView} from '../common/productunavailableview';
+import {Booking} from '../common/booking';
+import {User} from '../common/user';
 @Injectable({
   providedIn: 'root'
 })
@@ -22,7 +23,7 @@ export class ProductService {
   }
   getProduct(theProductId: number): Observable<Product> {
     // URL based on product id
-    const productUrl = `${this.baseUrl}/${theProductId}`;
+    const productUrl = `${this.baseUrl}/view/${theProductId}`;
     return this.httpClient.get<Product>(productUrl);
   }
   getBooking(bookingId: number): Observable<Booking> {
@@ -30,6 +31,12 @@ export class ProductService {
     const url = `http://localhost:8080/api/booking/${bookingId}`;
     return this.httpClient.get<Booking>(url);
   }
+
+  getUser(userId: number): Observable<User> {
+    const url = `http://localhost:8080/api/user/${userId}`;
+    return this.httpClient.get<User>(url);
+  }
+
   getProductStatus(theProductId: number): Observable<ProductStatus> {
     const productUrl = `${this.baseUrl}/${theProductId}/status`;
     return this.httpClient.get<ProductStatus>(productUrl);
@@ -72,20 +79,15 @@ export class ProductService {
     /*const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}`;
     return this.getProducts(searchUrl);*/
     return this.httpClient.get<GetResponseProductsPlain>(`${this.baseUrl}/available`).pipe(map(response => response.content));
-
   }
-
   // Owner's product list
   ownersProducts(theKeyword: string): Observable<Product[]> {
     return this.httpClient.get<GetResponseProductsPlain>(`${this.baseUrl}/owners`).pipe(map(response => response.content));
-
   }
-
   // DELETE product
   deleteProduct(productId: string): Observable<any> {
     const url = `${this.baseUrl}/${productId}`;
-    const headers = {'content-type': 'application/json'};
-    return this.httpClient.delete(url, {headers: headers});
+    return this.httpClient.delete(url);
   }
 // RESERVE PRODUCT
   reserveProduct(theProductId: string, from: Date, to: Date): Observable<any> {
@@ -144,6 +146,12 @@ export class ProductService {
     return this.httpClient.get<GetResponseBookingsPlain>(url).pipe(map(response => {
       return response.content;
     }));
+  }
+  editUser(userId: number, user: User): Observable<User> {
+    const url = `http://localhost:8080/api/user/${userId}`;
+    const headers = {'content-type': 'application/json'};
+    const body = JSON.stringify(user);
+    return this.httpClient.put<User>(url, body, {'headers': headers});
   }
   addProduct(product: Product): Observable<any> {
     const headers = {'content-type': 'application/json'}
