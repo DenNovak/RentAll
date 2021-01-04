@@ -5,18 +5,12 @@ import {Product} from '../common/product';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ProductCategory} from '../common/product-category';
-import {ExternalProduct} from "../common/ExternalProduct";
-import {AppComponent} from "../app.component";
-import {ProductStatus} from "../common/productstatus";
-import {ProductUnavailableView} from "../common/productunavailableview";
-import {Booking} from "../common/booking";
 import {ExternalProduct} from '../common/ExternalProduct';
 import {AppComponent} from '../app.component';
 import {ProductStatus} from '../common/productstatus';
 import {ProductUnavailableView} from '../common/productunavailableview';
 import {Booking} from '../common/booking';
 import {User} from '../common/user';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -37,6 +31,12 @@ export class ProductService {
     const url = `http://localhost:8080/api/booking/${bookingId}`;
     return this.httpClient.get<Booking>(url);
   }
+
+  getUser(userId: number): Observable<User> {
+    const url = `http://localhost:8080/api/user/${userId}`;
+    return this.httpClient.get<User>(url);
+  }
+
   getProductStatus(theProductId: number): Observable<ProductStatus> {
     const productUrl = `${this.baseUrl}/${theProductId}/status`;
     return this.httpClient.get<ProductStatus>(productUrl);
@@ -147,14 +147,12 @@ export class ProductService {
       return response.content;
     }));
   }
-
   editUser(userId: number, user: User): Observable<User> {
     const url = `http://localhost:8080/api/user/${userId}`;
     const headers = {'content-type': 'application/json'};
     const body = JSON.stringify(user);
     return this.httpClient.put<User>(url, body, {'headers': headers});
   }
-
   addProduct(product: Product): Observable<any> {
     const headers = {'content-type': 'application/json'}
     const body = JSON.stringify(product);
