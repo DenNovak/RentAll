@@ -1,34 +1,32 @@
 <div class="container">
+  <alert></alert>
   <div class="card border-0 shadow my-5">
     <div class="card-body p-3">
       <div class="row">
 
         <div class="col-md-4">
-          <img class="img-fluid" src="{{ product.imageUrl }}" onerror="this.onerror=null; this.src='assets/images/products/noImage.jpg' " sizes="400x300" >
+          <!--img class="img-fluid" src="{{ product.imageUrl }}" onerror="this.onerror=null; this.src='assets/images/products/noImage.jpg' " sizes="400x300" -->
+          <img *ngIf="currentImageId" class="img-fluid" src="http://localhost:8080/api/products/image/{{ currentImageId }}/" onerror="this.onerror=null; this.src='assets/images/products/noImage.jpg' " sizes="400x300" >
+          <button (click)="prevImage()"> &nbsp;&lt;&nbsp; </button>
+          &nbsp;
+          <button (click)="nextImage()"> &nbsp;&gt;&nbsp; </button>
 
         </div>
 
         <div class="col-md-5">
-          <h3 class="my-3">{{ product.name }}</h3>
+          <h4 class="my-3">{{ product.name }}</h4>
 
-          <h3 class="my-3">Price:</h3>
-          <ul>
-            <p>{{ product.unitPrice | currency: 'PLN'}}</p>
-          </ul>
-          <h3 class="my-3">Reservation period:</h3>
-          <ul>
-            <p>{{ booking.expectedStart}} to {{booking.expectedEnd}}</p>
-          </ul>
-          <h3 class="my-3">Total cost:</h3>
-          <ul>
-            <p>{{ booking.cost | currency: 'PLN'}}</p>
-          </ul>
-          <h3 class="my-3">Description:</h3>
+          <h4 class="my-3">Price: {{ product.unitPrice | currency: 'PLN '}}</h4>
+          <h4 class="my-3">Reservation period: </h4> {{ booking.expectedStart}} to {{booking.expectedEnd}}
+          <h4 class="my-3">Total cost: {{ booking.cost | currency: 'PLN '}}</h4>
+          <h4 class="my-3">Description:</h4>
           <a>{{ product.description }}</a>
-          <h3 class="my-3">Contact:</h3>
-          <a>{{ product.firstName }} </a>
+          <h4 class="my-3">Contact:</h4>
+          <a>{{ product.firstName }} , {{ product.phoneNumber}}</a>
           <br>
-          <a>{{ product.phoneNumber}}</a>
+          <h4 class="my-3">User Description:</h4>
+          <a>{{ product.userDescription }}</a>
+          <h4 class="my-3">Condition: {{ product.condition }}</h4>
           <br>
           <button class="btn btn-dark" (click)="bookProduct(booking.id)" *ngIf="productStatus === 'RESERVED' && product.userId === appComponent.userId">Accept Booking</button>
           <button class="btn btn-dark" (click)="returnProduct(booking.id)" *ngIf="productStatus === 'RETURNED_BY_CONSUMER' && product.userId === appComponent.userId">Confirm return</button>
@@ -40,6 +38,7 @@
 
       </div>
       Product status: {{productStatus}}
+      <div><a href="/user-view/{{product.userId}}">View user profile</a></div>
 
 
 
