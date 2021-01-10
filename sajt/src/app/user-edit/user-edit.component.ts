@@ -15,7 +15,8 @@ export class UserEditComponent implements OnInit {
   user: User;
   userId: number;
 
-  constructor(private productService: ProductService, private route: ActivatedRoute, private alertService: AlertService) { }
+  constructor(private productService: ProductService, private route: ActivatedRoute, private alertService: AlertService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.appComponent = this.productService.getAppComponent();
@@ -34,5 +35,9 @@ export class UserEditComponent implements OnInit {
       this.user = data;
       this.alertService.success('User updated');
     });
+  }
+
+  changePassword() {
+    this.router.navigate(['/resetPassword']);
   }
 }

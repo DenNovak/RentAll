@@ -38,6 +38,8 @@ import { UserEditComponent } from './user-edit/user-edit.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { OfferListComponent } from './offer-list/offer-list.component';
 import { AlertModule } from './_alert';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 
 
@@ -76,6 +78,8 @@ const routes: Routes = [
   {path: 'user', component: UserComponent},
   {path: 'offer', component: OfferComponent},
   {path: 'offers', component: OfferListComponent},
+  {path: 'resetPassword', component: PasswordResetComponent},
+  {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'user-edit/:id', component: UserEditComponent},
   {path: 'user-view/:id', component: UserViewComponent},
   {path: 'category', component: CategoryComponent, children: productRoutes},
@@ -108,7 +112,9 @@ const routes: Routes = [
     OwnerToReturnComponent,
     UserEditComponent,
     UserViewComponent,
-    OfferListComponent
+    OfferListComponent,
+    PasswordResetComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,

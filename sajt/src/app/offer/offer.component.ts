@@ -20,7 +20,7 @@ export class OfferComponent implements OnInit {
   product = new Product();
   cItems: string[];
   externalProducts: ExternalProduct[];
-  imageInput: File;
+  imageInput: File = null;
   productImage: string;
 
   OfferForm = new FormGroup({
@@ -57,6 +57,7 @@ export class OfferComponent implements OnInit {
 
   uploadFileToActivity() {
     this.productService.postFile(this.imageInput, this.product.id).subscribe(data => {
+      this.router.navigate(['/offers']);
     }, error => {
       console.log(error);
     });
@@ -81,6 +82,7 @@ export class OfferComponent implements OnInit {
           this.product = data;
           if (this.imageInput) {
             this.uploadFileToActivity();
+          } else {
             this.router.navigate(['/offers']);
           }
         });
