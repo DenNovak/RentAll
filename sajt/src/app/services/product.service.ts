@@ -220,6 +220,26 @@ export class ProductService {
     return this.getProducts(searchUrl);
   }
 
+  changePassword(password: string, uuid: string): Observable<any> {
+    const headers = {'content-type': 'application/json'};
+    const body = {
+      'password': password,
+      'uuid': uuid
+    };
+    console.log(body);
+    return this.httpClient.post('http://localhost:8080/api/auth/resetPassword', body, {'headers': headers});
+  }
+
+  generatePasswordResetLink(email: string): Observable<any> {
+    const headers = {'content-type': 'application/json'};
+    const body = {
+      'email': email
+    };
+    console.log(body);
+    return this.httpClient.post('http://localhost:8080/api/auth/getChangePasswordLink', body, {'headers': headers});
+  }
+
+
   setAppComponent(ac: AppComponent) {
     this.appComponent = ac;
   }
