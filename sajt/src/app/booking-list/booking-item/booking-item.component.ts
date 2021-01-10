@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {Product} from '../../common/product';
 import {AppComponent} from '../../app.component';
 import {ProductService} from '../../services/product.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Booking} from '../../common/booking';
+import {AlertService} from "../../_alert";
 
 @Component({
   selector: 'app-booking-item',
@@ -16,9 +17,12 @@ export class BookingItemComponent implements OnInit {
   productStatus = 'FREE';
   productConsumer = 0;
   appComponent: AppComponent;
+  currentImageId: number;
+  imageCount = 0;
+  currentImageIndex = 0;
 
   constructor(private productService: ProductService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute, private router: Router, private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.appComponent = this.productService.getAppComponent();
@@ -37,6 +41,10 @@ export class BookingItemComponent implements OnInit {
         this.booking = b;
         this.productService.getProduct(this.booking.productId).subscribe(data => {
           this.product = data;
+          if (this.product.imageIds && this.product.imageIds.length > 0) {
+            this.currentImageId = this.product.imageIds[0];
+            this.imageCount = this.product.imageIds.length;
+          }
           if (this.booking.bookingDate === null) {
             this.productStatus = 'RESERVED';
           } else if (this.booking.clientReturnDate === null) {
@@ -56,10 +64,12 @@ export class BookingItemComponent implements OnInit {
     this.productService.cancelReservation(bookingId).subscribe(
       result => {
         if (result === true) {
-          alert('Product reservation cancelled');
-          window.location.reload();
+          this.alertService.success('Product reservation cancelled');
+          setTimeout(() => {
+            this.router.navigate(['/consumer/reserved']);
+          }, 2000);
         } else {
-          alert('Could not cancel product reservation');
+          this.alertService.error('Could not cancel product reservation');
         }
       }
     );
@@ -69,10 +79,12 @@ export class BookingItemComponent implements OnInit {
     this.productService.bookProduct(bookingId).subscribe(
       result => {
         if (result === true) {
-          alert('Product booked');
-          window.location.reload();
+          this.alertService.success('Product booked');
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         } else {
-          alert('Product booking failed');
+          this.alertService.error('Product booking failed');
         }
       }
     );
@@ -82,10 +94,14 @@ export class BookingItemComponent implements OnInit {
     this.productService.returnProductConsumer(bookingId).subscribe(
       result => {
         if (result === true) {
-          alert('Product returned');
-          window.location.reload();
-        } else {
-          alert('Product return failed');
+          if (result === true) {
+            this.alertService.success('Product returned');
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          } else {
+            this.alertService.error('Product return failed');
+          }
         }
       }
     );
@@ -95,12 +111,31 @@ export class BookingItemComponent implements OnInit {
     this.productService.returnProduct(bookingId).subscribe(
       result => {
         if (result === true) {
-          alert('Product return confirmed');
-          window.location.reload();
+          this.alertService.success('Product return confirmed');
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         } else {
-          alert('Product return failed');
+          this.alertService.error('Product return failed');
         }
       }
     );
+  }
+
+  nextImage() {
+    this.currentImageIndex = (this.currentImageIndex + 1) % this.imageCount;
+    if (this.imageCount && this.imageCount > 0) {
+      this.currentImageId = this.product.imageIds[this.currentImageIndex];
+    }
+  }
+
+  prevImage() {
+    this.currentImageIndex--;
+    if (this.currentImageIndex < 0) {
+      this.currentImageIndex = this.imageCount - 1;
+    }
+    if (this.imageCount && this.imageCount > 0) {
+      this.currentImageId = this.product.imageIds[this.currentImageIndex];
+    }
   }
 }

@@ -1,8 +1,66 @@
+//
+//
+//.items{
+//  display: inline-flex;
+//}
+//.items, .items2{
+//  margin: 0 auto;
+//  max-width: 1140px;
+//
+//}
+//.items2{
+//  padding-top:50px;
+//}
+//.items a, .items2 a{
+//  display:inline-block;
+//  text-decoration:none;
+//  color:white;
+//  font-family: 'Montserrat', sans-serif;
+//  text-transform: uppercase;
+//  font-size: 20px;
+//  font-weight:400;
+//  margin:0 20px;
+//  height: 20px;
+//  overflow: hidden;
+//
+//
+//}
+//.items a span{
+//  display: inline-block;
+//  position:relative;
+//  transition: transform 500ms;
+//  -webkit-transition: -webkit-transform 500ms;
+//  -moz-transition: transform 500ms;
+//
+//}
+//.items a span:after{
+//  content: attr(data-hover);
+//  position: absolute;
+//  top: -30px;
+//  left:0;
+//  transform: translate3d(0,0,0);
+//  -moz-transform: translate3d(0,0,0);
+//  -webkit-transform: translate3d(0,0,0);
+//}
+//.items a:hover span,
+//.items a:focus span {
+//  transform: translateY(30px);
+//  -webkit-transform: translateY(30px);
+//  -moz-transform: translateY(30px);
+//}
+//
+//
+//ul.list {
+//  display: inline-block;
+//}
+
+
+
 
 .middled {
   text-align: center;
   padding-left: 37%;
-  margin-bottom: -7%;
+  margin-top: 5vh;
   display: inline-flex;
   list-style: none;
 
