@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +26,9 @@ public class Product {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     private List<Booking> bookings;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Image> images = Collections.emptyList();
 
     @Column(name = "name")
     private String name;
@@ -60,6 +64,15 @@ public class Product {
 
     @Column(name = "user_id")
     private long userId;
+
+    @Column(name = "USER_DESCRIPTION")
+    private String userDescription;
+
+    @Column(name = "PRODUCT_CONDITION")
+    private String condition;
+
+    @Column(name = "deleted")
+    private Boolean deleted;
 
     public Long getId() {
         return id;
@@ -167,5 +180,37 @@ public class Product {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public String getUserDescription() {
+        return userDescription;
+    }
+
+    public void setUserDescription(String userDescription) {
+        this.userDescription = userDescription;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

@@ -5,29 +5,29 @@ import com.cookie.rentall.auth.UserRepository;
 import com.cookie.rentall.dao.ProductCategoryRepository;
 import com.cookie.rentall.dao.ProductRepository;
 import com.cookie.rentall.entity.Booking;
+import com.cookie.rentall.entity.Image;
 import com.cookie.rentall.entity.Product;
 import com.cookie.rentall.entity.ProductCategory;
 import com.cookie.rentall.product.ProductReserveRequest;
 import com.cookie.rentall.product.ProductUpdateRequest;
 import com.cookie.rentall.repositores.BookingRepository;
+import com.cookie.rentall.repositores.ImageRepository;
+import com.cookie.rentall.services.StorageService;
 import com.cookie.rentall.views.ProductShortView;
 import com.cookie.rentall.views.ProductStatusView;
 import com.cookie.rentall.views.ProductUnavailableView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin
@@ -42,35 +42,10 @@ public class ProductController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private JavaMailSender emailSender;
+    private ImageRepository imageRepository;
 
-    private void sendSimpleMessage(
-            String to, String subject, String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply@chriucha.com");
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
-        emailSender.send(message);
-    }
-
-    @Bean
-    public JavaMailSender getJavaMailSender() {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
-
-        mailSender.setUsername("user@gmail.com");//todo
-        mailSender.setPassword("123");//todo
-
-        Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.debug", "true");
-
-        return mailSender;
-    }
+    @Autowired
+    private StorageService storageService;
 
     @GetMapping("api/products/currentUser")
     public Long getCurrentUser() {
@@ -89,65 +64,10 @@ public class ProductController {
                 .map(b -> new ProductUnavailableView(b.getExpectedStart(), b.getExpectedEnd())).collect(Collectors.toList());
     }
 
-<<<<<<< HEAD
-=======
-    @GetMapping("api/products/{id}/status")
-    public ProductStatusView getProductStatus(@PathVariable("id") Long id) {
-        Product p = productRepository.getOne(id);
-        if (p.getBookings().stream().anyMatch(b -> b.getCreateDate() != null && b.getBookingDate() == null))
-            return new ProductStatusView("RESERVED");
-        if (p.getBookings().stream().anyMatch(b -> b.getBookingDate() != null && b.getReturnDate() == null && b.getClientReturnDate() == null))
-            return new ProductStatusView("BOOKED");
-        if (p.getBookings().stream().anyMatch(b -> b.getBookingDate() != null && b.getReturnDate() == null && b.getClientReturnDate() != null))
-            return new ProductStatusView("RETURNED_BY_CONSUMER");
-        return new ProductStatusView("FREE");
-    }
-
-    @GetMapping("api/products/{id}/consumer")
-    public Long getProductConsumer(@PathVariable("id") Long id) {
-        Product p = productRepository.getOne(id);
-        Optional<Booking> booking = p.getBookings().stream().filter(b -> b.getCreateDate() != null && b.getBookingDate() == null || b.getBookingDate() != null && b.getReturnDate() == null).findFirst();
-        if (booking.isPresent())
-            return booking.get().getUserId();
-        return 0L;
-    }
-
-    @GetMapping("api/products/available")
-    public Page<ProductShortView> available() {
-        return productRepository.findAll(Pageable.unpaged()).map(ProductShortView::new);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("api/products")
-    public ProductUpdateRequest createProduct(@RequestBody ProductUpdateRequest request) {
-        Product product = new Product();
-        product.setActive(true);
-        product.setCity(request.city);
-        product.setDateCreated(new Date());
-        product.setFirstName(request.firstName);
-        product.setName(request.name);
-        product.setDescription(request.description);
-        product.setImageUrl(request.imageUrl);
-        product.setPhoneNumber(request.phoneNumber);
-        product.setUnitPrice(request.unitPrice);
-        product.setUserId(getUserId());
-        if (request.category != null) {
-            ProductCategory productCategory = productCategoryRepository.findProductCategoryByCategoryName(request.category);
-            if (productCategory != null) {
-                product.setCategory(productCategory);
-            }
-        }
-        productRepository.save(product);
-        request.id = product.getId();
-        return request;
-    }
-
->>>>>>> 274eb5baa17ae0748754c7e086268a5cc4df5c10
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("api/products/{id}")
     public boolean deleteProduct(@PathVariable("id") Long id) {
         Product product = productRepository.getOne(id);
-<<<<<<< HEAD
         if (product == null || product.getUserId() != getCurrentUser()) {
             return false;
         }
@@ -214,12 +134,52 @@ public class ProductController {
         return request;
     }
 
+    @GetMapping("api/products/image/{id}")
+    public ResponseEntity<Resource> getImage(@PathVariable("id") Long id) {
+        Optional<Image> image = imageRepository.findById(id);
+        if (image.isPresent()) {
+            Resource file = storageService.loadAsResource(image.get().getFilename());
+            return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                    "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+        }
+        return null;
+    }
+
+    @GetMapping("api/products/{id}/image/count")
+    public Integer getImageCount(@PathVariable("id") Long id) {
+        Optional<Product> product = productRepository.findById(id);
+        return product.map(value -> value.getImages().size()).orElse(0);
+    }
+
+    @GetMapping("api/products/{id}/image/ids")
+    public List<Long> getImageIds(@PathVariable("id") Long id) {
+        Optional<Product> product = productRepository.findById(id);
+        return product.map(value -> value.getImages().stream().map(Image::getId).collect(Collectors.toList())).orElse(Collections.emptyList());
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("api/products/{id}/image")
+    public Boolean uploadImage(@PathVariable("id") Long id, @RequestParam("file") MultipartFile file) {
+        Optional<Product> product = productRepository.findById(id);
+        if (!product.isPresent() || product.get().getUserId() != getCurrentUser())
+            return false;
+        String storedName = UUID.randomUUID().toString() + file.getOriginalFilename();
+        storageService.store(file, storedName);
+        Image image = new Image();
+        image.setFilename(storedName);
+        image.setUserId(getCurrentUser());
+        imageRepository.save(image);
+        List<Image> images = new ArrayList<>(product.get().getImages());
+        images.add(image);
+        product.get().setImages(images);
+        productRepository.save(product.get());
+        return true;
+    }
+
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("api/products/{id}/book")
     public Boolean book(@PathVariable("id") Long id, @RequestBody ProductReserveRequest request) {
         Product product = productRepository.getOne(id);
-=======
->>>>>>> 274eb5baa17ae0748754c7e086268a5cc4df5c10
         Optional<Booking> actualBooking = product.getBookings().stream().filter(b ->
                 isInInterval(request.expectedStart, b.getExpectedStart(), b.getExpectedEnd())
                         || isInInterval(request.expectedEnd, b.getExpectedStart(), b.getExpectedEnd())).findFirst();
