@@ -1,9 +1,8 @@
 <div class="container">
-  <alert></alert>
   <div class="card border-0 shadow my-5">
     <div class="card-body p-3">
+      <alert></alert>
       <div class="row">
-
         <div class="col-md-4">
           <!--img class="img-fluid" src="{{ product.imageUrl }}" onerror="this.onerror=null; this.src='assets/images/products/noImage.jpg' " sizes="400x300" -->
           <img *ngIf="currentImageId" class="img-fluid" src="http://localhost:8080/api/products/image/{{ currentImageId }}/" onerror="this.onerror=null; this.src='assets/images/products/noImage.jpg' " sizes="400x300" >

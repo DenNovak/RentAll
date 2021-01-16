@@ -260,6 +260,10 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   uploadFileToActivity() {
+    if (!this.imageInput.type.startsWith('image')) {
+      this.alertService.error('Only images allowed');
+      return;
+    }
     this.productService.postFile(this.imageInput, this.product.id).subscribe(data => {
       this.productService.getProduct(Number(this.product.id)).subscribe(data => {
         this.product = data;
