@@ -20,6 +20,7 @@ export class BookingItemComponent implements OnInit {
   currentImageId: number;
   imageCount = 0;
   currentImageIndex = 0;
+  clientName: string;
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute, private router: Router, private alertService: AlertService) { }
@@ -39,6 +40,9 @@ export class BookingItemComponent implements OnInit {
     this.productService.getBooking(bookingId).subscribe(
       b => {
         this.booking = b;
+        this.productService.getUser(this.booking.userId).subscribe(data => {
+          this.clientName = data.firstName + ' ' + data.lastName;
+        });
         this.productService.getProduct(this.booking.productId).subscribe(data => {
           this.product = data;
           if (this.product.imageIds && this.product.imageIds.length > 0) {
