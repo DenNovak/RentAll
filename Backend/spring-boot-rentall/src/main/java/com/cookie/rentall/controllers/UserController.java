@@ -54,7 +54,7 @@ public class UserController {
             return false;
         }
         Opinion opinion = new Opinion();
-        opinion.setAuthor(userRepository.getOne(getUserId()));
+        opinion.setAuthor(getUserId());
         opinion.setUser(user.get());
         opinion.setContent(request.getContent());
         opinion.setRating(request.getRating());

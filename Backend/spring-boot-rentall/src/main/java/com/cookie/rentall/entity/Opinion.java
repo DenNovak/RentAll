@@ -16,11 +16,10 @@ public class Opinion {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User users;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id", nullable = false)
-    private User author;
+    @Column(name = "author_id", nullable = false)
+    private Long authorId;
 
     @Column(name = "content")
     private String content;
@@ -37,19 +36,19 @@ public class Opinion {
     }
 
     public User getUser() {
-        return user;
+        return users;
     }
 
     public void setUser(User user) {
-        this.user = user;
+        this.users = user;
     }
 
-    public User getAuthor() {
-        return author;
+    public Long getAuthor() {
+        return authorId;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
+    public void setAuthor(Long author) {
+        this.authorId = author;
     }
 
     public String getContent() {

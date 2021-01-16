@@ -8,7 +8,7 @@ public class OpinionView {
     private Integer rating;
 
     public OpinionView(Opinion opinion) {
-        this.authorId = opinion.getAuthor().getId();
+        this.authorId = opinion.getAuthor();
         this.content = opinion.getContent();
         this.rating = opinion.getRating();
     }

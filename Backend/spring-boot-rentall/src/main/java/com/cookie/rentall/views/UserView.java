@@ -65,6 +65,14 @@ public class UserView {
         this.opinions = opinions;
     }
 
+    public Float getRating() {
+        return rating;
+    }
+
+    public void setRating(Float rating) {
+        this.rating = rating;
+    }
+
     private Float calculateRating(List<Integer> ratings) {
         float result = 0;
         int count = 0;
