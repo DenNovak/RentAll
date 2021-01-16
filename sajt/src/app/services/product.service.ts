@@ -239,6 +239,13 @@ export class ProductService {
     return this.httpClient.post('http://localhost:8080/api/auth/getChangePasswordLink', body, {'headers': headers});
   }
 
+  //Create opinion
+  createOpinion(userId: number, content: string, rating: number): Observable<any> {
+    const url = `http://localhost:8080/api/user/opinion`;
+    const headers = {'content-type': 'application/json'};
+    const body = {userId: userId, content: content, rating: rating};
+    return this.httpClient.post(url, body, {headers: headers});
+  }
 
   setAppComponent(ac: AppComponent) {
     this.appComponent = ac;
