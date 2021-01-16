@@ -27,7 +27,7 @@
 
   <form class="needs-validation" novalidate>
     <section>
-
+      <alert></alert>
       <div class="containerr">
         <h2>{{user.firstName}} {{user.lastName}}</h2>
 
@@ -76,6 +76,31 @@
           </div>
         </div>
 
+        <div class="row100" *ngIf="!hasOpinion()">
+          <div class="coll">
+            <div class="inputBox">
+              <input type="text" class="form-control" [(ngModel)]="yourOpinion" name="content"
+                     required="required">
+              <span class="text">Your opinion</span>
+              <span class="line"></span>
+              <div class="invalid-tooltip">
+                Please provide your opinion.
+              </div>
+            </div>
+          </div>
+          <div class="coll" *ngIf="!hasOpinion()">
+            <div>
+              <img *ngFor="let in of counter(5); let i = index" width="32px" class="images" [src]="getStarImage(i)" (mouseover)="setRatingMouse(i)" (mouseout)="resetRatingMouse(i)" (click)="fixRating(i)">
+            </div>
+          </div>
+        </div>
+
+        <div class="row100" *ngIf="!hasOpinion()">
+          <div class="coll">
+            <input type="submit" (click)="sendOpinion()" value="Send opinion">
+          </div>
+        </div>
+
 
         <div class="card border-0 shadow my-5">
           <div class="row100">
@@ -108,7 +133,7 @@
 
               <td class="align-middle">{{ opinion.content }}</td>
 
-              <td class="align-middle"><img *ngFor="let in of counter(opinion.rating) " width="16px" class="images"
+              <td class="align-middle"><img *ngFor="let in of counter(opinion.rating)" width="16px" class="images"
                                             src="assets/images/star.png"></td>
             </tr>
 
