@@ -1,9 +1,17 @@
 package com.cookie.rentall.views;
 
+import com.cookie.rentall.entity.Opinion;
+
 public class OpinionView {
     private Long authorId;
     private String content;
     private Integer rating;
+
+    public OpinionView(Opinion opinion) {
+        this.authorId = opinion.getAuthor().getId();
+        this.content = opinion.getContent();
+        this.rating = opinion.getRating();
+    }
 
     public Long getAuthorId() {
         return authorId;
