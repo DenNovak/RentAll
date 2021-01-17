@@ -1,13 +1,21 @@
-
 <div class="input-group">
   <input #myInput type="text"
          placeholder="...what are you interested in?"
          aria-label="Search"
          class="form-control"
-         (keyup.enter)="doSearch(myInput.value)" />
+         (keyup.enter)="doSearch(myInput.value, city, categoty)"/>
 
+  <app-city-search (item)="setCity($event)"></app-city-search>
 
-         <app-city-search></app-city-search>
+  <div>
+    <select class="custom-select" id="inputGroupSelect04" (change)="doSetCategory(selectCategory.value);"
+            #selectCategory>
+      <option selected>Choose category</option>
+      <option value="Garden">Garden</option>
+      <option value="Devices">Devices</option>
+    </select>
+  </div>
 
-  <button type="button" class="btn btn-primary btn-lg btn-block" (click)="doSearch(myInput.value)">Search</button>
+  <button type="button" class="btn btn-primary btn-lg btn-block" (click)="doSearch(myInput.value, city, categoty)">Search
+  </button>
 </div>

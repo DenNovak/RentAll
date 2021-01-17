@@ -17,7 +17,7 @@
 
           <td class="align-middle">
 
-            <a routerLink="/category/{{ booking.id }}">
+            <a routerLink="/booking/{{ booking.id }}">
               <!--img src="{{ products.get(booking.id).imageUrl }}"
                    onerror="this.onerror=null; this.src='assets/images/products/noImage.png'" width="150px"
                    height="150px"/-->
@@ -28,7 +28,7 @@
           </td>
 
 
-          <td class="align-middle" routerLink="/category/{{ booking.id }}">{{ products.get(booking.id).name }}</td>
+          <td class="align-middle" routerLink="/booking/{{ booking.id }}">{{ products.get(booking.id).name }}</td>
 
           <td class="align-middle">{{ booking.cost | currency: 'PLN'}}</td>
           <td class="align-middle">{{ products.get(booking.id).city }}</td>

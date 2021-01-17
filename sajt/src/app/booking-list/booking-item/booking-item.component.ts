@@ -5,6 +5,7 @@ import {ProductService} from '../../services/product.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Booking} from '../../common/booking';
 import {AlertService} from "../../_alert";
+import {formatDate} from "@angular/common";
 
 @Component({
   selector: 'app-booking-item',
@@ -13,6 +14,8 @@ import {AlertService} from "../../_alert";
 })
 export class BookingItemComponent implements OnInit {
   booking: Booking = new Booking();
+  start: string;
+  end: string;
   product: Product = new Product();
   productStatus = 'FREE';
   productConsumer = 0;
@@ -40,6 +43,8 @@ export class BookingItemComponent implements OnInit {
     this.productService.getBooking(bookingId).subscribe(
       b => {
         this.booking = b;
+        this.start = formatDate(b.expectedStart, 'dd.MM.yyyy', 'en-US');
+        this.end = formatDate(b.expectedEnd, 'dd.MM.yyyy', 'en-US');
         this.productService.getUser(this.booking.userId).subscribe(data => {
           this.clientName = data.firstName + ' ' + data.lastName;
         });

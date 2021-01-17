@@ -17,7 +17,7 @@
           <h4 class="my-3">{{ product.name }}</h4>
 
           <h4 class="my-3">Price: {{ product.unitPrice | currency: 'PLN '}}</h4>
-          <h4 class="my-3">Reservation period: </h4> {{ booking.expectedStart}} to {{booking.expectedEnd}}
+          <h4 class="my-3">Reservation period: </h4> {{ start }} to {{ end }}
           <h4 class="my-3">Total cost: {{ booking.cost | currency: 'PLN '}}</h4>
           <h4 class="my-3">Client: <a href="/user-view/{{booking.userId}}">{{clientName}}</a></h4>
           <h4 class="my-3">Description:</h4>

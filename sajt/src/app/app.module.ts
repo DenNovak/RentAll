@@ -46,11 +46,11 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 const productRoutes: Routes = [
   // {path: 'citySearch/:keyword/products/:id', component: ProductDetailsComponent},
   {path: 'citySearch/:cityName', component: ProductListComponent},
-  {path: ':id', component: BookingItemComponent},
+  //{path: ':id', component: BookingItemComponent},
   {path: 'product/:id', component: ProductDetailsComponent},
   // {path: ':id/products/:id', component: ProductDetailsComponent},
   //{path: 'search/:keyword/products/:id', component: ProductDetailsComponent},
-  {path: 'search/:keyword', component: ProductListComponent},
+  {path: 'search', component: ProductListComponent},
   {path: 'categories/:id', component: ProductListComponent},
   {path: 'categories', component: ProductListComponent},
   {path: '', component: ProductListComponent},
@@ -82,6 +82,7 @@ const routes: Routes = [
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'user-edit/:id', component: UserEditComponent},
   {path: 'user-view/:id', component: UserViewComponent},
+  {path: 'booking/:id', component: BookingItemComponent},
   {path: 'category', component: CategoryComponent, children: productRoutes},
   {path: 'owner', component: OwnerProductsComponent, children: ownerProductRoutes},
   {path: 'consumer', component: ConsumerProductsComponent, children: consumerProductRoutes}

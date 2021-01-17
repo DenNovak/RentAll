@@ -31,34 +31,26 @@ export class ProductListComponent implements OnInit {
   });
 }
   listProducts() {
-
-    this.searchMode = this.route.snapshot.paramMap.has('cityName');
-
-    if(this.route.snapshot.paramMap.has('keyword')) {
-      this.handleSearchProducts();
-    } else if (this.route.snapshot.paramMap.has('cityName')) {
-      this.handleCitySearchProducts();
-    }
-    else {
-      this.handleListProducts();
-    }
-
+    this.handleSearchProducts();
   }
 
   handleSearchProducts() {
-
-    const theKeyword : string = this.route.snapshot.paramMap.get('keyword');
-    this.productService.searchProducts(theKeyword).subscribe(
-      data => {
-        this.products = data;
-      }
-    )
+    this.route.queryParams.subscribe(params => {
+      const filter: string = params['filter'];
+      const city: string = params['city'];
+      const category: string = params['category'];
+      this.productService.searchProducts(filter, city, category).subscribe(
+        data => {
+          this.products = data;
+        }
+      );
+    });
   }
 
 
   handleCitySearchProducts() {
 
-    const theKeyword : string = this.route.snapshot.paramMap.get('cityName');
+    const theKeyword: string = this.route.snapshot.paramMap.get('cityName');
     this.productService.searchCityProducts(theKeyword).subscribe(
       data => {
         this.products = data;
@@ -70,9 +62,9 @@ export class ProductListComponent implements OnInit {
   handleListProducts() {
 
      // check if "id" parameter is available
-     const hasCategoryId:boolean = this.route.snapshot.paramMap.has('id');
+     const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
 
-     if(hasCategoryId) {
+     if (hasCategoryId) {
        // get the "id" param string. convert string to a number using the "+" symbol
        this.currentCategoryId = +this.route.snapshot.paramMap.get('id');
      }
@@ -88,7 +80,7 @@ export class ProductListComponent implements OnInit {
 
    // if we have a different category id than previous
    // then set thePageNumber back to 1
-   if(this.previousCategoryId != this.currentCategoryId) {
+   if (this.previousCategoryId != this.currentCategoryId) {
      this.thePageNumber = 1;
    }
 
