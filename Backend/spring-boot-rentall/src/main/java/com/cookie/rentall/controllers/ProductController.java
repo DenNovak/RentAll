@@ -24,6 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -98,8 +99,14 @@ public class ProductController {
     }
 
     @GetMapping("api/products/available")
-    public Page<ProductShortView> available() {
-        return productRepository.findAllNotDeleted(Pageable.unpaged()).map(ProductShortView::new);
+    public Page<ProductShortView> available(@RequestParam(name = "filter", defaultValue = "") String filter,
+                                            @RequestParam(name = "city", defaultValue = "") String city,
+                                            @RequestParam(name = "category", defaultValue = "") String category) {
+        if (StringUtils.isEmpty(category)) {
+            return productRepository.findAllNotDeletedWithoutCategory(Pageable.unpaged(), filter, city).map(ProductShortView::new);
+        } else {
+            return productRepository.findAllNotDeleted(Pageable.unpaged(), filter, city, category).map(ProductShortView::new);
+        }
     }
 
     @GetMapping("api/products/owners")
