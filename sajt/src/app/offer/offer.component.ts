@@ -56,6 +56,10 @@ export class OfferComponent implements OnInit {
   }
 
   uploadFileToActivity() {
+    if (!this.imageInput.type.startsWith('image')) {
+      this.alertService.error('Only images allowed');
+      return;
+    }
     this.productService.postFile(this.imageInput, this.product.id).subscribe(data => {
       this.router.navigate(['/offers']);
     }, error => {
