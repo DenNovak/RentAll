@@ -32,8 +32,8 @@
 
           <td class="align-middle">{{ booking.cost | currency: 'PLN'}}</td>
           <td class="align-middle">{{ products.get(booking.id).city }}</td>
-          <td class="align-middle">{{ booking.expectedStart }}</td>
-          <td class="align-middle">{{ booking.expectedEnd }}</td>
+          <td class="align-middle">{{ formDate(booking.expectedStart)}}</td>
+          <td class="align-middle">{{ formDate(booking.expectedEnd) }}</td>
         </tr>
 
         <!-- if products empty then display a message -->

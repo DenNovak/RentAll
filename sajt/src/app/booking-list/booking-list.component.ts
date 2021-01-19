@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Booking} from '../common/booking';
 import { Product } from '../common/product';
 import {ProductService} from '../services/product.service';
+import {formatDate} from "@angular/common";
 
 @Component({
   selector: 'app-booking-list',
@@ -26,4 +27,7 @@ export class BookingListComponent implements OnInit {
     }
   }
 
+  formDate(date) {
+    return formatDate(date, 'dd.MM.yyyy', 'en-US');
+  }
 }
