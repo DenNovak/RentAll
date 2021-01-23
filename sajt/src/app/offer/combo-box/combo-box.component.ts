@@ -67,7 +67,8 @@ export class ComboBoxComponent implements OnInit {
     } else {
       // helps to select item by clicking
       setTimeout(() => {
-        this.selectItem(this.selectedIndex);
+        //this.selectItem(this.selectedIndex);
+        this.onSelect.emit(this.inputItem);
         this.listHidden = true;
         if (!this.list.includes(this.inputItem)) {
           this.showError = true;

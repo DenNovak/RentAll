@@ -111,11 +111,15 @@ export class OfferComponent implements OnInit {
 
   selectFromExternal(filter: string) {
     const pr = this.externalProducts.filter(i => i.name === filter)[0];
-    this.productImage = `https://mediaexpert.pl${pr.photoLink}`;
-    this.product.name = pr.name;
-    if (pr != null) {
+    if (pr) {
+      this.productImage = `${pr.photoLink}`;
+      this.product.name = pr.name;
+
       // tslint:disable-next-line:max-line-length
-      this.product.description = `Engine name: ${pr.markaSilnika}\nEngine volume: ${pr.pojemnoscSilnika}\nCutting width: ${pr.szerokoscKoszenia}\nHeight regulation: ${pr.regulacjaWysokosciKoszenia}\nBasket capacity: ${pr.pojemnoscKosza}`;
+      this.OfferForm.get('description').setValue(`Engine name: ${pr.markaSilnika}\nEngine volume: ${pr.pojemnoscSilnika}\nCutting width: ${pr.szerokoscKoszenia}\nHeight regulation: ${pr.regulacjaWysokosciKoszenia}\nBasket capacity: ${pr.pojemnoscKosza}`);
+      this.OfferForm.get('name').setValue(pr.name);
+    } else {
+      this.OfferForm.get('name').setValue(filter);
     }
   }
 

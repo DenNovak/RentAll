@@ -30,14 +30,15 @@
         <h2>Add your product information</h2>
         <div class="row100">
           <div class="coll">
-            <div class="inputBox">
+            <!--div class="inputBox">
               <input type="text" class="form-control" formControlName="name" name="Name" required="required">
               <span class="text">Name:</span>
               <span class="line"></span>
               <div class="invalid-tooltip">
                 Please provide a product name.
               </div>
-            </div>
+            </div-->
+            <app-combo-box formControlName="name" name="Name" [(list)]="cItems" (onSelect)="selectFromExternal($event)"></app-combo-box>
             <!--app-combo-box [(ngModel)]="product.name" name="Name" [(list)]="cItems" (onSelect)="selectFromExternal($event)"></app-combo-box-->
           </div>
           <div class="coll">
@@ -124,7 +125,6 @@
         <div class="row100">
           <div class="coll">
             <div class="inputBox textarea">
-              <img style="z-index: 0" src="{{productImage}}">
               <textarea class="form-control" formControlName="description"
                         name="description"></textarea>
               <span class="text">Description:</span>
@@ -132,6 +132,11 @@
               <div class="invalid-tooltip">
                 Please provide a valid zip.
               </div>
+            </div>
+          </div>
+          <div class="coll">
+            <div class="inputBox textarea">
+              <img style="z-index: 0" src="{{productImage}}">
             </div>
           </div>
         </div>
