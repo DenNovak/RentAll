@@ -19,6 +19,7 @@ export class UserViewComponent implements OnInit {
   yourOpinion: string;
   yourRating: number = 0;
   mouseUprating: number = 0;
+  iHaveUserOffers = false;
 
   constructor(private productService: ProductService, private route: ActivatedRoute, private alertService: AlertService,
               private router: Router) { }
@@ -38,6 +39,7 @@ export class UserViewComponent implements OnInit {
           this.authorMap.set(o.authorId, author);
         });
       });
+      this.productService.hasMyBookings(this.userId).subscribe(d => this.iHaveUserOffers = d);
     });
   }
 
@@ -79,6 +81,6 @@ export class UserViewComponent implements OnInit {
   }
 
   hasOpinion() {
-    return this.appComponent.userId === this.userId || this.user.opinions.find(o => o.authorId === this.appComponent.userId) !== undefined;
+    return !this.iHaveUserOffers || this.appComponent.userId === this.userId || this.user.opinions.find(o => o.authorId === this.appComponent.userId) !== undefined;
   }
 }
