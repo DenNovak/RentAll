@@ -12,6 +12,7 @@ import com.cookie.rentall.product.ProductReserveRequest;
 import com.cookie.rentall.product.ProductUpdateRequest;
 import com.cookie.rentall.repositores.BookingRepository;
 import com.cookie.rentall.repositores.ImageRepository;
+import com.cookie.rentall.requests.ImageSaveRequest;
 import com.cookie.rentall.services.StorageService;
 import com.cookie.rentall.views.ProductShortView;
 import com.cookie.rentall.views.ProductStatusView;
@@ -20,14 +21,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -184,6 +193,41 @@ public class ProductController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @PostMapping("api/products/{id}/imageFromUrl")
+    public Boolean uploadImageFromUrl(@PathVariable("id") Long id, @RequestBody ImageSaveRequest request) {
+        Optional<Product> product = productRepository.findById(id);
+        if (!product.isPresent() || product.get().getUserId() != getCurrentUser())
+            return false;
+        String storedName = UUID.randomUUID().toString();
+
+        try {
+            URL url = new URL(request.getUrl());
+            java.net.URLConnection cconnection = url.openConnection();
+            cconnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            int nRead;
+            byte[] data = new byte[1024];
+            while ((nRead = cconnection.getInputStream().read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
+            }
+            buffer.flush();
+            byte[] byteArray = buffer.toByteArray();
+            storageService.store(byteArray, storedName);
+            Image image = new Image();
+            image.setFilename(storedName);
+            image.setUserId(getCurrentUser());
+            imageRepository.save(image);
+            List<Image> images = new ArrayList<>(product.get().getImages());
+            images.add(image);
+            product.get().setImages(images);
+            productRepository.save(product.get());
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @PatchMapping("api/products/{id}/book")
     public Boolean book(@PathVariable("id") Long id, @RequestBody ProductReserveRequest request) {
         Product product = productRepository.getOne(id);
@@ -216,5 +260,22 @@ public class ProductController {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private RestTemplate createImageRestTemplate() {
+        RestTemplate restTemplate = new RestTemplate();
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+        StringHttpMessageConverter converter = new StringHttpMessageConverter();
+        converter.setSupportedMediaTypes(Arrays.asList(MediaType.IMAGE_JPEG, MediaType.IMAGE_PNG));
+        messageConverters.add(converter);
+        restTemplate.setMessageConverters(messageConverters);
+        return restTemplate;
+    }
+
+    private HttpEntity<String> createStringHttpEntity() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.IMAGE_JPEG, MediaType.IMAGE_PNG));
+        headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+        return new HttpEntity<>("parameters", headers);
     }
 }
