@@ -84,10 +84,20 @@ export class OfferComponent implements OnInit {
       this.productService.addProduct(this.product)
         .subscribe(data => {
           this.product = data;
-          if (this.imageInput) {
-            this.uploadFileToActivity();
+          if (this.productImage) {
+            this.productService.postFileFromUrl('https:' + this.productImage, data.id).subscribe(resp => {
+              if (this.imageInput) {
+                this.uploadFileToActivity();
+              } else {
+                this.router.navigate(['/offers']);
+              }
+            });
           } else {
-            this.router.navigate(['/offers']);
+            if (this.imageInput) {
+              this.uploadFileToActivity();
+            } else {
+              this.router.navigate(['/offers']);
+            }
           }
         });
     }
