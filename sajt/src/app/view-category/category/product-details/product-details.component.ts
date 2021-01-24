@@ -49,8 +49,8 @@ export class ProductDetailsComponent implements OnInit {
         if (interval.start === null || interval.end === null || interval.start === undefined || interval.end === undefined) {
           continue;
         }
-        const start = new NgbDate(interval.start.getFullYear(), interval.start.getMonth() + 1, interval.start.getDate() - 1);
-        const end = new NgbDate(interval.end.getFullYear(), interval.end.getMonth() + 1, interval.end.getDate() - 1);
+        const start = new NgbDate(interval.start.getFullYear(), interval.start.getMonth() + 1, interval.start.getDate());
+        const end = new NgbDate(interval.end.getFullYear(), interval.end.getMonth() + 1, interval.end.getDate());
         if ((date.after(start) || date.equals(start)) && (date.before(end) || date.equals(end))) {
           return true;
         }
@@ -158,12 +158,12 @@ export class ProductDetailsComponent implements OnInit {
     if (this.refusedDates === null || this.refusedDates === undefined) {
       return true;
     }
-    const fr = new NgbDate(this.from.year, this.from.month - 1, this.from.day - 1);
-    const t = new NgbDate(this.to.year, this.to.month - 1, this.to.day - 1);
+    const fr = new NgbDate(this.from.year, this.from.month - 1, this.from.day);
+    const t = new NgbDate(this.to.year, this.to.month - 1, this.to.day);
     for (const period of this.refusedDates) {
-      const st = new NgbDate(period.start.getFullYear(), period.start.getMonth() - 1, period.start.getDate() - 1);
-      const f = new NgbDate(period.end.getFullYear(), period.end.getMonth() - 1, period.end.getDate() - 1);
-      if (this.isInInterval(fr, st, f) || this.isInInterval(t, st, f)) {
+      const st = new NgbDate(period.start.getFullYear(), period.start.getMonth() , period.start.getDate());
+      const f = new NgbDate(period.end.getFullYear(), period.end.getMonth(), period.end.getDate());
+      if (this.isInInterval(fr, st, f) || this.isInInterval(t, st, f) || this.isInInterval(st, fr, t) || this.isInInterval(f, fr, t)) {
         this.alertService.error('Selected date interval is not free');
         return false;
       }

@@ -40,6 +40,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -259,7 +260,7 @@ public class ProductController {
         LocalDate localDate = date.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate().atStartOfDay().toLocalDate();
-        return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        return Date.from(localDate.atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     }
 
     private boolean isInInterval(Date date, Date begin, Date end) {
