@@ -113,6 +113,10 @@ export class ProductService {
 
   }
 
+  hasMyBookings(userId: number): Observable<any> {
+    return this.httpClient.get<GetResponseProductsPlain>(`http://localhost:8080/api/booking/myByUser/${userId}`);
+  }
+
   // DELETE product
   deleteProduct(productId: string): Observable<any> {
     const url = `${this.baseUrl}/${productId}`;

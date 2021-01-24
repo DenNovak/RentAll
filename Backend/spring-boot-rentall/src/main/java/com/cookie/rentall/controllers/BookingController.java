@@ -25,6 +25,11 @@ public class BookingController {
         return new BookingView(bookingRepository.findById(id).orElseThrow(() -> new RuntimeException("Booking not found")));
     }
 
+    @GetMapping("api/booking/myByUser/{id}")
+    public Boolean hasMyBookings(@PathVariable("id") Long userId) {
+        return bookingRepository.findAllByUserIdAndProductUserId(getUserId(), userId).size() > 0;
+    }
+
     @GetMapping("api/booking/byOwner")
     public Page<BookingView> createdByUser(@RequestParam(name = "status") String status) {
         switch (status.toUpperCase()) {
