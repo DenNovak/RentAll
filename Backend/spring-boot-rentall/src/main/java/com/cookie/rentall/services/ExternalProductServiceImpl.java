@@ -33,8 +33,8 @@ public class ExternalProductServiceImpl implements ExternalProductService {
     private static final String PRODUCT_NAME = "<meta data-analytics-item='\\{\"id\":\"[0-9]+\",\"name\":\"";
     private static final String PRODUCT_ID = "<meta data-analytics-item='\\{\"id\":\"";
     private static final String PRODUCT_CATEGORY = "<meta data-analytics-item='\\{(([\\s\\S](?!category))*)\"category\":\"";
-    private static final String PRODUCT_PHOTO = "data-zone=\"OFFERBOX_PHOTO\" data-offer-id=(([\\s\\S](?!/div>))*)>";
-    private static final String PRODUCT_PHOTO_INTERNAL = "src=\"(([\\s\\S](?!\" ))*)>";
+    private static final String PRODUCT_PHOTO = "data-zone=\"OFFERBOX_PHOTO\" data-offer-id=(([\\s\\S](?!/div>))*)\"";
+    private static final String PRODUCT_PHOTO_INTERNAL = "src=\"(([\\s\\S](?! ))*)\"";
 
     @Autowired
     private ExternalProductRepository externalProductRepository;
@@ -85,7 +85,7 @@ public class ExternalProductServiceImpl implements ExternalProductService {
         result.setCategory(parseFieldValue(rawProduct, PRODUCT_CATEGORY, ",\"", true, "variant"));
         String photo = parseFieldValue(rawProduct, PRODUCT_PHOTO, PRODUCT_PHOTO_INTERNAL);
         if (photo != null && photo.length() > 5)
-            result.setPhotoLink(photo.substring(5, photo.length() - 2));
+            result.setPhotoLink(photo.substring(5, photo.length() - 1));
         Optional<ExternalProduct> externalProductOptional = externalProductRepository.findByProductID(result.getProductID());
         if (!externalProductOptional.isPresent()) {
             ExternalProduct externalProduct = new ExternalProduct();
