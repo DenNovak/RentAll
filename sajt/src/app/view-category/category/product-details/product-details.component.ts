@@ -61,7 +61,7 @@ export class ProductDetailsComponent implements OnInit {
 
   refreshCost(nVal: string, num: number) {
     const dt = new Date(nVal);
-    const newVal = new NgbDate(dt.getFullYear(), dt.getMonth(), dt.getDate());
+    const newVal = new NgbDate(dt.getFullYear(), dt.getMonth(), dt.getDate() - 1);
     let fr = null;
     let t = null;
     if (this.from != null) {
@@ -77,7 +77,7 @@ export class ProductDetailsComponent implements OnInit {
     }
     if (t.after(fr) || t.equals(fr)) {
       const diff = Math.abs(new Date(t.year, t.month, t.day).getTime() - new Date(fr.year, fr.month, fr.day).getTime());
-      const diffDays = Math.ceil(diff / (1000 * 3600 * 24)) + 1;
+      const diffDays = Math.floor(diff / (1000 * 3600 * 24)) + 1;
       this.totalCost = this.product.unitPrice * diffDays;
       return;
     }
