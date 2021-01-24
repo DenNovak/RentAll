@@ -134,8 +134,8 @@ export class ProductDetailsComponent implements OnInit {
     if (!this.checkDates()) {
       return;
     }
-    const st = new Date(this.from.year, this.from.month - 1, this.from.day + 1);
-    const f = new Date(this.to.year, this.to.month - 1, this.to.day + 1);
+    const st = new Date(this.from.year, this.from.month - 1, this.from.day);
+    const f = new Date(this.to.year, this.to.month - 1, this.to.day);
     this.productService.reserveProduct(id, st, f).subscribe(
       result => {
         if (result === true) {

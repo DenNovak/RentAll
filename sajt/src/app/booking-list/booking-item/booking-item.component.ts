@@ -24,6 +24,7 @@ export class BookingItemComponent implements OnInit {
   imageCount = 0;
   currentImageIndex = 0;
   clientName: string;
+  cancelPressed = false;
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute, private router: Router, private alertService: AlertService) { }
@@ -74,6 +75,7 @@ export class BookingItemComponent implements OnInit {
       result => {
         if (result === true) {
           this.alertService.success('Product reservation cancelled');
+          this.cancelPressed = true;
           setTimeout(() => {
             this.router.navigate(['/consumer/reserved']);
           }, 2000);
