@@ -1,5 +1,5 @@
 <div class="inputBox">
-  <input type="text" class="form-control" [(ngModel)]="inputItem"
+  <input type="text" class="form-control" [(ngModel)]="inputItem" maxlength="256"
          (ngModelChange)="getFilteredList()" (keyup)="onKeyPress($event)"
          (blur)="toggleListDisplay(0)" (focus)="toggleListDisplay(1)"
          [ngClass]="{'error': showError}" name="name" required="required">

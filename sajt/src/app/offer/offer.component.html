@@ -43,7 +43,7 @@
           </div>
           <div class="coll">
             <div class="inputBox">
-              <input type="text" class="form-control" formControlName="price" name="0" required="required">
+              <input type="number" class="form-control" formControlName="price" name="0" required="required" maxlength="10">
               <span class="text">Price:</span>
               <span class="line"></span>
               <div class="invalid-tooltip">
@@ -55,7 +55,7 @@
         <div class="row100">
           <div class="coll">
             <div class="inputBox">
-              <input type="text" class="form-control" formControlName="firstName" name="firstName"
+              <input type="text" class="form-control" formControlName="firstName" name="firstName" maxlength="255"
                      required="required">
               <span class="text">First name:</span>
               <span class="line"></span>
@@ -66,7 +66,7 @@
           </div>
           <div class="coll">
             <div class="inputBox">
-              <input type="text" class="form-control" formControlName="phoneNumber" name="phoneNumber"
+              <input type="text" class="form-control" formControlName="phoneNumber" name="phoneNumber" maxlength="20"
                      required="required">
               <span class="text">Phone number:</span>
               <span class="line"></span>
@@ -115,7 +115,7 @@
           </div>
           <div class="coll">
             <div class="inputBox">
-              <input type="text" class="form-control" formControlName="userDescription" name="phoneNumber">
+              <input type="text" class="form-control" formControlName="userDescription" name="userDescription" maxlength="255">
               <span class="text">User Description:</span>
               <span class="line"></span>
             </div>
@@ -126,7 +126,7 @@
           <div class="coll">
             <div class="inputBox textarea">
               <textarea class="form-control" formControlName="description"
-                        name="description"></textarea>
+                        name="description" maxlength="255"></textarea>
               <span class="text">Description:</span>
 
               <div class="invalid-tooltip">
