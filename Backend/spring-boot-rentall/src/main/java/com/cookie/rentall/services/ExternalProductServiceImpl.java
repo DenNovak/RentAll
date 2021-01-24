@@ -1,10 +1,13 @@
 package com.cookie.rentall.services;
 
 import com.cookie.rentall.dto.ExternalProductListItem;
+import com.cookie.rentall.entity.ExternalProduct;
+import com.cookie.rentall.repositores.ExternalProductRepository;
 import com.cookie.rentall.views.ExternalProductView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,10 +17,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,6 +35,9 @@ public class ExternalProductServiceImpl implements ExternalProductService {
     private static final String PRODUCT_CATEGORY = "<meta data-analytics-item='\\{(([\\s\\S](?!category))*)\"category\":\"";
     private static final String PRODUCT_PHOTO = "data-zone=\"OFFERBOX_PHOTO\" data-offer-id=(([\\s\\S](?!/div>))*)>";
     private static final String PRODUCT_PHOTO_INTERNAL = "src=\"(([\\s\\S](?!\" ))*)>";
+
+    @Autowired
+    private ExternalProductRepository externalProductRepository;
 
     @Override
     public List<ExternalProductView> getExternalProductList() {
@@ -60,6 +63,9 @@ public class ExternalProductServiceImpl implements ExternalProductService {
                 }*/
             }
         }
+        if (resultList.isEmpty()) {
+            externalProductRepository.findAll().forEach(p -> resultList.add(new ExternalProductView(p)));
+        }
         return resultList;
     }
 
@@ -80,6 +86,20 @@ public class ExternalProductServiceImpl implements ExternalProductService {
         String photo = parseFieldValue(rawProduct, PRODUCT_PHOTO, PRODUCT_PHOTO_INTERNAL);
         if (photo != null && photo.length() > 5)
             result.setPhotoLink(photo.substring(5, photo.length() - 2));
+        Optional<ExternalProduct> externalProductOptional = externalProductRepository.findByProductID(result.getProductID());
+        if (!externalProductOptional.isPresent()) {
+            ExternalProduct externalProduct = new ExternalProduct();
+            externalProduct.setCategory(result.getCategory());
+            externalProduct.setProductID(result.getProductID());
+            externalProduct.setName(result.getName());
+            externalProduct.setMarkaSilnika(result.getMarkaSilnika());
+            externalProduct.setPhotoLink(result.getPhotoLink());
+            externalProduct.setPojemnoscKosza(result.getPojemnoscKosza());
+            externalProduct.setPojemnoscSilnika(result.getPojemnoscSilnika());
+            externalProduct.setSzerokoscKoszenia(result.getSzerokoscKoszenia());
+            externalProduct.setRegulacjaWysokosciKoszenia(result.getRegulacjaWysokosciKoszenia());
+            externalProductRepository.save(externalProduct);
+        }
         return result;
     }
 
