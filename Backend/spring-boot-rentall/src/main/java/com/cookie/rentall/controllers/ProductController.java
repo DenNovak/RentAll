@@ -33,10 +33,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -239,14 +242,24 @@ public class ProductController {
         }
         Booking newBooking = new Booking();
         newBooking.setCreateDate(new Date());
-        newBooking.setExpectedStart(request.expectedStart);
-        newBooking.setExpectedEnd(request.expectedEnd);
+        Date from = cutDate(request.expectedStart);
+        Date to = cutDate(request.expectedEnd);
+        newBooking.setExpectedStart(from);
+        newBooking.setExpectedEnd(to);
+        newBooking.setCost(product.getUnitPrice().multiply(BigDecimal.valueOf((to.getTime() - from.getTime()) / (1000 * 3600 * 24) + 1)));
         newBooking.setActual(true);
         newBooking.setUserId(getUserId());
         newBooking.setProduct(product);
         newBooking.setPinCode((int) (Math.random() * 100) + 1);
         bookingRepository.save(newBooking);
         return true;
+    }
+
+    private Date cutDate(Date date) {
+        LocalDate localDate = date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate().atStartOfDay().toLocalDate();
+        return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
 
     private boolean isInInterval(Date date, Date begin, Date end) {
