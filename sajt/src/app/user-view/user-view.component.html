@@ -22,10 +22,14 @@
         {{ appComponent.username }}</a></li>
     </ul>
   </header>
+
   <form class="needs-validation" novalidate>
     <section>
+
+      <alert></alert>
       <div class="containerr">
         <h2>{{user.firstName}} {{user.lastName}}</h2>
+
         <div class="row100">
           <div class="coll">
             <div class="inputBox">
@@ -69,6 +73,31 @@
           </div>
         </div>
 
+        <div class="row100" *ngIf="!hasOpinion()">
+          <div class="coll">
+            <div class="inputBox">
+              <input type="text" class="form-control" [(ngModel)]="yourOpinion" name="content"
+                     required="required">
+              <span class="text">Your opinion</span>
+              <span class="line"></span>
+              <div class="invalid-tooltip">
+                Please provide your opinion.
+              </div>
+            </div>
+          </div>
+          <div class="coll" *ngIf="!hasOpinion()">
+            <div>
+              <img *ngFor="let in of counter(5); let i = index" width="32px" class="images" [src]="getStarImage(i)" (mouseover)="setRatingMouse(i)" (mouseout)="resetRatingMouse(i)" (click)="fixRating(i)">
+            </div>
+          </div>
+        </div>
+
+        <div class="row100" *ngIf="!hasOpinion()">
+          <div class="coll">
+            <input type="submit" (click)="sendOpinion()" value="Send opinion">
+          </div>
+        </div>
+
 
         <div class="card border-0 shadow my-5">
           <div class="row100">
@@ -78,9 +107,7 @@
               </h3>
             </div>
           </div>
-
         </div>
-
         <div class="card-body p-3">
           <h3>Opinions ({{user.opinions.length}})</h3>
           <table class="table bg-light">
@@ -93,15 +120,14 @@
             </thead>
             <tbody>
             <tr *ngFor="let opinion of user.opinions">
-
               <td class="align-middle">
                 {{ authorMap.get(opinion.authorId).firstName }} {{ authorMap.get(opinion.authorId).lastName }}
               </td>
 
-
               <td class="align-middle">{{ opinion.content }}</td>
 
               <td class="align-middle"><img *ngFor="let in of counter(opinion.rating) " width="16px" class="images"
+              <td class="align-middle"><img *ngFor="let in of counter(opinion.rating)" width="16px" class="images"
                                             src="assets/images/star.png"></td>
             </tr>
 
@@ -109,14 +135,10 @@
             <div *ngIf="user.opinions?.length == 0" class="alert alert-warning col-md-12" role="alert">
               No opinions found.
             </div>
-
             </tbody>
-
           </table>
         </div>
       </div>
-
     </section>
   </form>
-
 </div>
