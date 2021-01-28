@@ -137,16 +137,13 @@ export class ProductService {
     const url = `${this.baseUrl}/${productId}/image/ids`;
     return this.httpClient.get<number[]>(url).pipe();
   }
-
-  postFile(fileToUpload: File, productId: number): Observable<boolean> {
-    const url = `${this.baseUrl}/${productId}/image/upload`;;
+  postFile(fileToUpload: File, productId: string): Observable<boolean> {
+    const url = `${this.baseUrl}/${productId}/image`;;
     const formData: FormData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
-    const headers = {'content-type': 'image/jpg'};
     return this.httpClient
-      .post(url, formData, { headers: headers }).pipe(map(() => true));
+      .post(url, formData, ).pipe(map(() => true));
   }
-
   listBookingsByConsumer(userId: number, status: string): Observable<Booking[]> {
     const url = `http://localhost:8080/api/booking/byConsumer?status=${status}`;
     return this.httpClient.get<GetResponseBookingsPlain>(url).pipe(map(response => {
@@ -175,6 +172,32 @@ export class ProductService {
     const searchUrl = `${this.baseUrl}/search/findByCityContaining/?city=${cityName}`;
     return this.getProducts(searchUrl);
   }
+  changePassword(password: string, uuid: string): Observable<any> {
+    const headers = {'content-type': 'application/json'};
+    const body = {
+      'password': password,
+      'uuid': uuid
+    };
+    console.log(body);
+    return this.httpClient.post('http://localhost:8080/api/auth/resetPassword', body, {'headers': headers});
+  }
+  generatePasswordResetLink(email: string): Observable<any> {
+    const headers = {'content-type': 'application/json'};
+    const body = {
+      'email': email
+    };
+    console.log(body);
+    return this.httpClient.post('http://localhost:8080/api/auth/getChangePasswordLink', body, {'headers': headers});
+  }
+
+  //Create opinion
+  createOpinion(userId: number, content: string, rating: number): Observable<any> {
+    const url = `http://localhost:8080/api/user/opinion`;
+    const headers = {'content-type': 'application/json'};
+    const body = {userId: userId, content: content, rating: rating};
+    return this.httpClient.post(url, body, {headers: headers});
+  }
+
   setAppComponent(ac: AppComponent) {
     this.appComponent = ac;
   }
