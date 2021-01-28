@@ -133,10 +133,18 @@ export class ProductService {
     const url = `${this.baseUrl}/gotByUser?status=${status}`;
     return this.httpClient.get<GetResponseProductsPlain>(url).pipe(map(response => response.content));
   }
-
   listProductImages(productId: number, status: string): Observable<number[]> {
     const url = `${this.baseUrl}/${productId}/image/ids`;
     return this.httpClient.get<number[]>(url).pipe();
+  }
+
+  postFile(fileToUpload: File, productId: number): Observable<boolean> {
+    const url = `${this.baseUrl}/${productId}/image/upload`;;
+    const formData: FormData = new FormData();
+    formData.append('file', fileToUpload, fileToUpload.name);
+    const headers = {'content-type': 'image/jpg'};
+    return this.httpClient
+      .post(url, formData, { headers: headers }).pipe(map(() => true));
   }
 
   listBookingsByConsumer(userId: number, status: string): Observable<Booking[]> {
