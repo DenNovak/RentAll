@@ -31,12 +31,10 @@ export class ProductService {
     const url = `http://localhost:8080/api/booking/${bookingId}`;
     return this.httpClient.get<Booking>(url);
   }
-
   getUser(userId: number): Observable<User> {
     const url = `http://localhost:8080/api/user/${userId}`;
     return this.httpClient.get<User>(url);
   }
-
   getProductStatus(theProductId: number): Observable<ProductStatus> {
     const productUrl = `${this.baseUrl}/${theProductId}/status`;
     return this.httpClient.get<ProductStatus>(productUrl);
@@ -135,6 +133,12 @@ export class ProductService {
     const url = `${this.baseUrl}/gotByUser?status=${status}`;
     return this.httpClient.get<GetResponseProductsPlain>(url).pipe(map(response => response.content));
   }
+
+  listProductImages(productId: number, status: string): Observable<number[]> {
+    const url = `${this.baseUrl}/${productId}/image/ids`;
+    return this.httpClient.get<number[]>(url).pipe();
+  }
+
   listBookingsByConsumer(userId: number, status: string): Observable<Booking[]> {
     const url = `http://localhost:8080/api/booking/byConsumer?status=${status}`;
     return this.httpClient.get<GetResponseBookingsPlain>(url).pipe(map(response => {
