@@ -85,6 +85,51 @@
             <input type="submit" (click)="changePassword()" value="Change password">
           </div>
         </div>
+
+
+        <div class="card border-0 shadow my-5">
+          <div class="row100">
+            <div class="coll">
+              <h3>Rating: {{user.rating}} <div><img *ngFor="let i of ratings" width="32px" class="images" src="assets/images/star.png"></div></h3>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="card-body p-3">
+          <h3>Opinions ({{user.opinions.length}})</h3>
+          <table class="table bg-light">
+            <thead class="thead-success">
+            <tr>
+              <th width="200px">Author</th>
+              <th>Content</th>
+              <th width="200px">Rating</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let opinion of user.opinions">
+
+              <td class="align-middle">
+                {{ authorMap.get(opinion.authorId).firstName }} {{ authorMap.get(opinion.authorId).lastName }}
+              </td>
+
+
+              <td class="align-middle">{{ opinion.content }}</td>
+
+              <td class="align-middle"><img *ngFor="let in of counter(opinion.rating) " width="16px" class="images" src="assets/images/star.png"></td>
+            </tr>
+
+            <!-- if products empty then display a message -->
+            <div *ngIf="user.opinions?.length == 0" class="alert alert-warning col-md-12" role="alert">
+              No opinions found.
+            </div>
+
+            </tbody>
+
+          </table>
+        </div>
+
+
       </div>
     </section>
   </form>

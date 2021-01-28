@@ -1,23 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import {ProductService} from '../services/product.service';
 import {AppComponent} from '../app.component';
 import {User} from '../common/user';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AlertService} from "../_alert";
+import {ProductService} from '../services/product.service';
+import {ActivatedRoute} from '@angular/router';
 @Component({
-  selector: 'app-user-edit',
-  templateUrl: './user-edit.component.html',
-  styleUrls: ['./user-edit.component.scss']
+  selector: 'app-user-view',
+  templateUrl: './user-view.component.html',
+  styleUrls: ['./user-view.component.scss']
 })
-export class UserEditComponent implements OnInit {
+export class UserViewComponent implements OnInit {
   appComponent: AppComponent;
   user: User;
   userId: number;
   authorMap: Map<number, User> = new Map<number, User>();
   ratings: Array<number>;
 
-  constructor(private productService: ProductService, private route: ActivatedRoute, private alertService: AlertService,
-              private router: Router) { }
+  constructor(private productService: ProductService, private route: ActivatedRoute) { }
+
   ngOnInit(): void {
     this.appComponent = this.productService.getAppComponent();
     this.userId = +this.route.snapshot.paramMap.get('id');
@@ -33,16 +32,6 @@ export class UserEditComponent implements OnInit {
         });
       });
     });
-  }
-
-  saveUser() {
-    this.productService.editUser(this.userId, this.user).subscribe(data => {
-      this.user = data;
-      this.alertService.success('User updated');
-    });
-  }
-  changePassword() {
-    this.router.navigate(['/resetPassword']);
   }
 
   counter(i: number) {
