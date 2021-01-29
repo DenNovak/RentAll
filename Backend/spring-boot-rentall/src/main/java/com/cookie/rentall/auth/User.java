@@ -1,10 +1,14 @@
 package com.cookie.rentall.auth;
 
+import com.cookie.rentall.entity.Opinion;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -44,6 +48,9 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "users")
+    private List<Opinion> opinions = new ArrayList<>();
 
     public User() {
     }
@@ -116,5 +123,13 @@ public class User {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Opinion> getOpinions() {
+        return opinions;
+    }
+
+    public void setOpinions(List<Opinion> opinions) {
+        this.opinions = opinions;
     }
 }

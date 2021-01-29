@@ -1,6 +1,5 @@
 package com.cookie.rentall;
 
-import com.cookie.rentall.entity.Product;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

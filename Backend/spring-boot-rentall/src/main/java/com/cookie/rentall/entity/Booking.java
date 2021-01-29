@@ -43,10 +43,10 @@ public class Booking {
     @Column(name = "client_return_date")
     private Date clientReturnDate;
 
-    @Column(name="expected_start")
+    @Column(name = "expected_start")
     private Date expectedStart;
 
-    @Column(name="expected_end")
+    @Column(name = "expected_end")
     private Date expectedEnd;
 
     @Column(name = "cost")

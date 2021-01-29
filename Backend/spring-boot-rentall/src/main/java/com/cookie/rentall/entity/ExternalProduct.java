@@ -1,32 +1,51 @@
-package com.cookie.rentall.views;
+package com.cookie.rentall.entity;
 
-import com.cookie.rentall.entity.ExternalProduct;
+import lombok.Data;
 
-public class ExternalProductView {
-    public ExternalProductView() {
-        name = "ExampleProduct";
-    }
+import javax.persistence.*;
 
+@Entity
+@Table(name="external_product")
+@Data
+public class ExternalProduct {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column
     private String name;
+
+    @Column
     private String category;
+
+    @Column
     private String productID;
+
+    @Column
     private String pojemnoscSilnika;
+
+    @Column
     private String markaSilnika;
+
+    @Column
     private String szerokoscKoszenia;
+
+    @Column
     private String regulacjaWysokosciKoszenia;
+
+    @Column
     private String pojemnoscKosza;
+
+    @Column
     private String photoLink;
 
-    public ExternalProductView(ExternalProduct product) {
-        this.name = product.getName();
-        this.category = product.getCategory();
-        this.productID = product.getProductID();
-        this.pojemnoscSilnika = product.getPojemnoscSilnika();
-        this.markaSilnika = product.getMarkaSilnika();
-        this.szerokoscKoszenia = product.getSzerokoscKoszenia();
-        this.regulacjaWysokosciKoszenia = product.getRegulacjaWysokosciKoszenia();
-        this.pojemnoscKosza = product.getPojemnoscKosza();
-        this.photoLink = product.getPhotoLink();
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

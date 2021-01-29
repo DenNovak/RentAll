@@ -1,6 +1,8 @@
 package com.cookie.rentall.auth;
 
+import com.cookie.rentall.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,10 +11,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -33,6 +35,15 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    EmailService emailService;
+
+    @Autowired
+    PasswordResetRepository passwordResetRepository;
+
+    @Value("${site.url}")
+    private String siteUri;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -108,5 +119,47 @@ public class AuthController {
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @PostMapping("/getChangePasswordLink")
+    public ResponseEntity<?> generatePasswordChangeLink(@Valid @RequestBody GenerateChangePasswordLinkRequest request) {
+        String id = UUID.randomUUID().toString();
+        PasswordReset passwordReset = new PasswordReset();
+        passwordReset.setUuid(id);
+        passwordReset.setUserId(userRepository.findByEmail(request.getEmail()).map(User::getId).orElseThrow(() -> new RuntimeException("User Not found")));
+        passwordReset.setCreated(LocalDateTime.now());
+        passwordResetRepository.save(passwordReset);
+        try {
+            emailService.sendSimpleMessage(request.getEmail(), "Password recovery", "Link to password change: <a>" + siteUri + "/resetPassword?id=" + id + "</a>");
+        } catch (MessagingException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Failed to send email" + e.getMessage()));
+        }
+
+        return ResponseEntity.ok(new MessageResponse("Password change link generated!"));
+    }
+
+    @PostMapping("/resetPassword")
+    public ResponseEntity<?> generatePasswordChangeLink(@RequestBody ChangePasswordRequest request) {
+        User user = null;
+        Long userId = getUserId();
+        if (userId == null) {
+            PasswordReset passwordReset = passwordResetRepository.findPasswordResetByUuid(request.getUuid()).orElse(null);
+            if (passwordReset == null)
+                return ResponseEntity.badRequest().body(new MessageResponse("Wrong uuid"));
+            user = userRepository.getOne(passwordReset.getUserId());
+        } else {
+            user = userRepository.getOne(userId);
+        }
+        user.setPassword(encoder.encode(request.getPassword()));
+        userRepository.save(user);
+        return ResponseEntity.ok(new MessageResponse("Password changed successfully!"));
+    }
+
+    private Long getUserId() {
+        try {
+            return ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

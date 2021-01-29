@@ -28,6 +28,15 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
+    public void store(byte[] bytes, String storedName) {
+        try(FileOutputStream fileOutputStream = new FileOutputStream(new File("images/" + storedName))) {
+            fileOutputStream.write(bytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public Stream<Path> loadAll() {
         return null;
     }

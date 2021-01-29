@@ -20,6 +20,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findByCityContaining(@RequestParam("city") String city, Pageable pageable);
 
+    @Query("select  p from Product  p left join ProductCategory c on c.id = p.category.id where (p.deleted is null or p.deleted <> true) and p.name like %:productName% and p.city like %:city% and c.categoryName like %:category%")
+    Page<Product> findAllNotDeleted(Pageable pageable, String productName, String city, String category);
+
+    @Query("select  p from Product  p where (p.deleted is null or p.deleted <> true) and p.name like %:productName% and p.city like %:city%")
+    Page<Product> findAllNotDeletedWithoutCategory(Pageable pageable, String productName, String city);
+
+    @Query("select  p from Product  p where p.userId = :userId and (p.deleted is null or p.deleted <> true)")
+    Page<Product> findAllOwners(Long userId, Pageable pageable);
+
     @Query("select p from Product p left join Booking b on p.id = b.product.id where (b.actual = false or b.id is null) and not exists (select b from Booking b where b.product.id = p.id and b.actual = true)")
     Page<Product> findFree(Pageable pageable);
 
@@ -41,4 +50,3 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select p from Product p left join Booking b on p.id = b.product.id where b.returnDate is not null and b.actual = false and b.userId = :userId")
     Page<Product> findCustomerReturned(Long userId, Pageable pageable);
 }
-
