@@ -8,6 +8,7 @@ import {faCalendarAlt} from '@fortawesome/free-solid-svg-icons';
 import {ProductUnavailableView} from '../../../common/productunavailableview';
 import {AlertService} from "../../../_alert";
 import {Observable, timer} from "rxjs";
+import {User} from "../../../common/user";
 
 @Component({
   selector: 'app-product-details',
@@ -18,6 +19,8 @@ import {Observable, timer} from "rxjs";
 export class ProductDetailsComponent implements OnInit {
 
   product: Product = new Product();
+  user: User;
+  ratings: Array<number>;
   productStatus = 'FREE';
   productConsumer = 0;
   appComponent: AppComponent;
@@ -97,6 +100,10 @@ export class ProductDetailsComponent implements OnInit {
           this.currentImageId = this.product.imageIds[0];
           this.imageCount = this.product.imageIds.length;
         }
+        this.productService.getUser(this.product.userId).subscribe(user => {
+          this.user = user;
+          this.ratings = Array(Math.round(this.user.rating)).fill(0).map((x, i) => i);
+        });
         this.productService.listUnavailableDates(this.product.id).subscribe((d) => {
           this.refusedDates = d.map(rec => {
             const v = new ProductUnavailableView();

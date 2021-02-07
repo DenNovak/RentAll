@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Product} from '../../common/product';
 import {AppComponent} from '../../app.component';
 import {ProductService} from '../../services/product.service';
@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Booking} from '../../common/booking';
 import {AlertService} from "../../_alert";
 import {formatDate} from "@angular/common";
+import {User} from "../../common/user";
 
 @Component({
   selector: 'app-booking-item',
@@ -14,6 +15,11 @@ import {formatDate} from "@angular/common";
 })
 export class BookingItemComponent implements OnInit {
   booking: Booking = new Booking();
+  user: User;
+  ratings: Array<number>;
+  yourOpinion: string;
+  yourRating: number = 0;
+  mouseUprating: number = 0;
   start: string;
   end: string;
   product: Product = new Product();
@@ -27,7 +33,8 @@ export class BookingItemComponent implements OnInit {
   cancelPressed = false;
 
   constructor(private productService: ProductService,
-              private route: ActivatedRoute, private router: Router, private alertService: AlertService) { }
+              private route: ActivatedRoute, private router: Router, private alertService: AlertService) {
+  }
 
   ngOnInit(): void {
     this.appComponent = this.productService.getAppComponent();
@@ -51,6 +58,10 @@ export class BookingItemComponent implements OnInit {
         });
         this.productService.getProduct(this.booking.productId).subscribe(data => {
           this.product = data;
+          this.productService.getUser(this.product.userId).subscribe(user => {
+            this.user = user;
+            this.ratings = Array(Math.round(this.user.rating)).fill(0).map((x, i) => i);
+          });
           if (this.product.imageIds && this.product.imageIds.length > 0) {
             this.currentImageId = this.product.imageIds[0];
             this.imageCount = this.product.imageIds.length;
@@ -105,6 +116,7 @@ export class BookingItemComponent implements OnInit {
     this.productService.returnProductConsumer(bookingId).subscribe(
       result => {
         if (result === true) {
+          this.sendOpinion();
           if (result === true) {
             this.alertService.success('Product returned');
             setTimeout(() => {
@@ -148,5 +160,42 @@ export class BookingItemComponent implements OnInit {
     if (this.imageCount && this.imageCount > 0) {
       this.currentImageId = this.product.imageIds[this.currentImageIndex];
     }
+  }
+
+  counter(i: number) {
+    return new Array(i);
+  }
+
+  sendOpinion() {
+    if (this.yourOpinion && this.yourOpinion.length > 0) {
+      this.productService.createOpinion(this.product.userId, this.yourOpinion, this.yourRating).subscribe(data => {
+      });
+    }
+  }
+
+  resetRatingMouse(index) {
+    this.mouseUprating = 0;
+  }
+
+  setRatingMouse(index) {
+    this.mouseUprating = index + 1;
+  }
+
+  getMouseRating() {
+    if (this.mouseUprating >= this.yourRating) {
+      return this.mouseUprating;
+    }
+    return this.yourRating;
+  }
+
+  getStarImage(index) {
+    if (index < this.getMouseRating()) {
+      return 'assets/images/star.png';
+    }
+    return 'assets/images/star_grey.png';
+  }
+
+  fixRating(index) {
+    this.yourRating = index + 1;
   }
 }

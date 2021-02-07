@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-md-4">
           <!--img class="img-fluid" src="{{ product.imageUrl }}" onerror="this.onerror=null; this.src='assets/images/products/noImage.jpg' " sizes="400x300" -->
-          <img *ngIf="currentImageId" class="img-fluid" src="https://rentall.projektstudencki.pl:8080/api/products/image/{{ currentImageId }}/" onerror="this.onerror=null; this.src='assets/images/products/noImage.jpg' " sizes="400x300" >
+          <img *ngIf="currentImageId" class="img-fluid" src="http://localhost:8080/api/products/image/{{ currentImageId }}/" onerror="this.onerror=null; this.src='assets/images/products/noImage.jpg' " sizes="400x300" >
           <button (click)="prevImage()"> &nbsp;&lt;&nbsp; </button>
           &nbsp;
           <button (click)="nextImage()"> &nbsp;&gt;&nbsp; </button>
@@ -16,6 +16,10 @@
               name="imageInput"
               (change)="onFileSelected($event)">
           </div>
+          <!--Product status: {{productStatus}}-->
+          <div>Owner: <a href="/user-view/{{product.userId}}">{{user.firstName}} {{user.lastName}}</a></div>
+          <div><img *ngFor="let i of ratings" width="24px" class="images" src="assets/images/star.png"></div>
+          <div style="font-style: italic; margin-top: 5px" *ngFor="let opinion of user.opinions | slice:0:5">"{{opinion.content}}"</div>
         </div>
 
         <div class="col-md-5">
@@ -84,8 +88,7 @@
         </div>
 
       </div>
-      Product status: {{productStatus}}
-      <div><a href="/user-view/{{product.userId}}">View user profile</a></div>
+
 
 
 
