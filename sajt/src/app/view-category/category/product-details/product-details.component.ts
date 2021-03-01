@@ -2,10 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {Product} from 'src/app/common/product';
 import {ProductService} from 'src/app/services/product.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AppComponent} from "../../../app.component";
-import {NgbDate, NgbDatepicker, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {AppComponent} from '../../../app.component';
+import {NgbDate, NgbDatepicker, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {faCalendarAlt} from '@fortawesome/free-solid-svg-icons';
-import {ProductUnavailableView} from "../../../common/productunavailableview";
+import {ProductUnavailableView} from '../../../common/productunavailableview';
+import {AlertService} from "../../../_alert";
+import {Observable, timer} from "rxjs";
+import {User} from "../../../common/user";
 
 @Component({
   selector: 'app-product-details',
@@ -16,6 +19,8 @@ import {ProductUnavailableView} from "../../../common/productunavailableview";
 export class ProductDetailsComponent implements OnInit {
 
   product: Product = new Product();
+  user: User;
+  ratings: Array<number>;
   productStatus = 'FREE';
   productConsumer = 0;
   appComponent: AppComponent;
@@ -25,9 +30,13 @@ export class ProductDetailsComponent implements OnInit {
   markDisabled: (date: NgbDate) => {};
   refusedDates: ProductUnavailableView[];
   totalCost = 0;
+  currentImageId: number;
+  imageCount = 0;
+  currentImageIndex = 0;
+  imageInput: File;
 
   constructor(private productService: ProductService,
-              private route: ActivatedRoute, private router: Router) {
+              private route: ActivatedRoute, private router: Router, private alertService: AlertService) {
   }
 
   ngOnInit(): void {
@@ -43,8 +52,8 @@ export class ProductDetailsComponent implements OnInit {
         if (interval.start === null || interval.end === null || interval.start === undefined || interval.end === undefined) {
           continue;
         }
-        const start = new NgbDate(interval.start.getFullYear(), interval.start.getMonth() + 1, interval.start.getDate() - 1);
-        const end = new NgbDate(interval.end.getFullYear(), interval.end.getMonth() + 1, interval.end.getDate() - 1);
+        const start = new NgbDate(interval.start.getFullYear(), interval.start.getMonth() + 1, interval.start.getDate());
+        const end = new NgbDate(interval.end.getFullYear(), interval.end.getMonth() + 1, interval.end.getDate());
         if ((date.after(start) || date.equals(start)) && (date.before(end) || date.equals(end))) {
           return true;
         }
@@ -55,7 +64,7 @@ export class ProductDetailsComponent implements OnInit {
 
   refreshCost(nVal: string, num: number) {
     const dt = new Date(nVal);
-    const newVal = new NgbDate(dt.getFullYear(), dt.getMonth(), dt.getDate());
+    const newVal = new NgbDate(dt.getFullYear(), dt.getMonth(), dt.getDate() - 1);
     let fr = null;
     let t = null;
     if (this.from != null) {
@@ -71,7 +80,7 @@ export class ProductDetailsComponent implements OnInit {
     }
     if (t.after(fr) || t.equals(fr)) {
       const diff = Math.abs(new Date(t.year, t.month, t.day).getTime() - new Date(fr.year, fr.month, fr.day).getTime());
-      const diffDays = Math.ceil(diff / (1000 * 3600 * 24)) + 1;
+      const diffDays = Math.floor(diff / (1000 * 3600 * 24)) + 1;
       this.totalCost = this.product.unitPrice * diffDays;
       return;
     }
@@ -87,6 +96,14 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.getProduct(theProductId).subscribe(
       data => {
         this.product = data;
+        if (this.product.imageIds && this.product.imageIds.length > 0) {
+          this.currentImageId = this.product.imageIds[0];
+          this.imageCount = this.product.imageIds.length;
+        }
+        this.productService.getUser(this.product.userId).subscribe(user => {
+          this.user = user;
+          this.ratings = Array(Math.round(this.user.rating)).fill(0).map((x, i) => i);
+        });
         this.productService.listUnavailableDates(this.product.id).subscribe((d) => {
           this.refusedDates = d.map(rec => {
             const v = new ProductUnavailableView();
@@ -113,9 +130,9 @@ export class ProductDetailsComponent implements OnInit {
   deleteProduct(id: string) {
     this.productService.deleteProduct(id).subscribe(result => {
       if (result) {
-        this.router.navigate(['/category']);
+        this.router.navigate(['/offers']);
       } else {
-        alert('Failed to delete Product');
+        this.alertService.error('Failed to delete Product');
       }
     });
   }
@@ -124,15 +141,17 @@ export class ProductDetailsComponent implements OnInit {
     if (!this.checkDates()) {
       return;
     }
-    const st = new Date(this.from.year, this.from.month - 1, this.from.day + 1);
-    const f = new Date(this.to.year, this.to.month - 1, this.to.day + 1);
+    const st = new Date(this.from.year, this.from.month - 1, this.from.day);
+    const f = new Date(this.to.year, this.to.month - 1, this.to.day);
     this.productService.reserveProduct(id, st, f).subscribe(
       result => {
         if (result === true) {
-          alert('Product reserved');
-          window.location.reload();
+          this.alertService.success('Product reserved');
+          setTimeout(() => {
+            this.router.navigate(['/consumer/reserved']);
+          }, 2000);
         } else {
-          alert('Product reservation failed');
+          this.alertService.error('Product reservation failed');
         }
       }
     );
@@ -140,19 +159,19 @@ export class ProductDetailsComponent implements OnInit {
 
   checkDates(): boolean {
     if (this.from === null || this.to === null || this.from === undefined || this.to === undefined) {
-      alert('Fill reservation dates');
-      return  false;
+      this.alertService.error('Fill reservation dates');
+      return false;
     }
     if (this.refusedDates === null || this.refusedDates === undefined) {
       return true;
     }
-    const fr = new NgbDate(this.from.year, this.from.month - 1, this.from.day - 1);
-    const t = new NgbDate(this.to.year, this.to.month - 1, this.to.day - 1);
+    const fr = new NgbDate(this.from.year, this.from.month - 1, this.from.day);
+    const t = new NgbDate(this.to.year, this.to.month - 1, this.to.day);
     for (const period of this.refusedDates) {
-      const st = new NgbDate(period.start.getFullYear(), period.start.getMonth() - 1, period.start.getDate() - 1);
-      const f = new NgbDate(period.end.getFullYear(), period.end.getMonth() - 1, period.end.getDate() - 1);
-      if (this.isInInterval(fr, st, f) || this.isInInterval(t, st, f)) {
-        alert('Selected date interval is not free');
+      const st = new NgbDate(period.start.getFullYear(), period.start.getMonth() , period.start.getDate());
+      const f = new NgbDate(period.end.getFullYear(), period.end.getMonth(), period.end.getDate());
+      if (this.isInInterval(fr, st, f) || this.isInInterval(t, st, f) || this.isInInterval(st, fr, t) || this.isInInterval(f, fr, t)) {
+        this.alertService.error('Selected date interval is not free');
         return false;
       }
     }
@@ -167,10 +186,12 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.cancelReservation(id).subscribe(
       result => {
         if (result === true) {
-          alert('Product reservation cancelled');
-          window.location.reload();
+          this.alertService.success('Product reservation cancelled');
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         } else {
-          alert('Could not cancel product reservation');
+          this.alertService.error('Could not cancel product reservation');
         }
       }
     );
@@ -180,10 +201,12 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.bookProduct(id).subscribe(
       result => {
         if (result === true) {
-          alert('Product booked');
-          window.location.reload();
+          this.alertService.success('Product booked');
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         } else {
-          alert('Product booking failed');
+          this.alertService.error('Product booking failed');
         }
       }
     );
@@ -193,10 +216,12 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.returnProductConsumer(id).subscribe(
       result => {
         if (result === true) {
-          alert('Product returned');
-          window.location.reload();
+          this.alertService.success('Product returned');
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         } else {
-          alert('Product return failed');
+          this.alertService.error('Product return failed');
         }
       }
     );
@@ -206,13 +231,56 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.returnProduct(id).subscribe(
       result => {
         if (result === true) {
-          alert('Product return confirmed');
-          window.location.reload();
+          this.alertService.success('Product return confirmed');
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         } else {
-          alert('Product return failed');
+          this.alertService.error('Product return failed');
         }
       }
     );
   }
 
+  nextImage() {
+    this.currentImageIndex = (this.currentImageIndex + 1) % this.imageCount;
+    if (this.imageCount && this.imageCount > 0) {
+      this.currentImageId = this.product.imageIds[this.currentImageIndex];
+    }
+  }
+
+  prevImage() {
+    this.currentImageIndex--;
+    if (this.currentImageIndex < 0) {
+      this.currentImageIndex = this.imageCount - 1;
+    }
+    if (this.imageCount && this.imageCount > 0) {
+      this.currentImageId = this.product.imageIds[this.currentImageIndex];
+    }
+  }
+
+  onFileSelected(event) {
+    if (event.target.files.length > 0) {
+      this.imageInput = event.target.files[0];
+      this.uploadFileToActivity();
+    }
+  }
+
+  uploadFileToActivity() {
+    if (!this.imageInput.type.startsWith('image')) {
+      this.alertService.error('Only images allowed');
+      return;
+    }
+    this.productService.postFile(this.imageInput, this.product.id).subscribe(data => {
+      this.productService.getProduct(Number(this.product.id)).subscribe(data => {
+        this.product = data;
+        if (this.product.imageIds && this.product.imageIds.length > 0) {
+          this.imageCount = this.product.imageIds.length;
+          this.currentImageId = this.product.imageIds[this.imageCount - 1];
+        }
+      });
+    }, error => {
+      console.log(error);
+    });
+  }
 }
