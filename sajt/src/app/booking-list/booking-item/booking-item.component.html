@@ -33,7 +33,7 @@
           <div class="col-md-4">
             <!--img class="img-fluid" src="{{ product.imageUrl }}" onerror="this.onerror=null; this.src='assets/images/products/noImage.jpg' " sizes="400x300" -->
             <img *ngIf="currentImageId" class="img-fluid"
-                 src="http://localhost:8080/api/products/image/{{ currentImageId }}/"
+                 src="https://rentall.projektstudencki.pl/api/products/image/{{ currentImageId }}/"
                  onerror="this.onerror=null; this.src='assets/images/products/noImage.jpg' " sizes="400x300">
             <button (click)="prevImage()"> &nbsp;&lt;&nbsp;</button>
             &nbsp;
