@@ -5,9 +5,9 @@
   <label class="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>
   <ul class="menu">
     <li><a class ="cool" href="#" routerLink="/category">Categories</a></li>
-    <li><a class ="cool" href="#" routerLink="/owner">Booked from me</a></li>
-    <li><a class ="cool" href="#" routerLink="/consumer">My bookings</a></li>
-    <li><a class ="cool" href="#" routerLink="/offers">Manage products</a></li>
+    <li><a class ="cool" *ngIf="appComponent.isLoggedIn" href="#" routerLink="/owner">Booked from me</a></li>
+    <li><a class ="cool" *ngIf="appComponent.isLoggedIn" href="#" routerLink="/consumer">My bookings</a></li>
+    <li><a class ="cool" *ngIf="appComponent.isLoggedIn" href="#" routerLink="/offers">Manage products</a></li>
     <li><a class ="cool" *ngIf="!appComponent.isLoggedIn" href="#" routerLink="/user">Log in / Sign up</a></li>
     <li><a class ="cool" href=# routerLink="/" (click)="appComponent.logout()" *ngIf="appComponent.isLoggedIn">LogOut</a></li>
     <li><a class ="cool" href=# routerLink="/user-edit/{{appComponent.userId}}" *ngIf="appComponent.isLoggedIn"><svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-person-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

@@ -5,9 +5,9 @@
 <!--  <div class="logo"><img src="../../assets/images/logo_navbar.png" width="150"></div>-->
 <!--  <div class="navbar" xmlns="http://www.w3.org/1999/html">-->
 <!--    <a class="active" href="#" routerLink="/category">Categories</a>-->
-<!--    <a href="#" routerLink="/owner">Booked from me</a>-->
-<!--    <a href="#" routerLink="/consumer">My bookings</a>-->
-<!--    <a  href="#" routerLink="/offers">Manage products</a>-->
+<!--    <a *ngIf="appComponent.isLoggedIn" href="#" routerLink="/owner">Booked from me</a>-->
+<!--    <a *ngIf="appComponent.isLoggedIn" href="#" routerLink="/consumer">My bookings</a>-->
+<!--    <a  *ngIf="appComponent.isLoggedIn" href="#" routerLink="/offers">Manage products</a>-->
 <!--    <a href="#" routerLink="/user">Log in / Sign up</a>-->
 <!--  </div>-->
 
@@ -27,9 +27,9 @@
   <label class="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>
   <ul class="menu">
     <li><a class="active" href="#" routerLink="/category">Categories</a></li>
-    <li><a href="#" routerLink="/owner">Booked from me</a></li>
-    <li><a href="#" routerLink="/consumer">My bookings</a></li>
-    <li><a  href="#" routerLink="/offers">Manage products</a></li>
+    <li><a *ngIf="appComponent.isLoggedIn" href="#" routerLink="/owner">Booked from me</a></li>
+    <li><a *ngIf="appComponent.isLoggedIn" href="#" routerLink="/consumer">My bookings</a></li>
+    <li><a  *ngIf="appComponent.isLoggedIn" href="#" routerLink="/offers">Manage products</a></li>
     <li><a href="#" routerLink="/user">Log in / Sign up</a></li>
 
   </ul>

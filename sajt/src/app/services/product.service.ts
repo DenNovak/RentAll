@@ -18,11 +18,11 @@ import {User} from '../common/user';
 export class ProductService {
   private appComponent: AppComponent;
 
-  private baseUrl = 'https://rentall.projektstudencki.pl:8080/api/products';
+  private baseUrl = 'http://localhost:8080/api/products';
 
-  private bookingUrl = 'https://rentall.projektstudencki.pl:8080/api/booking';
+  private bookingUrl = 'http://localhost:8080/api/booking';
 
-  private categoryUrl = 'https://rentall.projektstudencki.pl:8080/api/product_category';
+  private categoryUrl = 'http://localhost:8080/api/product_category';
 
   constructor(private httpClient: HttpClient) {
   }
@@ -37,12 +37,12 @@ export class ProductService {
 
   getBooking(bookingId: number): Observable<Booking> {
     // URL based on booking id
-    const url = `https://rentall.projektstudencki.pl:8080/api/booking/${bookingId}`;
+    const url = `http://localhost:8080/api/booking/${bookingId}`;
     return this.httpClient.get<Booking>(url);
   }
 
   getUser(userId: number): Observable<User> {
-    const url = `https://rentall.projektstudencki.pl:8080/api/user/${userId}`;
+    const url = `http://localhost:8080/api/user/${userId}`;
     return this.httpClient.get<User>(url);
   }
 
@@ -85,7 +85,7 @@ export class ProductService {
   }
 
   searchExternalProduct(productNameFilter: string) {
-    return this.httpClient.get<ExternalProduct[]>(`https://rentall.projektstudencki.pl:8080/api/externalProduct`).pipe(map(response => {
+    return this.httpClient.get<ExternalProduct[]>(`http://localhost:8080/api/externalProduct`).pipe(map(response => {
       return response;
     }));
   }
@@ -114,7 +114,7 @@ export class ProductService {
   }
 
   hasMyBookings(userId: number): Observable<any> {
-    return this.httpClient.get<GetResponseProductsPlain>(`https://rentall.projektstudencki.pl:8080/api/booking/myByUser/${userId}`);
+    return this.httpClient.get<GetResponseProductsPlain>(`http://localhost:8080/api/booking/myByUser/${userId}`);
   }
 
   // DELETE product
@@ -196,21 +196,21 @@ export class ProductService {
   }
 
   listBookingsByConsumer(userId: number, status: string): Observable<Booking[]> {
-    const url = `https://rentall.projektstudencki.pl:8080/api/booking/byConsumer?status=${status}`;
+    const url = `http://localhost:8080/api/booking/byConsumer?status=${status}`;
     return this.httpClient.get<GetResponseBookingsPlain>(url).pipe(map(response => {
       return response.content;
     }));
   }
 
   listBookingsByOwner(userId: number, status: string): Observable<Booking[]> {
-    const url = `https://rentall.projektstudencki.pl:8080/api/booking/byOwner?status=${status}`;
+    const url = `http://localhost:8080/api/booking/byOwner?status=${status}`;
     return this.httpClient.get<GetResponseBookingsPlain>(url).pipe(map(response => {
       return response.content;
     }));
   }
 
   editUser(userId: number, user: User): Observable<User> {
-    const url = `https://rentall.projektstudencki.pl:8080/api/user/${userId}`;
+    const url = `http://localhost:8080/api/user/${userId}`;
     const headers = {'content-type': 'application/json'};
     const body = JSON.stringify(user);
     return this.httpClient.put<User>(url, body, {'headers': headers});
@@ -236,7 +236,7 @@ export class ProductService {
       'uuid': uuid
     };
     console.log(body);
-    return this.httpClient.post('https://rentall.projektstudencki.pl:8080/api/auth/resetPassword', body, {'headers': headers});
+    return this.httpClient.post('http://localhost:8080/api/auth/resetPassword', body, {'headers': headers});
   }
 
   generatePasswordResetLink(email: string): Observable<any> {
@@ -245,12 +245,12 @@ export class ProductService {
       'email': email
     };
     console.log(body);
-    return this.httpClient.post('https://rentall.projektstudencki.pl:8080/api/auth/getChangePasswordLink', body, {'headers': headers});
+    return this.httpClient.post('http://localhost:8080/api/auth/getChangePasswordLink', body, {'headers': headers});
   }
 
   //Create opinion
   createOpinion(userId: number, content: string, rating: number): Observable<any> {
-    const url = `https://rentall.projektstudencki.pl:8080/api/user/opinion`;
+    const url = `http://localhost:8080/api/user/opinion`;
     const headers = {'content-type': 'application/json'};
     const body = {userId: userId, content: content, rating: rating};
     return this.httpClient.post(url, body, {headers: headers});
