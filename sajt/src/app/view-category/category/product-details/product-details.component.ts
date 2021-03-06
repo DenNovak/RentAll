@@ -3,12 +3,11 @@ import {Product} from 'src/app/common/product';
 import {ProductService} from 'src/app/services/product.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppComponent} from '../../../app.component';
-import {NgbDate, NgbDatepicker, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {faCalendarAlt} from '@fortawesome/free-solid-svg-icons';
 import {ProductUnavailableView} from '../../../common/productunavailableview';
-import {AlertService} from "../../../_alert";
-import {Observable, timer} from "rxjs";
-import {User} from "../../../common/user";
+import {AlertService} from '../../../_alert';
+import {User} from '../../../common/user';
 
 @Component({
   selector: 'app-product-details',
@@ -58,7 +57,9 @@ export class ProductDetailsComponent implements OnInit {
           return true;
         }
       }
-      return false;
+      const now = new Date(Date.now());
+      const ngbNow = new NgbDate(now.getFullYear(), now.getMonth() + 1, now.getDate());
+      return ngbNow.after(date);
     };
   }
 
