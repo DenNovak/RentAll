@@ -55,7 +55,7 @@
             <h4 class="my-3">Client: <a href="/user-view/{{booking.userId}}">{{clientName}}</a></h4>
 
             <h4 class="my-3">Contact:</h4>
-            <a>{{ product.firstName }} , {{ product.phoneNumber}}</a>
+            {{ product.firstName }} , {{ product.phoneNumber}}
 
             <div style="padding: 20px">
               <div class="row100" *ngIf="productStatus === 'BOOKED' && productConsumer === appComponent.userId">
