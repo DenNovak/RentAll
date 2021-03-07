@@ -45,6 +45,7 @@ public class ProductControllerIntegrationTest {
 
 
     private void createTestProduct(String name) {
+        repository.deleteAll();
         Product product = new Product();
         product.setName(name);
         product.setCity("Warsaw");
