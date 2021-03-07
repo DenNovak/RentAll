@@ -168,6 +168,10 @@ export class ProductDetailsComponent implements OnInit {
     }
     const fr = new NgbDate(this.from.year, this.from.month - 1, this.from.day);
     const t = new NgbDate(this.to.year, this.to.month - 1, this.to.day);
+    if (fr.after(t)) {
+      this.alertService.error('The From date is after the To date');
+      return false;
+    }
     for (const period of this.refusedDates) {
       const st = new NgbDate(period.start.getFullYear(), period.start.getMonth() , period.start.getDate());
       const f = new NgbDate(period.end.getFullYear(), period.end.getMonth(), period.end.getDate());

@@ -8,11 +8,12 @@ import { Router } from '@angular/router';
 })
 export class SearchComponent implements OnInit {
   city = '';
-  categoty = '';
+  category = '';
 
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    this.router.navigateByUrl(`/category/search?filter=&city=${this.city}&category=${this.category}`);
   }
 
   doSearch(filter: string, city: string, category: string) {
@@ -26,9 +27,9 @@ export class SearchComponent implements OnInit {
 
   doSetCategory(value: string) {
     if (value !== 'Choose category') {
-      this.categoty = value;
+      this.category = value;
     } else {
-      this.categoty = '';
+      this.category = '';
     }
   }
 }
