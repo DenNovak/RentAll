@@ -116,7 +116,11 @@ public class ProductController {
                                             @RequestParam(name = "city", defaultValue = "") String city,
                                             @RequestParam(name = "category", defaultValue = "") String category) {
         if (StringUtils.isEmpty(category)) {
-            return productRepository.findAllNotDeletedWithoutCategory(Pageable.unpaged(), filter, city).map(ProductShortView::new);
+            if (StringUtils.isEmpty(city)) {
+                return productRepository.findAllNotDeletedWithoutCategoryAndCity(Pageable.unpaged(), filter).map(ProductShortView::new);
+            } else {
+                return productRepository.findAllNotDeletedWithoutCategory(Pageable.unpaged(), filter, city).map(ProductShortView::new);
+            }
         } else {
             return productRepository.findAllNotDeleted(Pageable.unpaged(), filter, city, category).map(ProductShortView::new);
         }

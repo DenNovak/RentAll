@@ -26,6 +26,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select  p from Product  p where (p.deleted is null or p.deleted <> true) and p.name like %:productName% and p.city like %:city%")
     Page<Product> findAllNotDeletedWithoutCategory(Pageable pageable, String productName, String city);
 
+    @Query("select  p from Product  p where (p.deleted is null or p.deleted <> true) and p.name like %:productName%")
+    Page<Product> findAllNotDeletedWithoutCategoryAndCity(Pageable pageable, String productName);
+
     @Query("select  p from Product  p where p.userId = :userId and (p.deleted is null or p.deleted <> true)")
     Page<Product> findAllOwners(Long userId, Pageable pageable);
 
